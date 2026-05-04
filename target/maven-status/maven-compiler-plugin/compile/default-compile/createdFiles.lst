@@ -20,7 +20,6 @@ com\spk\presentation\ResultView$1.class
 com\spk\presentation\VendorView$1.class
 com\spk\repository\UserRepository.class
 com\spk\presentation\AHPView.class
-com\spk\repository\UserSessionRepository.class
 com\spk\usecase\CalculateAHPUseCase.class
 com\spk\repository\CriteriaRepository.class
 com\spk\presentation\ProfileView.class

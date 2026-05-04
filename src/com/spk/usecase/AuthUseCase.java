@@ -1,10 +1,6 @@
 package com.spk.usecase;
 
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Enumeration;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -41,44 +37,10 @@ public class AuthUseCase {
 
         if (BCrypt.checkpw(password, user.getPassword())) {
             currentUser = user;
-            String macAddress = getLocalMacAddress();
-            String deviceType = resolveDeviceType();
             return user;
         }
         return null; // wrong password
     }
-
-    private String getLocalMacAddress() {
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            for (NetworkInterface network : Collections.list(interfaces)) {
-                if (network.isLoopback() || network.isVirtual() || !network.isUp()) {
-                    continue;
-                }
-                byte[] address = network.getHardwareAddress();
-                if (address == null || address.length == 0) {
-                    continue;
-                }
-                StringBuilder builder = new StringBuilder();
-                for (byte b : address) {
-                    builder.append(String.format("%02X:", b));
-                }
-                builder.setLength(builder.length() - 1);
-                return builder.toString();
-            }
-        } catch (SocketException ignored) {
-        }
-        return "UNKNOWN";
-    }
-
-    private String resolveDeviceType() {
-        String osName = System.getProperty("os.name", "unknown").toLowerCase();
-        if (osName.contains("android") || osName.contains("ios")) {
-            return "Mobile";
-        }
-        return "Desktop";
-    }
-
     /**
      * Log out the current user.
      */
