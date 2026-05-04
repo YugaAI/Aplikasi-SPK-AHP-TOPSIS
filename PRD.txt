@@ -1,0 +1,378 @@
+# PRODUCT REQUIREMENTS DOCUMENT (PRD)
+
+## Aplikasi Desktop SPK Pemilihan Vendor IT (AHP + TOPSIS)
+
+---
+
+# 1. 📌 OVERVIEW
+
+## 1.1 Latar Belakang
+
+Divisi IT membutuhkan proses objektif dalam memilih vendor berdasarkan banyak kriteria. Saat ini proses tersebut cenderung subjektif dan tidak terstruktur.
+
+Aplikasi ini bertujuan untuk:
+
+* Mengotomatisasi pengambilan keputusan
+* Mengurangi subjektivitas
+* Memberikan hasil yang terukur dan transparan
+
+---
+
+## 1.2 Tujuan Produk
+
+* Mengimplementasikan metode AHP (pembobotan kriteria)
+* Mengimplementasikan metode TOPSIS (perankingan alternatif)
+* Menyediakan sistem desktop yang stabil, ringan, dan maintainable
+
+---
+
+## 1.3 Target User
+
+* **Admin**: mengelola data dan melakukan perhitungan
+* **User**: hanya melihat hasil akhir
+
+---
+
+# 2. 🧩 SCOPE FITUR
+
+## 2.1 Role: Admin
+
+### 1. Data Kriteria
+
+Fungsi:
+
+* Tambah / edit / hapus kriteria
+* Menentukan tipe kriteria:
+
+  * Benefit (semakin besar semakin baik)
+  * Cost (semakin kecil semakin baik)
+
+Field:
+
+* id
+* nama_kriteria
+* tipe_kriteria
+
+---
+
+### 2. Data Alternatif (Vendor)
+
+Fungsi:
+
+* CRUD vendor
+
+Field:
+
+* id
+* nama_vendor
+* deskripsi
+
+---
+
+### 3. Data Penilaian
+
+Fungsi:
+
+* Input nilai vendor terhadap setiap kriteria
+
+Field:
+
+* vendor_id
+* kriteria_id
+* nilai
+
+Validasi:
+
+* Tidak boleh ada nilai kosong
+* Semua vendor harus punya nilai untuk semua kriteria
+
+---
+
+### 4. Data Perhitungan (AHP)
+
+Fungsi:
+
+* Input pairwise comparison antar kriteria
+* Generate matriks AHP
+* Hitung:
+
+  * normalisasi
+  * bobot kriteria
+  * consistency ratio (CR)
+
+Validasi:
+
+* CR ≤ 0.1
+
+Output:
+
+* bobot kriteria tersimpan
+
+---
+
+### 5. Data Hasil Akhir (TOPSIS)
+
+Fungsi:
+
+* Generate ranking vendor
+
+Proses:
+
+1. Ambil bobot dari AHP
+2. Normalisasi matriks keputusan
+3. Hitung solusi ideal (+/-)
+4. Hitung jarak
+5. Hitung nilai preferensi
+6. Ranking
+
+Output:
+
+* skor preferensi
+* ranking vendor
+
+---
+
+### 6. Data User
+
+Fungsi:
+
+* CRUD user
+* Assign role (admin/user)
+
+Field:
+
+* id
+* username
+* password (hashed)
+* role
+
+---
+
+### 7. Data Profile
+
+Fungsi:
+
+* Edit profil user
+* Ganti password
+
+---
+
+## 2.2 Role: User
+
+### 1. Data Hasil Akhir
+
+* Melihat ranking vendor
+* Melihat detail nilai
+
+---
+
+### 2. Data Profile
+
+* Edit profil
+* Ganti password
+
+---
+
+# 3. 🔄 FLOW SISTEM
+
+## 3.1 Flow Utama
+
+1. Admin input kriteria
+2. Admin input vendor
+3. Admin input pairwise AHP
+4. Sistem hitung bobot
+5. Admin input nilai vendor
+6. Sistem hitung TOPSIS
+7. Sistem tampilkan ranking
+
+---
+
+## 3.2 Flow Login
+
+* Input username & password
+* Validasi ke database
+* Redirect sesuai role
+
+---
+
+# 4. 🏗️ ARSITEKTUR SISTEM
+
+## 4.1 Clean Architecture Layer
+
+### 1. Presentation Layer (UI)
+
+* Java Swing / JavaFX
+* Neumorphism design
+* Tidak mengandung business logic
+
+---
+
+### 2. Use Case Layer
+
+Berisi logic utama:
+
+* Hitung AHP
+* Hitung TOPSIS
+* Validasi data
+
+Contoh:
+
+```java
+CalculateAHPUseCase
+CalculateTOPSISUseCase
+```
+
+---
+
+### 3. Domain Layer (Entity)
+
+Representasi data:
+
+```java
+Criteria
+Vendor
+Score
+Weight
+Result
+```
+
+---
+
+### 4. Data Layer (Repository)
+
+* Handle database (JDBC)
+* Query SQL
+
+---
+
+# 5. 🧱 TEKNOLOGI
+
+## 5.1 Bahasa
+
+* Java (tanpa framework)
+
+## 5.2 UI
+
+* Java Swing / JavaFX
+* Custom styling (Neumorphism)
+
+## 5.3 Database
+
+* SQLite (recommended desktop)
+  atau
+* MySQL
+
+## 5.4 ORM
+
+* Tidak pakai ORM → gunakan JDBC langsung
+
+---
+
+# 6. 🎨 UI/UX REQUIREMENT
+
+## 6.1 Design Style: Neumorphism
+
+Karakteristik:
+
+* Soft shadow
+* Rounded corner
+* Minimalist
+* Light color palette
+
+---
+
+## 6.2 Halaman Utama
+
+### Admin:
+
+* Dashboard
+* Kriteria
+* Alternatif
+* Penilaian
+* AHP
+* Hasil
+
+### User:
+
+* Hasil
+* Profile
+
+---
+
+# 7. 🔐 NON-FUNCTIONAL REQUIREMENTS
+
+## 7.1 Performance
+
+* Perhitungan < 2 detik untuk ≤ 50 vendor
+
+## 7.2 Security
+
+* Password hashing (bcrypt)
+* Role-based access
+
+## 7.3 Maintainability
+
+* Modular code (clean architecture)
+* Tidak ada logic di UI
+
+## 7.4 Reliability
+
+* Validasi input ketat
+* Error handling jelas
+
+---
+
+# 8. 📊 VALIDASI & TESTING
+
+## 8.1 Validasi AHP
+
+* Consistency Ratio ≤ 0.1
+
+## 8.2 Validasi Data
+
+* Tidak boleh null
+* Semua kriteria harus terisi
+
+## 8.3 Testing
+
+* Unit test (logic AHP & TOPSIS)
+* Manual test UI
+
+---
+
+# 9. 🚀 FUTURE ENHANCEMENT
+
+* Export hasil ke PDF/Excel
+* Multi project (multi kasus)
+* Grafik visualisasi
+* Logging histori perhitungan
+
+---
+
+# 10. 🔥 SUCCESS METRICS
+
+* Akurasi hasil dibanding perhitungan manual
+* Waktu pengambilan keputusan lebih cepat
+* User dapat memahami hasil dengan mudah
+
+---
+
+# 11. 📌 CATATAN IMPLEMENTASI PENTING
+
+* Pisahkan AHP & TOPSIS (jangan digabung)
+* Simpan hasil bobot → reuse
+* Gunakan struktur modular
+* Jangan hardcode kriteria/vendor
+
+---
+
+# ✅ KESIMPULAN
+
+PRD ini dirancang untuk:
+
+* Mudah diimplementasikan di Java tanpa framework
+* Clean & scalable
+* Sesuai dengan kebutuhan tugas akhir
+* Siap dikembangkan ke aplikasi production-level
+
+---
