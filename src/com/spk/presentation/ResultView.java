@@ -1,17 +1,29 @@
 package com.spk.presentation;
 
+import java.util.List;
+
 import com.spk.domain.TOPSISResult;
-import com.spk.usecase.*;
 import com.spk.repository.ResultRepository;
+import com.spk.usecase.AuthUseCase;
+import com.spk.usecase.CalculateAHPUseCase;
+import com.spk.usecase.CalculateTOPSISUseCase;
+import com.spk.usecase.ScoreUseCase;
+
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
-
-import java.util.List;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  * View for displaying TOPSIS calculation results and rankings.
@@ -92,7 +104,7 @@ public class ResultView extends VBox {
             List<TOPSISResult> results = topsisUseCase.getSavedResults();
             displayResults(results);
 
-        } catch (SQLException | IllegalStateException e) {
+        } catch (java.sql.SQLException | IllegalStateException e) {
             showAlert("Error: " + e.getMessage());
         }
     }
@@ -115,7 +127,7 @@ public class ResultView extends VBox {
             displayResults(results);
 
             showInfo("Perhitungan TOPSIS berhasil! Ranking telah disimpan.");
-        } catch (Exception e) {
+        } catch (java.sql.SQLException | IllegalStateException e) {
             showAlert("Error perhitungan: " + e.getMessage());
         }
     }
@@ -225,7 +237,7 @@ public class ResultView extends VBox {
                     (cr <= 0.1 ? " ✓ Konsisten" : " ✗ Tidak Konsisten"));
             crValue.setStyle("-fx-text-fill: " + (cr <= 0.1 ? "-accent-success" : "-accent-danger") + ";");
             crCard.getChildren().addAll(crTitle, crValue);
-        } catch (SQLException ignored) {}
+        } catch (java.sql.SQLException ignored) {}
 
         resultContainer.getChildren().addAll(winnerCard, tableCard, crCard);
     }
