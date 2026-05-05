@@ -7,6 +7,7 @@ import com.spk.usecase.AuthUseCase;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -48,11 +50,14 @@ public class MainApp extends Application {
         // Start with login screen
         showLogin();
 
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         stage.setTitle("SPK Pemilihan Vendor IT — AHP + TOPSIS");
+        stage.setX(screenBounds.getMinX());
+        stage.setY(screenBounds.getMinY());
         stage.setMinWidth(1100);
         stage.setMinHeight(700);
-        stage.setWidth(1280);
-        stage.setHeight(800);
+        stage.setWidth(screenBounds.getWidth());
+        stage.setHeight(screenBounds.getHeight());
         stage.show();
 
         stage.setOnCloseRequest(e -> {
@@ -75,7 +80,8 @@ public class MainApp extends Application {
             }
         });
 
-        scene = new Scene(loginView, 1280, 800);
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        scene = new Scene(loginView, screenBounds.getWidth(), screenBounds.getHeight());
         applyCSS(scene);
         primaryStage.setScene(scene);
     }
@@ -132,7 +138,8 @@ public class MainApp extends Application {
         mainLayout.setCenter(contentArea);
         mainLayout.setBottom(statusBar);
 
-        scene = new Scene(mainLayout, 1280, 800);
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        scene = new Scene(mainLayout, screenBounds.getWidth(), screenBounds.getHeight());
         applyCSS(scene);
         primaryStage.setScene(scene);
 

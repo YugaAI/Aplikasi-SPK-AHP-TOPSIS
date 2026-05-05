@@ -10,18 +10,17 @@ import com.spk.repository.UserRepository;
 import com.spk.repository.VendorRepository;
 
 import javafx.geometry.Pos;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 /**
  * Dashboard view showing system statistics.
@@ -57,16 +56,29 @@ public class DashboardView extends VBox {
 
         header.getChildren().addAll(titleRow, subtitle, new Separator());
 
-        // KPI row
+        // KPI row with metrics and usage flow panel
         HBox kpiRow = new HBox(20);
-        kpiRow.setAlignment(Pos.CENTER_LEFT);
+        kpiRow.setAlignment(Pos.TOP_LEFT);
+
+        HBox metricGroup = new HBox(20);
+        metricGroup.setAlignment(Pos.CENTER_LEFT);
+        metricGroup.setPrefWidth(0);
+        metricGroup.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(metricGroup, javafx.scene.layout.Priority.ALWAYS);
+
+        VBox flowPanel = new VBox();
+        flowPanel.setAlignment(Pos.TOP_LEFT);
+        flowPanel.setPrefWidth(340);
 
         VBox sideCards = new VBox(20);
-        sideCards.setPrefWidth(320);
+        sideCards.setPrefWidth(340);
+        sideCards.setMaxWidth(340);
 
         VBox chartCard = new VBox(18);
         chartCard.getStyleClass().add("chart-card");
-        chartCard.setPrefWidth(620);
+        chartCard.setPrefWidth(0);
+        chartCard.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(chartCard, javafx.scene.layout.Priority.ALWAYS);
 
         try {
             CriteriaRepository cr = new CriteriaRepository();
@@ -82,14 +94,18 @@ public class DashboardView extends VBox {
             Map<String, Integer> criteriaTypeCounts = cr.countByType();
             Map<String, Double> weightsByCriteria = rr.getWeightsByCriteria();
 
-            kpiRow.getChildren().addAll(
+            metricGroup.getChildren().addAll(
                     createMetricCard("Total Kriteria", String.valueOf(criteriaCount), "", "◈", "#38bdf8"),
                     createMetricCard("Total Vendor", String.valueOf(vendorCount), "", "◉", "#8b5cf6"),
                     createMetricCard("Total Skor", String.valueOf(scoreCount), "", "▣", "#f59e0b"),
                     createMetricCard("Total User", String.valueOf(userCount), "", "☷", "#38bdf8")
             );
+            flowPanel.getChildren().add(createFlowUsageCard());
+            Region rowSpacer = new Region();
+            HBox.setHgrow(rowSpacer, javafx.scene.layout.Priority.ALWAYS);
+            kpiRow.getChildren().addAll(metricGroup, flowPanel, rowSpacer);
 
-            sideCards.getChildren().add(createCriteriaTypeLineChartCard(criteriaTypeCounts));
+            sideCards.getChildren().add(createCriteriaTypeBarChartCard(criteriaTypeCounts));
             chartCard.getChildren().addAll(createWeightPieChartCard(weightsByCriteria));
         } catch (SQLException e) {
             Label errLabel = new Label("Error loading stats: " + e.getMessage());
@@ -103,39 +119,7 @@ public class DashboardView extends VBox {
 
         analyticsRow.getChildren().addAll(chartCard, sideCards);
 
-        // Bottom insights
-        HBox insightRow = new HBox(20);
-        insightRow.setAlignment(Pos.TOP_LEFT);
-
-        VBox activityCard = new VBox(16);
-        activityCard.getStyleClass().add("card");
-        Label activityTitle = new Label("Recent Activity");
-        activityTitle.getStyleClass().add("label-section");
-        activityCard.getChildren().add(activityTitle);
-
-        String[] activities = {
-                "Data vendor baru berhasil ditambahkan",
-                "Bobot AHP terbaru dihitung",
-                "Perhitungan TOPSIS selesai untuk 5 vendor"
-        };
-        for (String activity : activities) {
-            Label row = new Label("• " + activity);
-            row.getStyleClass().add("list-subtitle");
-            activityCard.getChildren().add(row);
-        }
-
-        VBox performanceCard = new VBox(16);
-        performanceCard.getStyleClass().add("card");
-        Label performanceTitle = new Label("Performance Overview");
-        performanceTitle.getStyleClass().add("label-section");
-        performanceCard.getChildren().addAll(performanceTitle,
-                createPerformanceRow("Akurasi Data", 82, "#38bdf8"),
-                createPerformanceRow("Kepuasan User", 73, "#8b5cf6"),
-                createPerformanceRow("Penyelesaian Analisa", 94, "#22c55e"));
-
-        insightRow.getChildren().addAll(activityCard, performanceCard);
-
-        getChildren().addAll(header, kpiRow, analyticsRow, insightRow);
+        getChildren().addAll(header, kpiRow, analyticsRow);
     }
 
     private VBox createMetricCard(String label, String value, String change, String icon, String iconColor) {
@@ -162,7 +146,7 @@ public class DashboardView extends VBox {
         return card;
     }
 
-    private VBox createCriteriaTypeLineChartCard(Map<String, Integer> criteriaTypeCounts) {
+    private VBox createCriteriaTypeBarChartCard(Map<String, Integer> criteriaTypeCounts) {
         VBox card = new VBox(16);
         card.getStyleClass().add("card");
 
@@ -175,14 +159,13 @@ public class DashboardView extends VBox {
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Jumlah");
 
-        LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setLegendVisible(false);
-        lineChart.setAnimated(false);
-        lineChart.setCreateSymbols(true);
-        lineChart.setPrefHeight(260);
-        lineChart.setPrefWidth(320);
-        lineChart.setVerticalGridLinesVisible(false);
-        lineChart.setHorizontalGridLinesVisible(false);
+        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+        barChart.setLegendVisible(false);
+        barChart.setAnimated(false);
+        barChart.setPrefHeight(320);
+        barChart.setPrefWidth(420);
+        barChart.setVerticalGridLinesVisible(false);
+        barChart.setHorizontalGridLinesVisible(false);
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         if (criteriaTypeCounts.isEmpty()) {
@@ -192,9 +175,34 @@ public class DashboardView extends VBox {
                 series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
             }
         }
-        lineChart.getData().add(series);
+        barChart.getData().add(series);
 
-        card.getChildren().add(lineChart);
+        card.getChildren().add(barChart);
+        return card;
+    }
+
+    private VBox createFlowUsageCard() {
+        VBox card = new VBox(14);
+        card.getStyleClass().add("card");
+        card.setPrefWidth(320);
+
+        Label title = new Label("Flow Penggunaan");
+        title.getStyleClass().add("label-section");
+
+        String[] activities = {
+                "1. Login dengan akun valid",
+                "2. Kelola kriteria dan vendor",
+                "3. Hitung bobot AHP",
+                "4. Jalankan TOPSIS untuk ranking"
+        };
+
+        card.getChildren().add(title);
+        for (String activity : activities) {
+            Label row = new Label(activity);
+            row.getStyleClass().add("list-subtitle");
+            card.getChildren().add(row);
+        }
+
         return card;
     }
 
@@ -218,36 +226,19 @@ public class DashboardView extends VBox {
         PieChart pieChart = new PieChart();
         pieChart.setLabelsVisible(true);
         pieChart.setLegendVisible(true);
-        pieChart.setPrefHeight(300);
-        pieChart.setPrefWidth(560);
+        pieChart.setPrefHeight(520);
+        pieChart.setPrefWidth(Double.MAX_VALUE);
+        pieChart.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(pieChart, javafx.scene.layout.Priority.ALWAYS);
 
         for (Map.Entry<String, Double> entry : weightsByCriteria.entrySet()) {
-            pieChart.getData().add(new PieChart.Data(entry.getKey(), entry.getValue() * 100));
+            double value = entry.getValue() * 100;
+            String label = entry.getKey() + " (" + String.format("%.1f%%", value) + ")";
+            pieChart.getData().add(new PieChart.Data(label, value));
         }
 
         card.getChildren().add(pieChart);
         return card;
-    }
-
-    private VBox createPerformanceRow(String label, int percent, String color) {
-        VBox row = new VBox(6);
-        Label title = new Label(label);
-        title.getStyleClass().add("list-subtitle");
-
-        Pane progress = new Pane();
-        progress.getStyleClass().add("progress-bar");
-        progress.setPrefWidth(220);
-        Rectangle fill = new Rectangle(percent * 2.0, 8);
-        fill.setArcWidth(8);
-        fill.setArcHeight(8);
-        fill.setFill(Color.web(color));
-        progress.getChildren().add(fill);
-
-        Label value = new Label(percent + "%");
-        value.getStyleClass().add("metric-change");
-
-        row.getChildren().addAll(title, progress, value);
-        return row;
     }
 
     public void refresh() {
