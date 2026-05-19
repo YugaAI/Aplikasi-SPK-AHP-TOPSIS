@@ -88,6 +88,7 @@ public class UserManagementView extends VBox {
                 resetBtn.setOnAction(e -> showResetPasswordDialog(getTableView().getItems().get(getIndex())));
                 deleteBtn.setOnAction(e -> handleDelete(getTableView().getItems().get(getIndex())));
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);

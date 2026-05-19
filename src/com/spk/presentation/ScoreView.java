@@ -105,7 +105,8 @@ public class ScoreView extends VBox {
 
     private void loadScoresForVendor() {
         Vendor selected = vendorCombo.getValue();
-        if (selected == null) return;
+        if (selected == null)
+            return;
 
         formContainer.getChildren().clear();
         scoreFields.clear();
@@ -153,7 +154,8 @@ public class ScoreView extends VBox {
                 nameLabel.setStyle("-fx-text-fill: -text-primary;");
 
                 Label tipeLabel = new Label(c.isBenefit() ? "▲ Benefit" : "▼ Cost");
-                tipeLabel.setStyle("-fx-text-fill: " + (c.isBenefit() ? "-accent-success" : "-accent-danger") + "; -fx-font-size: 11px;");
+                tipeLabel.setStyle("-fx-text-fill: " + (c.isBenefit() ? "-accent-success" : "-accent-danger")
+                        + "; -fx-font-size: 11px;");
 
                 TextField valueField = new TextField();
                 valueField.setPromptText("Masukkan nilai");
