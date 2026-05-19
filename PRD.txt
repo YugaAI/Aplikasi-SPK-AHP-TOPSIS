@@ -144,6 +144,7 @@ Field:
 * id
 * username
 * password (hashed)
+* full_name
 * role
 
 ---
@@ -277,7 +278,7 @@ Karakteristik:
 * Soft shadow
 * Rounded corner
 * Minimalist
-* Light color palette
+* Light color palette dipadukan dengan aksen Dark Blue (pada Sidebar dan Header Tabel)
 
 ---
 
