@@ -91,8 +91,11 @@ public class VendorView extends VBox {
             }
         });
 
-        table.getColumns().addAll(idCol, namaCol, descCol, actionCol);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.getColumns().add(idCol);
+        table.getColumns().add(namaCol);
+        table.getColumns().add(descCol);
+        table.getColumns().add(actionCol);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
         getChildren().addAll(header, toolbar, table);
     }

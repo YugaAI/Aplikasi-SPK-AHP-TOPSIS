@@ -2,12 +2,10 @@ package com.spk.presentation.components;
 
 import com.spk.usecase.AuthUseCase;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
@@ -60,11 +58,13 @@ public class Sidebar extends VBox {
             VBox userInfo = new VBox(2);
             userInfo.setPadding(new Insets(14, 20, 10, 20));
             String name = AuthUseCase.getCurrentUser().getFullName();
-            if (name == null || name.isEmpty()) name = AuthUseCase.getCurrentUser().getUsername();
+            if (name == null || name.isEmpty())
+                name = AuthUseCase.getCurrentUser().getUsername();
             Label userName = new Label("☺ " + name);
             userName.setStyle("-fx-text-fill: -text-primary; -fx-font-size: 13px;");
             Label userRole = new Label(AuthUseCase.isAdmin() ? "● Administrator" : "● User");
-            userRole.setStyle("-fx-text-fill: " + (AuthUseCase.isAdmin() ? "-accent-success" : "-accent-primary") + "; -fx-font-size: 11px;");
+            userRole.setStyle("-fx-text-fill: " + (AuthUseCase.isAdmin() ? "-accent-success" : "-accent-primary")
+                    + "; -fx-font-size: 11px;");
             userInfo.getChildren().addAll(userName, userRole);
             getChildren().add(userInfo);
         }
@@ -104,7 +104,8 @@ public class Sidebar extends VBox {
         logoutBtn.getStyleClass().addAll("btn-danger", "btn-small");
         logoutBtn.setPrefWidth(198);
         logoutBtn.setOnAction(e -> {
-            if (listener != null) listener.onNavigate("logout");
+            if (listener != null)
+                listener.onNavigate("logout");
         });
         logoutBox.getChildren().add(logoutBtn);
         getChildren().add(logoutBox);
@@ -125,7 +126,8 @@ public class Sidebar extends VBox {
         btn.setOnAction(e -> {
             activePage = page;
             setActive(page);
-            if (listener != null) listener.onNavigate(page);
+            if (listener != null)
+                listener.onNavigate(page);
         });
         navButtons.add(btn);
         getChildren().add(btn);
@@ -147,14 +149,22 @@ public class Sidebar extends VBox {
 
     private String getPageFromButton(Button btn) {
         String text = btn.getText().toLowerCase();
-        if (text.contains("dashboard")) return "dashboard";
-        if (text.contains("kriteria")) return "criteria";
-        if (text.contains("alternatif")) return "vendor";
-        if (text.contains("penilaian")) return "score";
-        if (text.contains("ahp")) return "ahp";
-        if (text.contains("hasil") || text.contains("ranking")) return "result";
-        if (text.contains("user")) return "users";
-        if (text.contains("profil")) return "profile";
+        if (text.contains("dashboard"))
+            return "dashboard";
+        if (text.contains("kriteria"))
+            return "criteria";
+        if (text.contains("alternatif"))
+            return "vendor";
+        if (text.contains("penilaian"))
+            return "score";
+        if (text.contains("ahp"))
+            return "ahp";
+        if (text.contains("hasil") || text.contains("ranking"))
+            return "result";
+        if (text.contains("user"))
+            return "users";
+        if (text.contains("profil"))
+            return "profile";
         return "";
     }
 

@@ -2,13 +2,13 @@ package com.spk.usecase;
 
 import com.spk.domain.Score;
 import com.spk.domain.Criteria;
-import com.spk.domain.Vendor;
+
 import com.spk.repository.ScoreRepository;
 import com.spk.repository.CriteriaRepository;
 import com.spk.repository.VendorRepository;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**

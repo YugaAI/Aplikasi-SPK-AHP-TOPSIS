@@ -1,8 +1,6 @@
 package com.spk.presentation;
 
 import com.spk.usecase.AuthUseCase;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
@@ -45,19 +43,23 @@ public class ProfileView extends VBox {
 
         Label usernameHdr = new Label("Username:");
         usernameHdr.getStyleClass().add("form-label");
-        usernameLabel = new Label(AuthUseCase.getCurrentUser() != null ? AuthUseCase.getCurrentUser().getUsername() : "");
+        usernameLabel = new Label(
+                AuthUseCase.getCurrentUser() != null ? AuthUseCase.getCurrentUser().getUsername() : "");
         usernameLabel.setStyle("-fx-text-fill: -text-primary; -fx-font-size: 14px;");
 
         Label roleHdr = new Label("Role:");
         roleHdr.getStyleClass().add("form-label");
-        roleLabel = new Label(AuthUseCase.getCurrentUser() != null ?
-                (AuthUseCase.getCurrentUser().getRole().substring(0, 1).toUpperCase() +
-                        AuthUseCase.getCurrentUser().getRole().substring(1)) : "");
+        roleLabel = new Label(
+                AuthUseCase.getCurrentUser() != null
+                        ? (AuthUseCase.getCurrentUser().getRole().substring(0, 1).toUpperCase() +
+                                AuthUseCase.getCurrentUser().getRole().substring(1))
+                        : "");
         roleLabel.setStyle("-fx-text-fill: -accent-primary; -fx-font-size: 14px; -fx-font-weight: bold;");
 
         Label nameHdr = new Label("Nama Lengkap:");
         nameHdr.getStyleClass().add("form-label");
-        nameField = new TextField(AuthUseCase.getCurrentUser() != null ? AuthUseCase.getCurrentUser().getFullName() : "");
+        nameField = new TextField(
+                AuthUseCase.getCurrentUser() != null ? AuthUseCase.getCurrentUser().getFullName() : "");
         nameField.setPrefWidth(300);
 
         profileGrid.add(usernameHdr, 0, 0);

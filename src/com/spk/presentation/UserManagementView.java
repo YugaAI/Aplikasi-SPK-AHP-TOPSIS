@@ -4,14 +4,11 @@ import com.spk.domain.User;
 import com.spk.usecase.UserUseCase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-
-import java.util.Optional;
 
 /**
  * View for admin user management (CRUD users + assign roles).
@@ -102,8 +99,12 @@ public class UserManagementView extends VBox {
             }
         });
 
-        table.getColumns().addAll(idCol, usernameCol, nameCol, roleCol, actionCol);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.getColumns().add(idCol);
+        table.getColumns().add(usernameCol);
+        table.getColumns().add(nameCol);
+        table.getColumns().add(roleCol);
+        table.getColumns().add(actionCol);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
         getChildren().addAll(header, toolbar, table);
     }

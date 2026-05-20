@@ -218,9 +218,13 @@ public class ResultView extends VBox {
             }
         });
 
-        table.getColumns().addAll(rankCol, nameCol, scoreCol, dPosCol, dNegCol);
+        table.getColumns().add(rankCol);
+        table.getColumns().add(nameCol);
+        table.getColumns().add(scoreCol);
+        table.getColumns().add(dPosCol);
+        table.getColumns().add(dNegCol);
         table.setItems(FXCollections.observableArrayList(results));
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         table.setPrefHeight(Math.min(400, 60 + results.size() * 40));
 
         tableCard.getChildren().addAll(tableTitle, table);
