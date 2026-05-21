@@ -1,19 +1,28 @@
 package com.spk.presentation;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.spk.domain.AHPResult;
 import com.spk.domain.Criteria;
 import com.spk.domain.PairwiseComparison;
 import com.spk.usecase.CalculateAHPUseCase;
 import com.spk.usecase.CriteriaUseCase;
+
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  * View for AHP pairwise comparison input and calculation.
@@ -49,11 +58,10 @@ public class AHPView extends VBox {
         VBox infoCard = new VBox(6);
         infoCard.getStyleClass().add("card");
         infoCard.setStyle("-fx-background-color: rgba(79, 195, 247, 0.05); -fx-border-color: rgba(79, 195, 247, 0.2);");
-        Label infoTitle = new Label("ℹ Skala Saaty (1-9)");
+        Label infoTitle = new Label("Skala Saaty (1-9)");
         infoTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
         Label infoText = new Label(
-                "1 = Sama penting  |  3 = Sedikit lebih penting  |  5 = Lebih penting\n" +
-                "7 = Sangat penting  |  9 = Mutlak penting  |  2,4,6,8 = Nilai antara"
+                "|  1 = Sama penting  |  3 = Sedikit lebih penting  |  5 = Lebih penting  |  7 = Sangat penting  |  9 = Mutlak penting  |  2,4,6,8 = Nilai antara  |"
         );
         infoText.setStyle("-fx-text-fill: -text-secondary; -fx-font-size: 12px;");
         infoCard.getChildren().addAll(infoTitle, infoText);
