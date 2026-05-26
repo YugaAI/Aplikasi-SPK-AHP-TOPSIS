@@ -1,173 +1,215 @@
 package com.spk.presentation;
 
+import com.spk.presentation.components.CardPanel;
+import com.spk.presentation.components.CustomButton;
+import com.spk.presentation.components.Theme;
 import com.spk.usecase.AuthUseCase;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 
-/**
- * View for editing user profile and changing password.
- */
-public class ProfileView extends VBox {
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+
+public class ProfileView extends JPanel {
 
     private final AuthUseCase authUseCase = new AuthUseCase();
-    private TextField nameField;
-    private Label usernameLabel;
-    private Label roleLabel;
+    private JTextField nameField;
+    private JLabel usernameLabel;
+    private JLabel roleLabel;
 
     public ProfileView() {
-        getStyleClass().add("content-area");
-        setSpacing(20);
+        setLayout(new BorderLayout());
+        setBackground(Theme.BG_PRIMARY);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         buildUI();
     }
 
     private void buildUI() {
+        removeAll();
+
         // Header
-        VBox header = new VBox(4);
-        header.getStyleClass().add("page-header");
-        Label title = new Label("Profil Saya");
-        title.getStyleClass().add("label-title");
-        Label subtitle = new Label("Edit profil dan ganti password");
-        subtitle.getStyleClass().add("label-subtitle");
-        header.getChildren().addAll(title, subtitle);
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setOpaque(false);
+        header.setBorder(new EmptyBorder(0, 0, 20, 0));
+
+        JLabel title = new JLabel("Profil Saya");
+        title.setFont(Theme.FONT_TITLE);
+        title.setForeground(Theme.TEXT_PRIMARY);
+
+        JLabel subtitle = new JLabel("Edit profil dan ganti password");
+        subtitle.setFont(Theme.FONT_SUBTITLE);
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+
+        header.add(title);
+        header.add(Box.createRigidArea(new Dimension(0, 5)));
+        header.add(subtitle);
+
+        add(header, BorderLayout.NORTH);
+
+        JPanel contentContainer = new JPanel();
+        contentContainer.setLayout(new BoxLayout(contentContainer, BoxLayout.Y_AXIS));
+        contentContainer.setOpaque(false);
+        contentContainer.setBorder(new EmptyBorder(10, 0, 10, 0));
 
         // Profile card
-        VBox profileCard = new VBox(16);
-        profileCard.getStyleClass().add("card");
+        CardPanel profileCard = new CardPanel();
+        profileCard.setLayout(new BorderLayout(0, 15));
+        profileCard.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        Label profileTitle = new Label("☺ Informasi Profil");
-        profileTitle.getStyleClass().add("label-section");
+        JLabel profileTitle = new JLabel("☺ Informasi Profil");
+        profileTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        profileTitle.setForeground(Theme.ACCENT_PRIMARY);
+        profileCard.add(profileTitle, BorderLayout.NORTH);
 
-        GridPane profileGrid = new GridPane();
-        profileGrid.setHgap(16);
-        profileGrid.setVgap(12);
+        JPanel profileGrid = new JPanel(new GridBagLayout());
+        profileGrid.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.WEST;
 
-        Label usernameHdr = new Label("Username:");
-        usernameHdr.getStyleClass().add("form-label");
-        usernameLabel = new Label(
-                AuthUseCase.getCurrentUser() != null ? AuthUseCase.getCurrentUser().getUsername() : "");
-        usernameLabel.setStyle("-fx-text-fill: -text-primary; -fx-font-size: 14px;");
+        gbc.gridx = 0; gbc.gridy = 0;
+        JLabel usernameHdr = new JLabel("Username:");
+        usernameHdr.setFont(Theme.FONT_BOLD);
+        profileGrid.add(usernameHdr, gbc);
 
-        Label roleHdr = new Label("Role:");
-        roleHdr.getStyleClass().add("form-label");
-        roleLabel = new Label(
-                AuthUseCase.getCurrentUser() != null
-                        ? (AuthUseCase.getCurrentUser().getRole().substring(0, 1).toUpperCase() +
-                                AuthUseCase.getCurrentUser().getRole().substring(1))
-                        : "");
-        roleLabel.setStyle("-fx-text-fill: -accent-primary; -fx-font-size: 14px; -fx-font-weight: bold;");
+        gbc.gridx = 1;
+        usernameLabel = new JLabel(AuthUseCase.getCurrentUser() != null ? AuthUseCase.getCurrentUser().getUsername() : "");
+        usernameLabel.setFont(Theme.FONT_REGULAR);
+        profileGrid.add(usernameLabel, gbc);
 
-        Label nameHdr = new Label("Nama Lengkap:");
-        nameHdr.getStyleClass().add("form-label");
-        nameField = new TextField(
-                AuthUseCase.getCurrentUser() != null ? AuthUseCase.getCurrentUser().getFullName() : "");
-        nameField.setPrefWidth(300);
+        gbc.gridx = 0; gbc.gridy = 1;
+        JLabel roleHdr = new JLabel("Role:");
+        roleHdr.setFont(Theme.FONT_BOLD);
+        profileGrid.add(roleHdr, gbc);
 
-        profileGrid.add(usernameHdr, 0, 0);
-        profileGrid.add(usernameLabel, 1, 0);
-        profileGrid.add(roleHdr, 0, 1);
-        profileGrid.add(roleLabel, 1, 1);
-        profileGrid.add(nameHdr, 0, 2);
-        profileGrid.add(nameField, 1, 2);
+        gbc.gridx = 1;
+        roleLabel = new JLabel(AuthUseCase.getCurrentUser() != null ?
+                (AuthUseCase.getCurrentUser().getRole().substring(0, 1).toUpperCase() + AuthUseCase.getCurrentUser().getRole().substring(1)) : "");
+        roleLabel.setFont(Theme.FONT_BOLD);
+        roleLabel.setForeground(Theme.ACCENT_PRIMARY);
+        profileGrid.add(roleLabel, gbc);
 
-        Button saveProfileBtn = new Button("💾 Simpan Profil");
-        saveProfileBtn.getStyleClass().add("btn-primary");
-        saveProfileBtn.setOnAction(e -> saveProfile());
+        gbc.gridx = 0; gbc.gridy = 2;
+        JLabel nameHdr = new JLabel("Nama Lengkap:");
+        nameHdr.setFont(Theme.FONT_BOLD);
+        profileGrid.add(nameHdr, gbc);
 
-        profileCard.getChildren().addAll(profileTitle, profileGrid, saveProfileBtn);
+        gbc.gridx = 1;
+        nameField = new JTextField(AuthUseCase.getCurrentUser() != null ? AuthUseCase.getCurrentUser().getFullName() : "");
+        nameField.setPreferredSize(new Dimension(300, 35));
+        profileGrid.add(nameField, gbc);
+
+        profileCard.add(profileGrid, BorderLayout.CENTER);
+
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        btnPanel.setOpaque(false);
+        CustomButton saveProfileBtn = new CustomButton("💾 Simpan Profil");
+        saveProfileBtn.setPrimary();
+        saveProfileBtn.addActionListener(e -> saveProfile());
+        btnPanel.add(saveProfileBtn);
+        profileCard.add(btnPanel, BorderLayout.SOUTH);
+
+        contentContainer.add(profileCard);
+        contentContainer.add(Box.createRigidArea(new Dimension(0, 20)));
 
         // Password card
-        VBox passwordCard = new VBox(16);
-        passwordCard.getStyleClass().add("card");
+        CardPanel passwordCard = new CardPanel();
+        passwordCard.setLayout(new BorderLayout(0, 15));
+        passwordCard.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        Label passwordTitle = new Label("🔑 Ganti Password");
-        passwordTitle.getStyleClass().add("label-section");
+        JLabel passwordTitle = new JLabel("🔑 Ganti Password");
+        passwordTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        passwordTitle.setForeground(Theme.ACCENT_WARNING);
+        passwordCard.add(passwordTitle, BorderLayout.NORTH);
 
-        GridPane passGrid = new GridPane();
-        passGrid.setHgap(16);
-        passGrid.setVgap(12);
+        JPanel passGrid = new JPanel(new GridBagLayout());
+        passGrid.setOpaque(false);
+        
+        gbc.gridx = 0; gbc.gridy = 0;
+        JLabel oldPassHdr = new JLabel("Password Lama:");
+        oldPassHdr.setFont(Theme.FONT_BOLD);
+        passGrid.add(oldPassHdr, gbc);
 
-        Label oldPassHdr = new Label("Password Lama:");
-        oldPassHdr.getStyleClass().add("form-label");
-        PasswordField oldPassField = new PasswordField();
-        oldPassField.setPromptText("Masukkan password lama");
-        oldPassField.setPrefWidth(300);
+        gbc.gridx = 1;
+        JPasswordField oldPassField = new JPasswordField();
+        oldPassField.setPreferredSize(new Dimension(300, 35));
+        passGrid.add(oldPassField, gbc);
 
-        Label newPassHdr = new Label("Password Baru:");
-        newPassHdr.getStyleClass().add("form-label");
-        PasswordField newPassField = new PasswordField();
-        newPassField.setPromptText("Masukkan password baru (min 4 karakter)");
-        newPassField.setPrefWidth(300);
+        gbc.gridx = 0; gbc.gridy = 1;
+        JLabel newPassHdr = new JLabel("Password Baru:");
+        newPassHdr.setFont(Theme.FONT_BOLD);
+        passGrid.add(newPassHdr, gbc);
 
-        Label confirmPassHdr = new Label("Konfirmasi Password:");
-        confirmPassHdr.getStyleClass().add("form-label");
-        PasswordField confirmPassField = new PasswordField();
-        confirmPassField.setPromptText("Masukkan ulang password baru");
-        confirmPassField.setPrefWidth(300);
+        gbc.gridx = 1;
+        JPasswordField newPassField = new JPasswordField();
+        newPassField.setPreferredSize(new Dimension(300, 35));
+        passGrid.add(newPassField, gbc);
 
-        passGrid.add(oldPassHdr, 0, 0);
-        passGrid.add(oldPassField, 1, 0);
-        passGrid.add(newPassHdr, 0, 1);
-        passGrid.add(newPassField, 1, 1);
-        passGrid.add(confirmPassHdr, 0, 2);
-        passGrid.add(confirmPassField, 1, 2);
+        gbc.gridx = 0; gbc.gridy = 2;
+        JLabel confirmPassHdr = new JLabel("Konfirmasi Password:");
+        confirmPassHdr.setFont(Theme.FONT_BOLD);
+        passGrid.add(confirmPassHdr, gbc);
 
-        Button changePassBtn = new Button("🔑 Ubah Password");
-        changePassBtn.getStyleClass().add("btn-warning");
-        changePassBtn.setOnAction(e -> {
-            String oldPass = oldPassField.getText();
-            String newPass = newPassField.getText();
-            String confirm = confirmPassField.getText();
+        gbc.gridx = 1;
+        JPasswordField confirmPassField = new JPasswordField();
+        confirmPassField.setPreferredSize(new Dimension(300, 35));
+        passGrid.add(confirmPassField, gbc);
+
+        passwordCard.add(passGrid, BorderLayout.CENTER);
+
+        JPanel passBtnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        passBtnPanel.setOpaque(false);
+        CustomButton changePassBtn = new CustomButton("🔑 Ubah Password");
+        changePassBtn.setWarning();
+        changePassBtn.addActionListener(e -> {
+            String oldPass = new String(oldPassField.getPassword());
+            String newPass = new String(newPassField.getPassword());
+            String confirm = new String(confirmPassField.getPassword());
 
             if (oldPass.isEmpty() || newPass.isEmpty() || confirm.isEmpty()) {
-                showAlert("Semua field password harus diisi");
+                JOptionPane.showMessageDialog(this, "Semua field password harus diisi", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (!newPass.equals(confirm)) {
-                showAlert("Password baru dan konfirmasi tidak sama");
+                JOptionPane.showMessageDialog(this, "Password baru dan konfirmasi tidak sama", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             try {
                 authUseCase.changePassword(oldPass, newPass);
-                showInfo("Password berhasil diubah!");
-                oldPassField.clear();
-                newPassField.clear();
-                confirmPassField.clear();
+                JOptionPane.showMessageDialog(this, "Password berhasil diubah!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                oldPassField.setText("");
+                newPassField.setText("");
+                confirmPassField.setText("");
             } catch (Exception ex) {
-                showAlert("Error: " + ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+        passBtnPanel.add(changePassBtn);
+        passwordCard.add(passBtnPanel, BorderLayout.SOUTH);
 
-        passwordCard.getChildren().addAll(passwordTitle, passGrid, changePassBtn);
+        contentContainer.add(passwordCard);
 
-        getChildren().addAll(header, profileCard, passwordCard);
+        JScrollPane scrollPane = new JScrollPane(contentContainer);
+        scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        add(scrollPane, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
     }
 
     private void saveProfile() {
         try {
             authUseCase.updateProfile(nameField.getText());
-            showInfo("Profil berhasil disimpan!");
+            JOptionPane.showMessageDialog(this, "Profil berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
-            showAlert("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void showAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error");
-        alert.showAndWait();
-    }
-
-    private void showInfo(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
-        alert.setTitle("Sukses");
-        alert.setHeaderText("Sukses");
-        alert.showAndWait();
-    }
-
     public void refresh() {
-        getChildren().clear();
         buildUI();
     }
 }

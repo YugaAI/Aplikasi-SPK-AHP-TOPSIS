@@ -1,215 +1,211 @@
 package com.spk.presentation;
 
 import com.spk.domain.Criteria;
+import com.spk.presentation.components.CustomButton;
+import com.spk.presentation.components.Theme;
 import com.spk.usecase.CriteriaUseCase;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
 
-import java.util.Optional;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
-/**
- * View for managing criteria (CRUD).
- */
-public class CriteriaView extends VBox {
+public class CriteriaView extends JPanel {
 
     private final CriteriaUseCase criteriaUseCase = new CriteriaUseCase();
-    private TableView<Criteria> table;
-    private ObservableList<Criteria> dataList;
+    private JTable table;
+    private DefaultTableModel tableModel;
 
     public CriteriaView() {
-        getStyleClass().add("content-area");
-        setSpacing(20);
+        setLayout(new BorderLayout());
+        setBackground(Theme.BG_PRIMARY);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         buildUI();
         loadData();
     }
 
     private void buildUI() {
+        removeAll();
+
         // Header
-        VBox header = new VBox(4);
-        header.getStyleClass().add("page-header");
-        Label title = new Label("Data Kriteria");
-        title.getStyleClass().add("label-title");
-        Label subtitle = new Label("Kelola kriteria penilaian vendor (benefit/cost)");
-        subtitle.getStyleClass().add("label-subtitle");
-        header.getChildren().addAll(title, subtitle);
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setOpaque(false);
+        header.setBorder(new EmptyBorder(0, 0, 20, 0));
+
+        JLabel title = new JLabel("Data Kriteria");
+        title.setFont(Theme.FONT_TITLE);
+        title.setForeground(Theme.TEXT_PRIMARY);
+
+        JLabel subtitle = new JLabel("Kelola kriteria penilaian vendor (benefit/cost)");
+        subtitle.setFont(Theme.FONT_SUBTITLE);
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+
+        header.add(title);
+        header.add(Box.createRigidArea(new Dimension(0, 5)));
+        header.add(subtitle);
 
         // Toolbar
-        HBox toolbar = new HBox(10);
-        toolbar.setAlignment(Pos.CENTER_LEFT);
-        Button addBtn = new Button("＋ Tambah Kriteria");
-        addBtn.getStyleClass().add("btn-primary");
-        addBtn.setOnAction(e -> showAddDialog());
+        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        toolbar.setOpaque(false);
+        toolbar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
-        Button refreshBtn = new Button("↻ Refresh");
-        refreshBtn.setOnAction(e -> loadData());
+        CustomButton addBtn = new CustomButton("＋ Tambah Kriteria");
+        addBtn.setPrimary();
+        addBtn.addActionListener(e -> showAddDialog());
 
-        toolbar.getChildren().addAll(addBtn, refreshBtn);
+        CustomButton refreshBtn = new CustomButton("↻ Refresh");
+        refreshBtn.addActionListener(e -> loadData());
+
+        CustomButton editBtn = new CustomButton("✎ Edit Terpilih");
+        editBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                int id = (int) tableModel.getValueAt(row, 0);
+                String name = (String) tableModel.getValueAt(row, 1);
+                String type = (String) tableModel.getValueAt(row, 2);
+                Criteria c = new Criteria();
+                c.setId(id);
+                c.setNamaKriteria(name);
+                c.setTipeKriteria(type.toLowerCase());
+                showEditDialog(c);
+            } else {
+                JOptionPane.showMessageDialog(this, "Pilih kriteria yang akan diedit", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        CustomButton deleteBtn = new CustomButton("✕ Hapus Terpilih");
+        deleteBtn.setDanger();
+        deleteBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                int id = (int) tableModel.getValueAt(row, 0);
+                String name = (String) tableModel.getValueAt(row, 1);
+                handleDelete(id, name);
+            } else {
+                JOptionPane.showMessageDialog(this, "Pilih kriteria yang akan dihapus", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        toolbar.add(addBtn);
+        toolbar.add(refreshBtn);
+        toolbar.add(editBtn);
+        toolbar.add(deleteBtn);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+        topPanel.add(header, BorderLayout.NORTH);
+        topPanel.add(toolbar, BorderLayout.SOUTH);
+
+        add(topPanel, BorderLayout.NORTH);
 
         // Table
-        table = new TableView<>();
-        table.setPlaceholder(new Label("Belum ada data kriteria"));
-        VBox.setVgrow(table, Priority.ALWAYS);
-
-        TableColumn<Criteria, Integer> idCol = new TableColumn<>("ID");
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idCol.setPrefWidth(60);
-
-        TableColumn<Criteria, String> namaCol = new TableColumn<>("Nama Kriteria");
-        namaCol.setCellValueFactory(new PropertyValueFactory<>("namaKriteria"));
-        namaCol.setPrefWidth(250);
-
-        TableColumn<Criteria, String> tipeCol = new TableColumn<>("Tipe");
-        tipeCol.setCellValueFactory(data -> {
-            String tipe = data.getValue().getTipeKriteria();
-            return new SimpleStringProperty(tipe.substring(0, 1).toUpperCase() + tipe.substring(1));
-        });
-        tipeCol.setPrefWidth(120);
-
-        TableColumn<Criteria, Void> actionCol = new TableColumn<>("Aksi");
-        actionCol.setPrefWidth(200);
-        actionCol.setCellFactory(col -> new TableCell<Criteria, Void>() {
-            private final Button editBtn = new Button("✎ Edit");
-            private final Button deleteBtn = new Button("✕ Hapus");
-            {
-                editBtn.getStyleClass().addAll("btn-warning", "btn-small");
-                deleteBtn.getStyleClass().addAll("btn-danger", "btn-small");
-                editBtn.setOnAction(e -> showEditDialog(getTableView().getItems().get(getIndex())));
-                deleteBtn.setOnAction(e -> handleDelete(getTableView().getItems().get(getIndex())));
-            }
+        String[] columnNames = {"ID", "Nama Kriteria", "Tipe"};
+        tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox box = new HBox(6, editBtn, deleteBtn);
-                    box.setAlignment(Pos.CENTER);
-                    setGraphic(box);
-                }
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
 
-        table.getColumns().add(idCol);
-        table.getColumns().add(namaCol);
-        table.getColumns().add(tipeCol);
-        table.getColumns().add(actionCol);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        table = new JTable(tableModel);
+        table.setRowHeight(30);
+        table.setFont(Theme.FONT_REGULAR);
+        table.getTableHeader().setFont(Theme.FONT_BOLD);
+        table.getTableHeader().setBackground(new Color(37, 52, 85));
+        table.getTableHeader().setForeground(Theme.ACCENT_PRIMARY);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setShowVerticalLines(false);
+        table.setGridColor(Theme.BORDER_COLOR);
 
-        getChildren().addAll(header, toolbar, table);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(0).setMaxWidth(80);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.getViewport().setBackground(Theme.BG_CARD);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Theme.BORDER_COLOR));
+
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     private void loadData() {
+        tableModel.setRowCount(0);
         try {
-            dataList = FXCollections.observableArrayList(criteriaUseCase.getAllCriteria());
-            table.setItems(dataList);
+            List<Criteria> criteriaList = criteriaUseCase.getAllCriteria();
+            for (Criteria c : criteriaList) {
+                String tipe = c.getTipeKriteria();
+                String tipeDisplay = tipe.substring(0, 1).toUpperCase() + tipe.substring(1);
+                tableModel.addRow(new Object[]{c.getId(), c.getNamaKriteria(), tipeDisplay});
+            }
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void showAddDialog() {
-        Dialog<Criteria> dialog = createFormDialog("Tambah Kriteria", null);
-        Optional<Criteria> result = dialog.showAndWait();
-        result.ifPresent(c -> {
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
+        JTextField namaField = new JTextField();
+        JComboBox<String> tipeCombo = new JComboBox<>(new String[]{"benefit", "cost"});
+
+        panel.add(new JLabel("Nama Kriteria:"));
+        panel.add(namaField);
+        panel.add(new JLabel("Tipe Kriteria:"));
+        panel.add(tipeCombo);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Tambah Kriteria",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
             try {
-                criteriaUseCase.createCriteria(c.getNamaKriteria(), c.getTipeKriteria());
+                criteriaUseCase.createCriteria(namaField.getText(), (String) tipeCombo.getSelectedItem());
                 loadData();
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
+        }
     }
 
     private void showEditDialog(Criteria criteria) {
-        Dialog<Criteria> dialog = createFormDialog("Edit Kriteria", criteria);
-        Optional<Criteria> result = dialog.showAndWait();
-        result.ifPresent(c -> {
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
+        JTextField namaField = new JTextField(criteria.getNamaKriteria());
+        JComboBox<String> tipeCombo = new JComboBox<>(new String[]{"benefit", "cost"});
+        tipeCombo.setSelectedItem(criteria.getTipeKriteria());
+
+        panel.add(new JLabel("Nama Kriteria:"));
+        panel.add(namaField);
+        panel.add(new JLabel("Tipe Kriteria:"));
+        panel.add(tipeCombo);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Edit Kriteria",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
             try {
-                criteriaUseCase.updateCriteria(criteria.getId(), c.getNamaKriteria(), c.getTipeKriteria());
+                criteriaUseCase.updateCriteria(criteria.getId(), namaField.getText(), (String) tipeCombo.getSelectedItem());
                 loadData();
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
+        }
     }
 
-    private void handleDelete(Criteria criteria) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "Hapus kriteria '" + criteria.getNamaKriteria() + "'?\nData pairwise dan score terkait juga akan terhapus.",
-                ButtonType.YES, ButtonType.NO);
-        confirm.setTitle("Konfirmasi Hapus");
-        confirm.setHeaderText("Hapus Kriteria");
-        confirm.showAndWait().ifPresent(type -> {
-            if (type == ButtonType.YES) {
-                try {
-                    criteriaUseCase.deleteCriteria(criteria.getId());
-                    loadData();
-                } catch (Exception e) {
-                    showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
-                }
+    private void handleDelete(int id, String name) {
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Hapus kriteria '" + name + "'?\nData pairwise dan score terkait juga akan terhapus.",
+                "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                criteriaUseCase.deleteCriteria(id);
+                loadData();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
-    }
-
-    private Dialog<Criteria> createFormDialog(String titleText, Criteria existing) {
-        Dialog<Criteria> dialog = new Dialog<>();
-        dialog.setTitle(titleText);
-        dialog.setHeaderText(titleText);
-
-        ButtonType saveBtn = new ButtonType("Simpan", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(14);
-        grid.setPadding(new Insets(20));
-
-        TextField namaField = new TextField();
-        namaField.setPromptText("Nama kriteria");
-        namaField.setPrefWidth(300);
-        if (existing != null) namaField.setText(existing.getNamaKriteria());
-
-        ComboBox<String> tipeCombo = new ComboBox<>(FXCollections.observableArrayList("benefit", "cost"));
-        tipeCombo.setPromptText("Pilih tipe");
-        tipeCombo.setPrefWidth(300);
-        if (existing != null) tipeCombo.setValue(existing.getTipeKriteria());
-
-        Label namaLabel = new Label("Nama Kriteria:");
-        namaLabel.getStyleClass().add("form-label");
-        Label tipeLabel = new Label("Tipe Kriteria:");
-        tipeLabel.getStyleClass().add("form-label");
-
-        grid.add(namaLabel, 0, 0);
-        grid.add(namaField, 1, 0);
-        grid.add(tipeLabel, 0, 1);
-        grid.add(tipeCombo, 1, 1);
-
-        dialog.getDialogPane().setContent(grid);
-
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == saveBtn) {
-                Criteria c = new Criteria();
-                c.setNamaKriteria(namaField.getText());
-                c.setTipeKriteria(tipeCombo.getValue());
-                return c;
-            }
-            return null;
-        });
-
-        return dialog;
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String msg) {
-        Alert alert = new Alert(type, msg, ButtonType.OK);
-        alert.setTitle(title);
-        alert.setHeaderText(title);
-        alert.showAndWait();
+        }
     }
 
     public void refresh() {

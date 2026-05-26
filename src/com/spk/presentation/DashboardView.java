@@ -1,84 +1,69 @@
 package com.spk.presentation;
 
-import java.sql.SQLException;
-import java.util.Map;
-
+import com.spk.presentation.components.CardPanel;
+import com.spk.presentation.components.Theme;
 import com.spk.repository.CriteriaRepository;
 import com.spk.repository.ResultRepository;
 import com.spk.repository.ScoreRepository;
 import com.spk.repository.UserRepository;
 import com.spk.repository.VendorRepository;
 
-import javafx.geometry.Pos;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.geom.Arc2D;
+import java.sql.SQLException;
+import java.util.Map;
 
-/**
- * Dashboard view showing system statistics.
- */
-public class DashboardView extends VBox {
+public class DashboardView extends JPanel {
 
     public DashboardView() {
-        getStyleClass().add("content-area");
-        setSpacing(24);
+        setLayout(new BorderLayout(24, 24));
+        setBackground(Theme.BG_PRIMARY);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         buildUI();
     }
 
     private void buildUI() {
-        getChildren().clear();
+        removeAll();
 
-        // Header with breadcrumb
-        VBox header = new VBox(10);
-        header.getStyleClass().add("page-header");
+        // Header
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setOpaque(false);
 
-        HBox titleRow = new HBox(12);
-        titleRow.setAlignment(Pos.CENTER_LEFT);
+        JPanel titleRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        titleRow.setOpaque(false);
+        
+        JLabel title = new JLabel("Dashboard");
+        title.setFont(Theme.FONT_TITLE);
+        title.setForeground(Theme.TEXT_PRIMARY);
 
-        Label title = new Label("Dashboard");
-        title.getStyleClass().add("label-title");
+        JLabel breadcrumb = new JLabel("Home  >  Dashboard");
+        breadcrumb.setFont(Theme.FONT_REGULAR.deriveFont(12f));
+        breadcrumb.setForeground(Theme.TEXT_MUTED);
 
-        Label breadcrumb = new Label("Home  >  Dashboard");
-        breadcrumb.getStyleClass().add("breadcrumb");
+        titleRow.add(title);
+        titleRow.add(breadcrumb);
 
-        titleRow.getChildren().addAll(title, breadcrumb);
+        JLabel subtitle = new JLabel("Ringkasan sistem pilihan vendor IT dalam tampilan analytics modern");
+        subtitle.setFont(Theme.FONT_SUBTITLE);
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+        subtitle.setBorder(new EmptyBorder(5, 12, 10, 0));
 
-        Label subtitle = new Label("Ringkasan sistem pilihan vendor IT dalam tampilan analytics modern");
-        subtitle.getStyleClass().add("label-subtitle");
+        JSeparator separator = new JSeparator();
+        separator.setForeground(Theme.BORDER_COLOR);
 
-        header.getChildren().addAll(titleRow, subtitle, new Separator());
+        header.add(titleRow);
+        header.add(subtitle);
+        header.add(separator);
 
-        // KPI row with metrics and usage flow panel
-        HBox kpiRow = new HBox(20);
-        kpiRow.setAlignment(Pos.TOP_LEFT);
+        add(header, BorderLayout.NORTH);
 
-        HBox metricGroup = new HBox(20);
-        metricGroup.setAlignment(Pos.CENTER_LEFT);
-        metricGroup.setPrefWidth(0);
-        metricGroup.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(metricGroup, javafx.scene.layout.Priority.ALWAYS);
-
-        VBox flowPanel = new VBox();
-        flowPanel.setAlignment(Pos.TOP_LEFT);
-        flowPanel.setPrefWidth(340);
-
-        VBox sideCards = new VBox(20);
-        sideCards.setPrefWidth(340);
-        sideCards.setMaxWidth(340);
-
-        VBox chartCard = new VBox(18);
-        chartCard.getStyleClass().add("chart-card");
-        chartCard.setPrefWidth(0);
-        chartCard.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(chartCard, javafx.scene.layout.Priority.ALWAYS);
+        // Content
+        JPanel contentContainer = new JPanel();
+        contentContainer.setLayout(new BoxLayout(contentContainer, BoxLayout.Y_AXIS));
+        contentContainer.setOpaque(false);
 
         try {
             CriteriaRepository cr = new CriteriaRepository();
@@ -94,100 +79,82 @@ public class DashboardView extends VBox {
             Map<String, Integer> criteriaTypeCounts = cr.countByType();
             Map<String, Double> weightsByCriteria = rr.getWeightsByCriteria();
 
-            metricGroup.getChildren().addAll(
-                    createMetricCard("Total Kriteria", String.valueOf(criteriaCount), "", "◈", "#38bdf8"),
-                    createMetricCard("Total Vendor", String.valueOf(vendorCount), "", "◉", "#8b5cf6"),
-                    createMetricCard("Total Skor", String.valueOf(scoreCount), "", "▣", "#f59e0b"),
-                    createMetricCard("Total User", String.valueOf(userCount), "", "☷", "#38bdf8")
-            );
-            flowPanel.getChildren().add(createFlowUsageCard());
-            Region rowSpacer = new Region();
-            HBox.setHgrow(rowSpacer, javafx.scene.layout.Priority.ALWAYS);
-            kpiRow.getChildren().addAll(metricGroup, flowPanel, rowSpacer);
+            // KPI Row
+            JPanel kpiRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
+            kpiRow.setOpaque(false);
+            kpiRow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            sideCards.getChildren().add(createCriteriaTypeBarChartCard(criteriaTypeCounts));
-            chartCard.getChildren().addAll(createWeightPieChartCard(weightsByCriteria));
+            kpiRow.add(createMetricCard("Total Kriteria", String.valueOf(criteriaCount), "◈", Theme.ACCENT_PRIMARY));
+            kpiRow.add(createMetricCard("Total Vendor", String.valueOf(vendorCount), "◉", Theme.ACCENT_SECONDARY));
+            kpiRow.add(createMetricCard("Total Skor", String.valueOf(scoreCount), "▣", Theme.ACCENT_WARNING));
+            kpiRow.add(createMetricCard("Total User", String.valueOf(userCount), "☷", Theme.ACCENT_PRIMARY));
+
+            contentContainer.add(kpiRow);
+            contentContainer.add(Box.createRigidArea(new Dimension(0, 20)));
+
+            // Charts Row
+            JPanel chartsRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
+            chartsRow.setOpaque(false);
+            chartsRow.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            chartsRow.add(createFlowUsageCard());
+            chartsRow.add(createCriteriaTypeBarChartCard(criteriaTypeCounts));
+            chartsRow.add(createWeightPieChartCard(weightsByCriteria));
+
+            contentContainer.add(chartsRow);
+
         } catch (SQLException e) {
-            Label errLabel = new Label("Error loading stats: " + e.getMessage());
-            errLabel.setStyle("-fx-text-fill: -accent-danger;");
-            kpiRow.getChildren().add(errLabel);
+            JLabel errLabel = new JLabel("Error loading stats: " + e.getMessage());
+            errLabel.setForeground(Theme.ACCENT_DANGER);
+            contentContainer.add(errLabel);
         }
 
-        // Main analytics row
-        HBox analyticsRow = new HBox(20);
-        analyticsRow.setAlignment(Pos.TOP_LEFT);
+        JScrollPane scrollPane = new JScrollPane(contentContainer);
+        scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        add(scrollPane, BorderLayout.CENTER);
 
-        analyticsRow.getChildren().addAll(chartCard, sideCards);
-
-        getChildren().addAll(header, kpiRow, analyticsRow);
+        revalidate();
+        repaint();
     }
 
-    private VBox createMetricCard(String label, String value, String change, String icon, String iconColor) {
-        VBox card = new VBox(12);
-        card.getStyleClass().add("metric-card");
-        card.setAlignment(Pos.TOP_LEFT);
+    private JPanel createMetricCard(String label, String value, String icon, Color iconColor) {
+        CardPanel card = new CardPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBorder(new EmptyBorder(15, 20, 15, 20));
+        card.setPreferredSize(new Dimension(180, 130));
 
-        Label iconLabel = new Label(icon);
-        iconLabel.getStyleClass().add("stat-icon");
-        iconLabel.setTextFill(Color.web(iconColor));
+        JLabel iconLabel = new JLabel(icon);
+        iconLabel.setFont(Theme.FONT_TITLE.deriveFont(24f));
+        iconLabel.setForeground(iconColor);
 
-        Label nameLabel = new Label(label);
-        nameLabel.getStyleClass().add("metric-label");
+        JLabel nameLabel = new JLabel(label.toUpperCase());
+        nameLabel.setFont(Theme.FONT_BOLD.deriveFont(10f));
+        nameLabel.setForeground(Theme.TEXT_MUTED);
 
-        Label valueLabel = new Label(value);
-        valueLabel.getStyleClass().add("metric-value");
+        JLabel valueLabel = new JLabel(value);
+        valueLabel.setFont(Theme.FONT_BOLD.deriveFont(28f));
+        valueLabel.setForeground(Theme.TEXT_PRIMARY);
 
-        card.getChildren().addAll(iconLabel, nameLabel, valueLabel);
-        if (change != null && !change.isEmpty()) {
-            Label changeLabel = new Label(change);
-            changeLabel.getStyleClass().add("metric-change");
-            card.getChildren().add(changeLabel);
-        }
+        card.add(iconLabel);
+        card.add(Box.createRigidArea(new Dimension(0, 5)));
+        card.add(nameLabel);
+        card.add(Box.createRigidArea(new Dimension(0, 5)));
+        card.add(valueLabel);
+
         return card;
     }
 
-    private VBox createCriteriaTypeBarChartCard(Map<String, Integer> criteriaTypeCounts) {
-        VBox card = new VBox(16);
-        card.getStyleClass().add("card");
+    private JPanel createFlowUsageCard() {
+        CardPanel card = new CardPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBorder(new EmptyBorder(20, 20, 20, 20));
+        card.setPreferredSize(new Dimension(280, 320));
 
-        Label title = new Label("Jumlah Tipe Kriteria");
-        title.getStyleClass().add("label-section");
-        card.getChildren().add(title);
-
-        CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Tipe Kriteria");
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Jumlah");
-
-        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-        barChart.setLegendVisible(false);
-        barChart.setAnimated(false);
-        barChart.setPrefHeight(320);
-        barChart.setPrefWidth(420);
-        barChart.setVerticalGridLinesVisible(false);
-        barChart.setHorizontalGridLinesVisible(false);
-
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        if (criteriaTypeCounts.isEmpty()) {
-            series.getData().add(new XYChart.Data<>("No Data", 0));
-        } else {
-            for (Map.Entry<String, Integer> entry : criteriaTypeCounts.entrySet()) {
-                series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
-            }
-        }
-        barChart.getData().add(series);
-
-        card.getChildren().add(barChart);
-        return card;
-    }
-
-    private VBox createFlowUsageCard() {
-        VBox card = new VBox(14);
-        card.getStyleClass().add("card");
-        card.setPrefWidth(320);
-
-        Label title = new Label("Flow Penggunaan");
-        title.getStyleClass().add("label-section");
+        JLabel title = new JLabel("Flow Penggunaan");
+        title.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        title.setForeground(Theme.ACCENT_PRIMARY);
 
         String[] activities = {
                 "1. Login dengan akun valid",
@@ -196,48 +163,157 @@ public class DashboardView extends VBox {
                 "4. Jalankan TOPSIS untuk ranking"
         };
 
-        card.getChildren().add(title);
+        card.add(title);
+        card.add(Box.createRigidArea(new Dimension(0, 15)));
         for (String activity : activities) {
-            Label row = new Label(activity);
-            row.getStyleClass().add("list-subtitle");
-            card.getChildren().add(row);
+            JLabel row = new JLabel(activity);
+            row.setFont(Theme.FONT_REGULAR);
+            row.setForeground(Theme.TEXT_SECONDARY);
+            card.add(row);
+            card.add(Box.createRigidArea(new Dimension(0, 10)));
         }
 
         return card;
     }
 
-    private VBox createWeightPieChartCard(Map<String, Double> weightsByCriteria) {
-        VBox card = new VBox(16);
-        card.getStyleClass().add("chart-card");
+    private JPanel createCriteriaTypeBarChartCard(Map<String, Integer> data) {
+        CardPanel card = new CardPanel();
+        card.setLayout(new BorderLayout());
+        card.setBorder(new EmptyBorder(20, 20, 20, 20));
+        card.setPreferredSize(new Dimension(320, 320));
 
-        Label title = new Label("Bobot Kriteria");
-        title.getStyleClass().add("chart-title");
-        Label subtitle = new Label("Distribusi bobot kriteria AHP");
-        subtitle.getStyleClass().add("chart-subtitle");
-        card.getChildren().addAll(title, subtitle);
+        JLabel title = new JLabel("Jumlah Tipe Kriteria");
+        title.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        title.setForeground(Theme.ACCENT_PRIMARY);
+        card.add(title, BorderLayout.NORTH);
 
-        if (weightsByCriteria.isEmpty()) {
-            Label empty = new Label("Bobot AHP belum dihitung");
-            empty.getStyleClass().add("list-subtitle");
-            card.getChildren().add(empty);
+        JPanel chartPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                if (data.isEmpty()) return;
+
+                int max = data.values().stream().max(Integer::compareTo).orElse(1);
+                int width = getWidth();
+                int height = getHeight();
+                int barWidth = 40;
+                int spacing = 60;
+                int startX = 50;
+
+                g2.setColor(Theme.BORDER_COLOR);
+                g2.drawLine(40, height - 30, width - 20, height - 30);
+                
+                int i = 0;
+                for (Map.Entry<String, Integer> entry : data.entrySet()) {
+                    int barHeight = (int) (((double) entry.getValue() / max) * (height - 60));
+                    int x = startX + (i * spacing);
+                    int y = height - 30 - barHeight;
+
+                    g2.setColor(Theme.ACCENT_PRIMARY);
+                    g2.fillRoundRect(x, y, barWidth, barHeight, 5, 5);
+                    
+                    // Label
+                    g2.setColor(Theme.TEXT_SECONDARY);
+                    g2.setFont(Theme.FONT_REGULAR.deriveFont(10f));
+                    g2.drawString(entry.getKey(), x, height - 15);
+                    
+                    // Value
+                    g2.drawString(String.valueOf(entry.getValue()), x + 15, y - 5);
+                    i++;
+                }
+            }
+        };
+        chartPanel.setOpaque(false);
+        card.add(chartPanel, BorderLayout.CENTER);
+
+        return card;
+    }
+
+    private JPanel createWeightPieChartCard(Map<String, Double> data) {
+        CardPanel card = new CardPanel();
+        card.setLayout(new BorderLayout());
+        card.setBorder(new EmptyBorder(20, 20, 20, 20));
+        card.setPreferredSize(new Dimension(320, 320));
+
+        JPanel titleBox = new JPanel();
+        titleBox.setLayout(new BoxLayout(titleBox, BoxLayout.Y_AXIS));
+        titleBox.setOpaque(false);
+        JLabel title = new JLabel("Bobot Kriteria");
+        title.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        title.setForeground(Theme.TEXT_PRIMARY);
+        JLabel subtitle = new JLabel("Distribusi bobot kriteria AHP");
+        subtitle.setFont(Theme.FONT_REGULAR.deriveFont(12f));
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+        titleBox.add(title);
+        titleBox.add(subtitle);
+        card.add(titleBox, BorderLayout.NORTH);
+
+        if (data.isEmpty()) {
+            JLabel empty = new JLabel("Bobot AHP belum dihitung", SwingConstants.CENTER);
+            empty.setForeground(Theme.TEXT_MUTED);
+            card.add(empty, BorderLayout.CENTER);
             return card;
         }
 
-        PieChart pieChart = new PieChart();
-        pieChart.setLabelsVisible(true);
-        pieChart.setLegendVisible(true);
-        pieChart.setPrefHeight(520);
-        pieChart.setPrefWidth(Double.MAX_VALUE);
-        pieChart.setMaxWidth(Double.MAX_VALUE);
-        VBox.setVgrow(pieChart, javafx.scene.layout.Priority.ALWAYS);
+        JPanel chartPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        for (Map.Entry<String, Double> entry : weightsByCriteria.entrySet()) {
-            double value = entry.getValue() * 100;
-            String label = entry.getKey() + " (" + String.format("%.1f%%", value) + ")";
-            pieChart.getData().add(new PieChart.Data(label, value));
-        }
+                int width = getWidth();
+                int height = getHeight();
+                int size = Math.min(width, height) - 60;
+                int x = (width - size) / 2;
+                int y = (height - size) / 2;
 
-        card.getChildren().add(pieChart);
+                Color[] colors = {Theme.ACCENT_PRIMARY, Theme.ACCENT_SECONDARY, Theme.ACCENT_SUCCESS, Theme.ACCENT_WARNING, Theme.ACCENT_DANGER};
+                
+                double total = data.values().stream().mapToDouble(Double::doubleValue).sum();
+                double currentAngle = 0;
+                int i = 0;
+
+                // Draw pie
+                for (Map.Entry<String, Double> entry : data.entrySet()) {
+                    double angle = (entry.getValue() / total) * 360;
+                    g2.setColor(colors[i % colors.length]);
+                    g2.fill(new Arc2D.Double(x, y, size, size, currentAngle, angle, Arc2D.PIE));
+                    currentAngle += angle;
+                    i++;
+                }
+                
+                // Draw inner circle for donut chart look
+                g2.setColor(Theme.BG_CARD);
+                int innerSize = size / 2;
+                g2.fillOval(x + (size - innerSize)/2, y + (size - innerSize)/2, innerSize, innerSize);
+                
+                // Legend
+                int legendY = height - 20;
+                int legendX = 10;
+                i = 0;
+                for (Map.Entry<String, Double> entry : data.entrySet()) {
+                    g2.setColor(colors[i % colors.length]);
+                    g2.fillRect(legendX, legendY, 10, 10);
+                    g2.setColor(Theme.TEXT_SECONDARY);
+                    g2.setFont(Theme.FONT_REGULAR.deriveFont(10f));
+                    double pct = (entry.getValue() / total) * 100;
+                    g2.drawString(entry.getKey() + String.format(" (%.1f%%)", pct), legendX + 15, legendY + 9);
+                    legendX += 80;
+                    if (legendX > width - 80) {
+                        legendX = 10;
+                        legendY += 15;
+                    }
+                    i++;
+                }
+            }
+        };
+        chartPanel.setOpaque(false);
+        card.add(chartPanel, BorderLayout.CENTER);
+
         return card;
     }
 

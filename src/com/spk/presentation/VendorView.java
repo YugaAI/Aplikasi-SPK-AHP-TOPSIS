@@ -1,212 +1,220 @@
 package com.spk.presentation;
 
 import com.spk.domain.Vendor;
+import com.spk.presentation.components.CustomButton;
+import com.spk.presentation.components.Theme;
 import com.spk.usecase.VendorUseCase;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
 
-import java.util.Optional;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
-/**
- * View for managing vendors/alternatives (CRUD).
- */
-public class VendorView extends VBox {
+public class VendorView extends JPanel {
 
     private final VendorUseCase vendorUseCase = new VendorUseCase();
-    private TableView<Vendor> table;
-    private ObservableList<Vendor> dataList;
+    private JTable table;
+    private DefaultTableModel tableModel;
 
     public VendorView() {
-        getStyleClass().add("content-area");
-        setSpacing(20);
+        setLayout(new BorderLayout());
+        setBackground(Theme.BG_PRIMARY);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         buildUI();
         loadData();
     }
 
     private void buildUI() {
+        removeAll();
+
         // Header
-        VBox header = new VBox(4);
-        header.getStyleClass().add("page-header");
-        Label title = new Label("Data Alternatif (Vendor)");
-        title.getStyleClass().add("label-title");
-        Label subtitle = new Label("Kelola daftar vendor IT yang akan dievaluasi");
-        subtitle.getStyleClass().add("label-subtitle");
-        header.getChildren().addAll(title, subtitle);
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setOpaque(false);
+        header.setBorder(new EmptyBorder(0, 0, 20, 0));
+
+        JLabel title = new JLabel("Data Alternatif (Vendor)");
+        title.setFont(Theme.FONT_TITLE);
+        title.setForeground(Theme.TEXT_PRIMARY);
+
+        JLabel subtitle = new JLabel("Kelola daftar vendor IT yang akan dievaluasi");
+        subtitle.setFont(Theme.FONT_SUBTITLE);
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+
+        header.add(title);
+        header.add(Box.createRigidArea(new Dimension(0, 5)));
+        header.add(subtitle);
 
         // Toolbar
-        HBox toolbar = new HBox(10);
-        toolbar.setAlignment(Pos.CENTER_LEFT);
-        Button addBtn = new Button("＋ Tambah Vendor");
-        addBtn.getStyleClass().add("btn-primary");
-        addBtn.setOnAction(e -> showAddDialog());
+        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        toolbar.setOpaque(false);
+        toolbar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
-        Button refreshBtn = new Button("↻ Refresh");
-        refreshBtn.setOnAction(e -> loadData());
+        CustomButton addBtn = new CustomButton("＋ Tambah Vendor");
+        addBtn.setPrimary();
+        addBtn.addActionListener(e -> showAddDialog());
 
-        toolbar.getChildren().addAll(addBtn, refreshBtn);
+        CustomButton refreshBtn = new CustomButton("↻ Refresh");
+        refreshBtn.addActionListener(e -> loadData());
 
-        // Table
-        table = new TableView<>();
-        table.setPlaceholder(new Label("Belum ada data vendor"));
-        VBox.setVgrow(table, Priority.ALWAYS);
-
-        TableColumn<Vendor, Integer> idCol = new TableColumn<>("ID");
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idCol.setPrefWidth(60);
-
-        TableColumn<Vendor, String> namaCol = new TableColumn<>("Nama Vendor");
-        namaCol.setCellValueFactory(new PropertyValueFactory<>("namaVendor"));
-        namaCol.setPrefWidth(250);
-
-        TableColumn<Vendor, String> descCol = new TableColumn<>("Deskripsi");
-        descCol.setCellValueFactory(new PropertyValueFactory<>("deskripsi"));
-        descCol.setPrefWidth(300);
-
-        TableColumn<Vendor, Void> actionCol = new TableColumn<>("Aksi");
-        actionCol.setPrefWidth(200);
-        actionCol.setCellFactory(col -> new TableCell<Vendor, Void>() {
-            private final Button editBtn = new Button("✎ Edit");
-            private final Button deleteBtn = new Button("✕ Hapus");
-            {
-                editBtn.getStyleClass().addAll("btn-warning", "btn-small");
-                deleteBtn.getStyleClass().addAll("btn-danger", "btn-small");
-                editBtn.setOnAction(e -> showEditDialog(getTableView().getItems().get(getIndex())));
-                deleteBtn.setOnAction(e -> handleDelete(getTableView().getItems().get(getIndex())));
-            }
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox box = new HBox(6, editBtn, deleteBtn);
-                    box.setAlignment(Pos.CENTER);
-                    setGraphic(box);
-                }
+        CustomButton editBtn = new CustomButton("✎ Edit Terpilih");
+        editBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                int id = (int) tableModel.getValueAt(row, 0);
+                String name = (String) tableModel.getValueAt(row, 1);
+                String desc = (String) tableModel.getValueAt(row, 2);
+                Vendor v = new Vendor();
+                v.setId(id);
+                v.setNamaVendor(name);
+                v.setDeskripsi(desc);
+                showEditDialog(v);
+            } else {
+                JOptionPane.showMessageDialog(this, "Pilih vendor yang akan diedit", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-        table.getColumns().add(idCol);
-        table.getColumns().add(namaCol);
-        table.getColumns().add(descCol);
-        table.getColumns().add(actionCol);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        CustomButton deleteBtn = new CustomButton("✕ Hapus Terpilih");
+        deleteBtn.setDanger();
+        deleteBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                int id = (int) tableModel.getValueAt(row, 0);
+                String name = (String) tableModel.getValueAt(row, 1);
+                handleDelete(id, name);
+            } else {
+                JOptionPane.showMessageDialog(this, "Pilih vendor yang akan dihapus", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
 
-        getChildren().addAll(header, toolbar, table);
+        toolbar.add(addBtn);
+        toolbar.add(refreshBtn);
+        toolbar.add(editBtn);
+        toolbar.add(deleteBtn);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+        topPanel.add(header, BorderLayout.NORTH);
+        topPanel.add(toolbar, BorderLayout.SOUTH);
+
+        add(topPanel, BorderLayout.NORTH);
+
+        // Table
+        String[] columnNames = {"ID", "Nama Vendor", "Deskripsi"};
+        tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        table = new JTable(tableModel);
+        table.setRowHeight(30);
+        table.setFont(Theme.FONT_REGULAR);
+        table.getTableHeader().setFont(Theme.FONT_BOLD);
+        table.getTableHeader().setBackground(new Color(37, 52, 85));
+        table.getTableHeader().setForeground(Theme.ACCENT_PRIMARY);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setShowVerticalLines(false);
+        table.setGridColor(Theme.BORDER_COLOR);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(0).setMaxWidth(80);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.getViewport().setBackground(Theme.BG_CARD);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Theme.BORDER_COLOR));
+
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     private void loadData() {
+        tableModel.setRowCount(0);
         try {
-            dataList = FXCollections.observableArrayList(vendorUseCase.getAllVendors());
-            table.setItems(dataList);
+            List<Vendor> vendors = vendorUseCase.getAllVendors();
+            for (Vendor v : vendors) {
+                tableModel.addRow(new Object[]{v.getId(), v.getNamaVendor(), v.getDeskripsi()});
+            }
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void showAddDialog() {
-        Dialog<Vendor> dialog = createFormDialog("Tambah Vendor", null);
-        Optional<Vendor> result = dialog.showAndWait();
-        result.ifPresent(v -> {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JPanel form = new JPanel(new GridLayout(2, 2, 10, 10));
+        
+        JTextField namaField = new JTextField();
+        JTextArea descField = new JTextArea(3, 20);
+        JScrollPane descScroll = new JScrollPane(descField);
+
+        form.add(new JLabel("Nama Vendor:"));
+        form.add(namaField);
+        form.add(new JLabel("Deskripsi:"));
+        form.add(new JLabel("")); // Spacer
+
+        panel.add(form, BorderLayout.NORTH);
+        panel.add(descScroll, BorderLayout.CENTER);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Tambah Vendor",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
             try {
-                vendorUseCase.createVendor(v.getNamaVendor(), v.getDeskripsi());
+                vendorUseCase.createVendor(namaField.getText(), descField.getText());
                 loadData();
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
+        }
     }
 
     private void showEditDialog(Vendor vendor) {
-        Dialog<Vendor> dialog = createFormDialog("Edit Vendor", vendor);
-        Optional<Vendor> result = dialog.showAndWait();
-        result.ifPresent(v -> {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JPanel form = new JPanel(new GridLayout(2, 2, 10, 10));
+        
+        JTextField namaField = new JTextField(vendor.getNamaVendor());
+        JTextArea descField = new JTextArea(vendor.getDeskripsi(), 3, 20);
+        JScrollPane descScroll = new JScrollPane(descField);
+
+        form.add(new JLabel("Nama Vendor:"));
+        form.add(namaField);
+        form.add(new JLabel("Deskripsi:"));
+        form.add(new JLabel(""));
+
+        panel.add(form, BorderLayout.NORTH);
+        panel.add(descScroll, BorderLayout.CENTER);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Edit Vendor",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
             try {
-                vendorUseCase.updateVendor(vendor.getId(), v.getNamaVendor(), v.getDeskripsi());
+                vendorUseCase.updateVendor(vendor.getId(), namaField.getText(), descField.getText());
                 loadData();
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
+        }
     }
 
-    private void handleDelete(Vendor vendor) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "Hapus vendor '" + vendor.getNamaVendor() + "'?\nData penilaian terkait juga akan terhapus.",
-                ButtonType.YES, ButtonType.NO);
-        confirm.setTitle("Konfirmasi Hapus");
-        confirm.setHeaderText("Hapus Vendor");
-        confirm.showAndWait().ifPresent(type -> {
-            if (type == ButtonType.YES) {
-                try {
-                    vendorUseCase.deleteVendor(vendor.getId());
-                    loadData();
-                } catch (Exception e) {
-                    showAlert(Alert.AlertType.ERROR, "Error", e.getMessage());
-                }
+    private void handleDelete(int id, String name) {
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Hapus vendor '" + name + "'?\nData penilaian terkait juga akan terhapus.",
+                "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                vendorUseCase.deleteVendor(id);
+                loadData();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
-    }
-
-    private Dialog<Vendor> createFormDialog(String titleText, Vendor existing) {
-        Dialog<Vendor> dialog = new Dialog<>();
-        dialog.setTitle(titleText);
-        dialog.setHeaderText(titleText);
-
-        ButtonType saveBtn = new ButtonType("Simpan", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(14);
-        grid.setPadding(new Insets(20));
-
-        TextField namaField = new TextField();
-        namaField.setPromptText("Nama vendor");
-        namaField.setPrefWidth(300);
-        if (existing != null) namaField.setText(existing.getNamaVendor());
-
-        TextArea descField = new TextArea();
-        descField.setPromptText("Deskripsi vendor");
-        descField.setPrefWidth(300);
-        descField.setPrefRowCount(3);
-        if (existing != null) descField.setText(existing.getDeskripsi());
-
-        Label namaLabel = new Label("Nama Vendor:");
-        namaLabel.getStyleClass().add("form-label");
-        Label descLabel = new Label("Deskripsi:");
-        descLabel.getStyleClass().add("form-label");
-
-        grid.add(namaLabel, 0, 0);
-        grid.add(namaField, 1, 0);
-        grid.add(descLabel, 0, 1);
-        grid.add(descField, 1, 1);
-
-        dialog.getDialogPane().setContent(grid);
-
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == saveBtn) {
-                Vendor v = new Vendor();
-                v.setNamaVendor(namaField.getText());
-                v.setDeskripsi(descField.getText());
-                return v;
-            }
-            return null;
-        });
-
-        return dialog;
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String msg) {
-        Alert alert = new Alert(type, msg, ButtonType.OK);
-        alert.setTitle(title);
-        alert.setHeaderText(title);
-        alert.showAndWait();
+        }
     }
 
     public void refresh() {

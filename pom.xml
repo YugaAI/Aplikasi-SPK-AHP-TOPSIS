@@ -17,20 +17,6 @@
     </properties>
 
     <dependencies>
-        <!-- JavaFX Controls -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-
-        <!-- JavaFX FXML -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-
         <!-- BCrypt password hashing -->
         <dependency>
             <groupId>org.mindrot</groupId>
@@ -48,16 +34,7 @@
 
     <build>
         <sourceDirectory>src</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>src</directory>
-                <includes>
-                    <include>**/*.css</include>
-                </includes>
-            </resource>
-        </resources>
         <plugins>
-
             <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -70,16 +47,15 @@
                 </configuration>
             </plugin>
 
-            <!-- JavaFX Run Plugin -->
+            <!-- Exec Maven Plugin for running -->
             <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
                 <configuration>
                     <mainClass>com.spk.presentation.MainApp</mainClass>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 

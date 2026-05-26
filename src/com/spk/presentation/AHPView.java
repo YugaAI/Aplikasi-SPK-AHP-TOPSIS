@@ -1,90 +1,115 @@
 package com.spk.presentation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.spk.domain.AHPResult;
 import com.spk.domain.Criteria;
 import com.spk.domain.PairwiseComparison;
+import com.spk.presentation.components.CardPanel;
+import com.spk.presentation.components.CustomButton;
+import com.spk.presentation.components.Theme;
 import com.spk.usecase.CalculateAHPUseCase;
 import com.spk.usecase.CriteriaUseCase;
 
-import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * View for AHP pairwise comparison input and calculation.
- */
-public class AHPView extends VBox {
+public class AHPView extends JPanel {
 
     private final CalculateAHPUseCase ahpUseCase = new CalculateAHPUseCase();
     private final CriteriaUseCase criteriaUseCase = new CriteriaUseCase();
 
-    private VBox comparisonContainer;
-    private VBox resultContainer;
+    private JPanel comparisonContainer;
+    private JPanel resultContainer;
     private List<Criteria> criteriaList;
-    private final List<ComboBox<String>> comparisonCombos = new ArrayList<>();
-    private final List<int[]> comparisonPairs = new ArrayList<>(); // pairs of criteria IDs
+    private final List<JComboBox<String>> comparisonCombos = new ArrayList<>();
+    private final List<int[]> comparisonPairs = new ArrayList<>();
 
     public AHPView() {
-        getStyleClass().add("content-area");
-        setSpacing(20);
+        setLayout(new BorderLayout());
+        setBackground(Theme.BG_PRIMARY);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         buildUI();
     }
 
     private void buildUI() {
+        removeAll();
+
         // Header
-        VBox header = new VBox(4);
-        header.getStyleClass().add("page-header");
-        Label title = new Label("Perhitungan AHP");
-        title.getStyleClass().add("label-title");
-        Label subtitle = new Label("Perbandingan berpasangan antar kriteria untuk menentukan bobot");
-        subtitle.getStyleClass().add("label-subtitle");
-        header.getChildren().addAll(title, subtitle);
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setOpaque(false);
+        header.setBorder(new EmptyBorder(0, 0, 20, 0));
+
+        JLabel title = new JLabel("Perhitungan AHP");
+        title.setFont(Theme.FONT_TITLE);
+        title.setForeground(Theme.TEXT_PRIMARY);
+
+        JLabel subtitle = new JLabel("Perbandingan berpasangan antar kriteria untuk menentukan bobot");
+        subtitle.setFont(Theme.FONT_SUBTITLE);
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+
+        header.add(title);
+        header.add(Box.createRigidArea(new Dimension(0, 5)));
+        header.add(subtitle);
 
         // Info card
-        VBox infoCard = new VBox(6);
-        infoCard.getStyleClass().add("card");
-        infoCard.setStyle("-fx-background-color: rgba(79, 195, 247, 0.05); -fx-border-color: rgba(79, 195, 247, 0.2);");
-        Label infoTitle = new Label("Skala Saaty (1-9)");
-        infoTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
-        Label infoText = new Label(
-                "|  1 = Sama penting  |  3 = Sedikit lebih penting  |  5 = Lebih penting  |  7 = Sangat penting  |  9 = Mutlak penting  |  2,4,6,8 = Nilai antara  |"
-        );
-        infoText.setStyle("-fx-text-fill: -text-secondary; -fx-font-size: 12px;");
-        infoCard.getChildren().addAll(infoTitle, infoText);
+        CardPanel infoCard = new CardPanel();
+        infoCard.setLayout(new BoxLayout(infoCard, BoxLayout.Y_AXIS));
+        infoCard.setBorder(new EmptyBorder(10, 15, 10, 15));
+        infoCard.setBackground(new Color(79, 195, 247, 15));
 
-        // Comparison form
-        comparisonContainer = new VBox(12);
-        comparisonContainer.getStyleClass().add("card");
+        JLabel infoTitle = new JLabel("Skala Saaty (1-9)");
+        infoTitle.setFont(Theme.FONT_BOLD);
+        infoTitle.setForeground(Theme.ACCENT_PRIMARY);
 
-        // Result display
-        resultContainer = new VBox(12);
+        JLabel infoText = new JLabel("|  1 = Sama penting  |  3 = Sedikit lebih penting  |  5 = Lebih penting  |  7 = Sangat penting  |  9 = Mutlak penting  |  2,4,6,8 = Nilai antara  |");
+        infoText.setFont(Theme.FONT_REGULAR.deriveFont(12f));
+        infoText.setForeground(Theme.TEXT_SECONDARY);
 
-        ScrollPane scrollPane = new ScrollPane(new VBox(20, comparisonContainer, resultContainer));
-        scrollPane.setFitToWidth(true);
-        scrollPane.setStyle("-fx-background-color: transparent;");
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        infoCard.add(infoTitle);
+        infoCard.add(Box.createRigidArea(new Dimension(0, 5)));
+        infoCard.add(infoText);
 
-        getChildren().addAll(header, infoCard, scrollPane);
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+        topPanel.add(header, BorderLayout.NORTH);
+        topPanel.add(infoCard, BorderLayout.SOUTH);
+
+        add(topPanel, BorderLayout.NORTH);
+
+        // Scrollable content
+        JPanel scrollContent = new JPanel();
+        scrollContent.setLayout(new BoxLayout(scrollContent, BoxLayout.Y_AXIS));
+        scrollContent.setOpaque(false);
+        scrollContent.setBorder(new EmptyBorder(20, 0, 20, 0));
+
+        comparisonContainer = new JPanel();
+        comparisonContainer.setLayout(new BoxLayout(comparisonContainer, BoxLayout.Y_AXIS));
+        comparisonContainer.setOpaque(false);
+
+        resultContainer = new JPanel();
+        resultContainer.setLayout(new BoxLayout(resultContainer, BoxLayout.Y_AXIS));
+        resultContainer.setOpaque(false);
+
+        scrollContent.add(comparisonContainer);
+        scrollContent.add(Box.createRigidArea(new Dimension(0, 20)));
+        scrollContent.add(resultContainer);
+
+        JScrollPane scrollPane = new JScrollPane(scrollContent);
+        scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        add(scrollPane, BorderLayout.CENTER);
 
         loadComparisons();
     }
 
     private void loadComparisons() {
-        comparisonContainer.getChildren().clear();
+        comparisonContainer.removeAll();
         comparisonCombos.clear();
         comparisonPairs.clear();
 
@@ -92,28 +117,30 @@ public class AHPView extends VBox {
             criteriaList = criteriaUseCase.getAllCriteria();
 
             if (criteriaList.size() < 2) {
-                Label warn = new Label("⚠ Minimal 2 kriteria diperlukan untuk perbandingan AHP");
-                warn.setStyle("-fx-text-fill: -accent-warning;");
-                comparisonContainer.getChildren().add(warn);
+                JLabel warn = new JLabel("⚠ Minimal 2 kriteria diperlukan untuk perbandingan AHP");
+                warn.setForeground(Theme.ACCENT_WARNING);
+                warn.setFont(Theme.FONT_BOLD);
+                comparisonContainer.add(warn);
                 return;
             }
 
-            Label formTitle = new Label("Perbandingan Berpasangan");
-            formTitle.getStyleClass().add("label-section");
-            comparisonContainer.getChildren().add(formTitle);
+            CardPanel compCard = new CardPanel();
+            compCard.setLayout(new BorderLayout(0, 15));
+            compCard.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-            // Load existing comparisons
+            JLabel formTitle = new JLabel("Perbandingan Berpasangan");
+            formTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+            formTitle.setForeground(Theme.ACCENT_PRIMARY);
+            compCard.add(formTitle, BorderLayout.NORTH);
+
+            // Load existing
             List<PairwiseComparison> existing = ahpUseCase.getPairwiseComparisons();
-            Map<String, Double> existingMap = new java.util.HashMap<>();
+            Map<String, Double> existingMap = new HashMap<>();
             for (PairwiseComparison pc : existing) {
                 existingMap.put(pc.getKriteriaId1() + "-" + pc.getKriteriaId2(), pc.getNilai());
             }
 
-            // Build comparison scale options
             Map<String, Double> scaleMap = CalculateAHPUseCase.getIntensityScale();
-            List<String> scaleOptions = new ArrayList<>(scaleMap.keySet());
-
-            // Also add reciprocal options (1/2 to 1/9) for when criterion 2 is more important
             List<String> allOptions = new ArrayList<>();
             allOptions.add("1/9 - Mutlak Kurang Penting");
             allOptions.add("1/8 - Mendekati Mutlak Kurang Penting");
@@ -123,26 +150,24 @@ public class AHPView extends VBox {
             allOptions.add("1/4 - Mendekati Kurang Penting");
             allOptions.add("1/3 - Sedikit Kurang Penting");
             allOptions.add("1/2 - Mendekati Sedikit Kurang Penting");
-            allOptions.addAll(scaleOptions);
+            allOptions.addAll(scaleMap.keySet());
 
-            GridPane grid = new GridPane();
-            grid.setHgap(12);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(10, 0, 10, 0));
+            JPanel grid = new JPanel(new GridBagLayout());
+            grid.setOpaque(false);
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(5, 10, 5, 10);
+            gbc.anchor = GridBagConstraints.WEST;
 
-            // Header
-            Label hLeft = new Label("Kriteria A");
-            hLeft.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary; -fx-font-size: 12px;");
-            Label hVs = new Label("vs");
-            hVs.setStyle("-fx-font-weight: bold; -fx-text-fill: -text-muted; -fx-font-size: 12px;");
-            Label hRight = new Label("Kriteria B");
-            hRight.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary; -fx-font-size: 12px;");
-            Label hValue = new Label("Intensitas Kepentingan");
-            hValue.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary; -fx-font-size: 12px;");
-            grid.add(hLeft, 0, 0);
-            grid.add(hVs, 1, 0);
-            grid.add(hRight, 2, 0);
-            grid.add(hValue, 3, 0);
+            // Headers
+            gbc.gridy = 0;
+            String[] headers = {"Kriteria A", "vs", "Kriteria B", "Intensitas Kepentingan"};
+            for (int i = 0; i < headers.length; i++) {
+                gbc.gridx = i;
+                JLabel h = new JLabel(headers[i]);
+                h.setFont(Theme.FONT_BOLD.deriveFont(12f));
+                h.setForeground(i == 1 ? Theme.TEXT_MUTED : Theme.ACCENT_PRIMARY);
+                grid.add(h, gbc);
+            }
 
             int row = 1;
             for (int i = 0; i < criteriaList.size(); i++) {
@@ -150,60 +175,66 @@ public class AHPView extends VBox {
                     Criteria c1 = criteriaList.get(i);
                     Criteria c2 = criteriaList.get(j);
 
-                    Label leftLabel = new Label(c1.getNamaKriteria());
-                    leftLabel.setStyle("-fx-text-fill: -text-primary;");
-                    Label vsLabel = new Label("vs");
-                    vsLabel.setStyle("-fx-text-fill: -text-muted;");
-                    Label rightLabel = new Label(c2.getNamaKriteria());
-                    rightLabel.setStyle("-fx-text-fill: -text-primary;");
+                    gbc.gridy = row;
+                    
+                    gbc.gridx = 0;
+                    JLabel leftLabel = new JLabel(c1.getNamaKriteria());
+                    leftLabel.setForeground(Theme.TEXT_PRIMARY);
+                    grid.add(leftLabel, gbc);
 
-                    ComboBox<String> combo = new ComboBox<>(FXCollections.observableArrayList(allOptions));
-                    combo.setPrefWidth(320);
-                    combo.setPromptText("Pilih intensitas");
+                    gbc.gridx = 1;
+                    JLabel vsLabel = new JLabel("vs");
+                    vsLabel.setForeground(Theme.TEXT_MUTED);
+                    grid.add(vsLabel, gbc);
 
-                    // Set existing value
+                    gbc.gridx = 2;
+                    JLabel rightLabel = new JLabel(c2.getNamaKriteria());
+                    rightLabel.setForeground(Theme.TEXT_PRIMARY);
+                    grid.add(rightLabel, gbc);
+
+                    gbc.gridx = 3;
+                    JComboBox<String> combo = new JComboBox<>(allOptions.toArray(new String[0]));
+                    combo.setPreferredSize(new Dimension(280, 30));
+                    
                     String key = c1.getId() + "-" + c2.getId();
                     if (existingMap.containsKey(key)) {
-                        double val = existingMap.get(key);
-                        combo.setValue(findScaleLabel(val, allOptions));
+                        combo.setSelectedItem(findScaleLabel(existingMap.get(key), allOptions));
                     }
-
+                    
                     comparisonCombos.add(combo);
                     comparisonPairs.add(new int[]{c1.getId(), c2.getId()});
-
-                    grid.add(leftLabel, 0, row);
-                    grid.add(vsLabel, 1, row);
-                    grid.add(rightLabel, 2, row);
-                    grid.add(combo, 3, row);
+                    grid.add(combo, gbc);
+                    
                     row++;
                 }
             }
-
-            comparisonContainer.getChildren().add(grid);
+            
+            compCard.add(grid, BorderLayout.CENTER);
 
             // Buttons
-            HBox btnBar = new HBox(12);
-            btnBar.setAlignment(Pos.CENTER_LEFT);
-            btnBar.setPadding(new Insets(10, 0, 0, 0));
+            JPanel btnBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+            btnBar.setOpaque(false);
+            btnBar.setBorder(new EmptyBorder(10, 0, 0, 0));
 
-            Button saveBtn = new Button("💾 Simpan Perbandingan");
-            saveBtn.getStyleClass().add("btn-primary");
-            saveBtn.setOnAction(e -> saveComparisons());
+            CustomButton saveBtn = new CustomButton("💾 Simpan Perbandingan");
+            saveBtn.setPrimary();
+            saveBtn.addActionListener(e -> saveComparisons());
 
-            Button calcBtn = new Button("⚡ Hitung AHP");
-            calcBtn.getStyleClass().add("btn-success");
-            calcBtn.setOnAction(e -> calculateAHP());
+            CustomButton calcBtn = new CustomButton("⚡ Hitung AHP");
+            calcBtn.addActionListener(e -> calculateAHP());
 
-            btnBar.getChildren().addAll(saveBtn, calcBtn);
-            comparisonContainer.getChildren().add(btnBar);
+            btnBar.add(saveBtn);
+            btnBar.add(calcBtn);
+            
+            compCard.add(btnBar, BorderLayout.SOUTH);
+            comparisonContainer.add(compCard);
 
         } catch (Exception e) {
-            showAlert("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private String findScaleLabel(double value, List<String> options) {
-        // Map value to label
         if (value == 1.0) return "1 - Sama Penting";
         if (value == 2.0) return "2 - Mendekati Sedikit Lebih Penting";
         if (value == 3.0) return "3 - Sedikit Lebih Penting";
@@ -250,40 +281,38 @@ public class AHPView extends VBox {
         try {
             List<PairwiseComparison> comparisons = new ArrayList<>();
             for (int idx = 0; idx < comparisonCombos.size(); idx++) {
-                ComboBox<String> combo = comparisonCombos.get(idx);
-                if (combo.getValue() == null) {
-                    showAlert("Semua perbandingan harus diisi");
+                JComboBox<String> combo = comparisonCombos.get(idx);
+                if (combo.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(this, "Semua perbandingan harus diisi", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                double value = parseScaleValue(combo.getValue());
+                double value = parseScaleValue((String) combo.getSelectedItem());
                 int[] pair = comparisonPairs.get(idx);
                 comparisons.add(new PairwiseComparison(pair[0], pair[1], value));
             }
-
             ahpUseCase.savePairwiseComparisons(comparisons);
-            showInfo("Perbandingan berhasil disimpan!");
+            JOptionPane.showMessageDialog(this, "Perbandingan berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
-            showAlert("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void calculateAHP() {
-        // Save first
         try {
             List<PairwiseComparison> comparisons = new ArrayList<>();
             for (int idx = 0; idx < comparisonCombos.size(); idx++) {
-                ComboBox<String> combo = comparisonCombos.get(idx);
-                if (combo.getValue() == null) {
-                    showAlert("Semua perbandingan harus diisi sebelum perhitungan");
+                JComboBox<String> combo = comparisonCombos.get(idx);
+                if (combo.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(this, "Semua perbandingan harus diisi sebelum perhitungan", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                double value = parseScaleValue(combo.getValue());
+                double value = parseScaleValue((String) combo.getSelectedItem());
                 int[] pair = comparisonPairs.get(idx);
                 comparisons.add(new PairwiseComparison(pair[0], pair[1], value));
             }
             ahpUseCase.savePairwiseComparisons(comparisons);
         } catch (Exception e) {
-            showAlert("Error saving: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error saving: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -291,141 +320,134 @@ public class AHPView extends VBox {
             AHPResult result = ahpUseCase.calculate();
             displayResult(result);
         } catch (Exception e) {
-            showAlert("Error perhitungan: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error perhitungan: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void displayResult(AHPResult result) {
-        resultContainer.getChildren().clear();
+        resultContainer.removeAll();
 
-        // Pairwise matrix card
-        VBox matrixCard = new VBox(10);
-        matrixCard.getStyleClass().add("card");
-        Label matrixTitle = new Label("📊 Matriks Perbandingan Berpasangan");
-        matrixTitle.getStyleClass().add("label-section");
-        matrixCard.getChildren().add(matrixTitle);
-        matrixCard.getChildren().add(createMatrixGrid(result.getPairwiseMatrix(), "Pairwise"));
+        // Pairwise matrix
+        CardPanel matrixCard = new CardPanel();
+        matrixCard.setLayout(new BorderLayout(0, 10));
+        matrixCard.setBorder(new EmptyBorder(20, 20, 20, 20));
+        JLabel matrixTitle = new JLabel("📊 Matriks Perbandingan Berpasangan");
+        matrixTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        matrixTitle.setForeground(Theme.ACCENT_PRIMARY);
+        matrixCard.add(matrixTitle, BorderLayout.NORTH);
+        matrixCard.add(createMatrixGrid(result.getPairwiseMatrix()), BorderLayout.CENTER);
 
-        // Normalized matrix card
-        VBox normCard = new VBox(10);
-        normCard.getStyleClass().add("card");
-        Label normTitle = new Label("📊 Matriks Normalisasi");
-        normTitle.getStyleClass().add("label-section");
-        normCard.getChildren().add(normTitle);
-        normCard.getChildren().add(createMatrixGrid(result.getNormalizedMatrix(), "Normalized"));
+        // Normalized matrix
+        CardPanel normCard = new CardPanel();
+        normCard.setLayout(new BorderLayout(0, 10));
+        normCard.setBorder(new EmptyBorder(20, 20, 20, 20));
+        JLabel normTitle = new JLabel("📊 Matriks Normalisasi");
+        normTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        normTitle.setForeground(Theme.ACCENT_PRIMARY);
+        normCard.add(normTitle, BorderLayout.NORTH);
+        normCard.add(createMatrixGrid(result.getNormalizedMatrix()), BorderLayout.CENTER);
 
-        // Weights card
-        VBox weightsCard = new VBox(10);
-        weightsCard.getStyleClass().add("card");
-        Label weightsTitle = new Label("⚖ Bobot Kriteria (Priority Vector)");
-        weightsTitle.getStyleClass().add("label-section");
+        // Weights
+        CardPanel weightsCard = new CardPanel();
+        weightsCard.setLayout(new BorderLayout(0, 10));
+        weightsCard.setBorder(new EmptyBorder(20, 20, 20, 20));
+        JLabel weightsTitle = new JLabel("⚖ Bobot Kriteria (Priority Vector)");
+        weightsTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        weightsTitle.setForeground(Theme.ACCENT_PRIMARY);
+        weightsCard.add(weightsTitle, BorderLayout.NORTH);
 
-        GridPane weightsGrid = new GridPane();
-        weightsGrid.setHgap(16);
-        weightsGrid.setVgap(8);
-        weightsGrid.setPadding(new Insets(10, 0, 10, 0));
+        JPanel weightsGrid = new JPanel(new GridLayout(0, 3, 10, 5));
+        weightsGrid.setOpaque(false);
+        weightsGrid.add(createBoldLabel("Kriteria"));
+        weightsGrid.add(createBoldLabel("Bobot"));
+        weightsGrid.add(createBoldLabel("Persentase"));
 
-        Label whKriteria = new Label("Kriteria");
-        whKriteria.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
-        Label whBobot = new Label("Bobot");
-        whBobot.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
-        Label whPersen = new Label("Persentase");
-        whPersen.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
-        weightsGrid.add(whKriteria, 0, 0);
-        weightsGrid.add(whBobot, 1, 0);
-        weightsGrid.add(whPersen, 2, 0);
-
-        int row = 1;
         for (Map.Entry<Integer, Double> entry : result.getWeights().entrySet()) {
-            String criteriaName = getCriteriaName(entry.getKey());
-            Label nameLabel = new Label(criteriaName);
-            nameLabel.setStyle("-fx-text-fill: -text-primary;");
-            Label bobotLabel = new Label(String.format("%.4f", entry.getValue()));
-            bobotLabel.setStyle("-fx-text-fill: -text-primary;");
-            Label pctLabel = new Label(String.format("%.2f%%", entry.getValue() * 100));
-            pctLabel.setStyle("-fx-text-fill: -accent-success; -fx-font-weight: bold;");
-            weightsGrid.add(nameLabel, 0, row);
-            weightsGrid.add(bobotLabel, 1, row);
-            weightsGrid.add(pctLabel, 2, row);
-            row++;
+            weightsGrid.add(new JLabel(getCriteriaName(entry.getKey())));
+            weightsGrid.add(new JLabel(String.format("%.4f", entry.getValue())));
+            JLabel pct = new JLabel(String.format("%.2f%%", entry.getValue() * 100));
+            pct.setForeground(Theme.ACCENT_SUCCESS);
+            pct.setFont(Theme.FONT_BOLD);
+            weightsGrid.add(pct);
         }
+        weightsCard.add(weightsGrid, BorderLayout.CENTER);
 
-        weightsCard.getChildren().add(weightsGrid);
-
-        // Consistency card
-        VBox crCard = new VBox(10);
-        crCard.getStyleClass().add("card");
-
+        // Consistency
+        CardPanel crCard = new CardPanel();
+        crCard.setLayout(new BoxLayout(crCard, BoxLayout.Y_AXIS));
+        crCard.setBorder(new EmptyBorder(20, 20, 20, 20));
         boolean consistent = result.isConsistent();
-        crCard.setStyle("-fx-border-color: " + (consistent ? "rgba(102,187,106,0.3)" : "rgba(239,83,80,0.3)") + ";");
 
-        Label crTitle = new Label(consistent ? "✓ Konsistensi: VALID" : "✗ Konsistensi: TIDAK VALID");
-        crTitle.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: " +
-                (consistent ? "-accent-success" : "-accent-danger") + ";");
+        JLabel crTitle = new JLabel(consistent ? "✓ Konsistensi: VALID" : "✗ Konsistensi: TIDAK VALID");
+        crTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        crTitle.setForeground(consistent ? Theme.ACCENT_SUCCESS : Theme.ACCENT_DANGER);
+        crCard.add(crTitle);
+        crCard.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        GridPane crGrid = new GridPane();
-        crGrid.setHgap(20);
-        crGrid.setVgap(6);
-        crGrid.add(new Label("λ max"), 0, 0);
-        crGrid.add(createValueLabel(String.format("%.4f", result.getLambdaMax())), 1, 0);
-        crGrid.add(new Label("CI (Consistency Index)"), 0, 1);
-        crGrid.add(createValueLabel(String.format("%.4f", result.getConsistencyIndex())), 1, 1);
-        crGrid.add(new Label("CR (Consistency Ratio)"), 0, 2);
-        Label crValue = createValueLabel(String.format("%.4f", result.getConsistencyRatio()));
-        crValue.setStyle("-fx-font-weight: bold; -fx-text-fill: " + (consistent ? "-accent-success" : "-accent-danger") + ";");
-        crGrid.add(crValue, 1, 2);
-        crGrid.add(new Label("Batas CR"), 0, 3);
-        crGrid.add(createValueLabel("≤ 0.1"), 1, 3);
-
-        crCard.getChildren().addAll(crTitle, crGrid);
+        JPanel crGrid = new JPanel(new GridLayout(0, 2, 10, 5));
+        crGrid.setOpaque(false);
+        crGrid.add(new JLabel("λ max"));
+        crGrid.add(new JLabel(String.format("%.4f", result.getLambdaMax())));
+        crGrid.add(new JLabel("CI (Consistency Index)"));
+        crGrid.add(new JLabel(String.format("%.4f", result.getConsistencyIndex())));
+        crGrid.add(new JLabel("CR (Consistency Ratio)"));
+        JLabel crValue = new JLabel(String.format("%.4f", result.getConsistencyRatio()));
+        crValue.setFont(Theme.FONT_BOLD);
+        crValue.setForeground(consistent ? Theme.ACCENT_SUCCESS : Theme.ACCENT_DANGER);
+        crGrid.add(crValue);
+        crGrid.add(new JLabel("Batas CR"));
+        crGrid.add(new JLabel("≤ 0.1"));
+        
+        crCard.add(crGrid);
 
         if (!consistent) {
-            Label warn = new Label("⚠ Perbandingan tidak konsisten! Ubah nilai perbandingan agar CR ≤ 0.1");
-            warn.setStyle("-fx-text-fill: -accent-danger; -fx-font-size: 12px;");
-            warn.setWrapText(true);
-            crCard.getChildren().add(warn);
+            crCard.add(Box.createRigidArea(new Dimension(0, 10)));
+            JLabel warn = new JLabel("<html>⚠ Perbandingan tidak konsisten! Ubah nilai perbandingan agar CR ≤ 0.1</html>");
+            warn.setForeground(Theme.ACCENT_DANGER);
+            crCard.add(warn);
         }
 
-        resultContainer.getChildren().addAll(matrixCard, normCard, weightsCard, crCard);
+        resultContainer.add(matrixCard);
+        resultContainer.add(Box.createRigidArea(new Dimension(0, 15)));
+        resultContainer.add(normCard);
+        resultContainer.add(Box.createRigidArea(new Dimension(0, 15)));
+        resultContainer.add(weightsCard);
+        resultContainer.add(Box.createRigidArea(new Dimension(0, 15)));
+        resultContainer.add(crCard);
+
+        revalidate();
+        repaint();
     }
 
-    private GridPane createMatrixGrid(double[][] matrix, String type) {
-        GridPane grid = new GridPane();
-        grid.setHgap(4);
-        grid.setVgap(4);
-        grid.setPadding(new Insets(10, 0, 10, 0));
-
+    private JPanel createMatrixGrid(double[][] matrix) {
         int n = matrix.length;
+        JPanel grid = new JPanel(new GridLayout(n + 1, n + 1, 4, 4));
+        grid.setOpaque(false);
 
-        // Column headers
-        grid.add(new Label(""), 0, 0);
+        grid.add(new JLabel(""));
         for (int j = 0; j < n && j < criteriaList.size(); j++) {
-            Label header = new Label(criteriaList.get(j).getNamaKriteria());
-            header.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary; -fx-font-size: 11px; -fx-padding: 4 8 4 8;");
-            grid.add(header, j + 1, 0);
+            grid.add(createBoldLabel(criteriaList.get(j).getNamaKriteria()));
         }
 
-        // Rows
         for (int i = 0; i < n && i < criteriaList.size(); i++) {
-            Label rowHeader = new Label(criteriaList.get(i).getNamaKriteria());
-            rowHeader.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary; -fx-font-size: 11px; -fx-padding: 4 8 4 8;");
-            grid.add(rowHeader, 0, i + 1);
-
+            grid.add(createBoldLabel(criteriaList.get(i).getNamaKriteria()));
             for (int j = 0; j < n; j++) {
-                Label cell = new Label(String.format("%.4f", matrix[i][j]));
-                cell.setStyle("-fx-text-fill: -text-primary; -fx-font-size: 11px; -fx-padding: 4 8 4 8; " +
-                        "-fx-background-color: " + (i == j ? "rgba(79,195,247,0.08)" : "transparent") + "; " +
-                        "-fx-background-radius: 4;");
-                grid.add(cell, j + 1, i + 1);
+                JLabel cell = new JLabel(String.format("%.4f", matrix[i][j]));
+                cell.setHorizontalAlignment(SwingConstants.CENTER);
+                if (i == j) {
+                    cell.setOpaque(true);
+                    cell.setBackground(new Color(79, 195, 247, 20));
+                }
+                grid.add(cell);
             }
         }
-
         return grid;
     }
 
-    private Label createValueLabel(String text) {
-        Label label = new Label(text);
-        label.setStyle("-fx-text-fill: -text-primary;");
+    private JLabel createBoldLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(Theme.FONT_BOLD.deriveFont(11f));
+        label.setForeground(Theme.ACCENT_PRIMARY);
         return label;
     }
 
@@ -438,22 +460,8 @@ public class AHPView extends VBox {
         return "Kriteria " + criteriaId;
     }
 
-    private void showAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error");
-        alert.showAndWait();
-    }
-
-    private void showInfo(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
-        alert.setTitle("Sukses");
-        alert.setHeaderText("Sukses");
-        alert.showAndWait();
-    }
-
     public void refresh() {
-        resultContainer.getChildren().clear();
+        resultContainer.removeAll();
         loadComparisons();
     }
 }

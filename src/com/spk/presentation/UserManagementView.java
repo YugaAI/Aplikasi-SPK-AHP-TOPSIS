@@ -1,272 +1,256 @@
 package com.spk.presentation;
 
 import com.spk.domain.User;
+import com.spk.presentation.components.CustomButton;
+import com.spk.presentation.components.Theme;
 import com.spk.usecase.UserUseCase;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
 
-/**
- * View for admin user management (CRUD users + assign roles).
- */
-public class UserManagementView extends VBox {
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
+
+public class UserManagementView extends JPanel {
 
     private final UserUseCase userUseCase = new UserUseCase();
-    private TableView<User> table;
+    private JTable table;
+    private DefaultTableModel tableModel;
 
     public UserManagementView() {
-        getStyleClass().add("content-area");
-        setSpacing(20);
+        setLayout(new BorderLayout());
+        setBackground(Theme.BG_PRIMARY);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         buildUI();
         loadData();
     }
 
     private void buildUI() {
+        removeAll();
+
         // Header
-        VBox header = new VBox(4);
-        header.getStyleClass().add("page-header");
-        Label title = new Label("Kelola User");
-        title.getStyleClass().add("label-title");
-        Label subtitle = new Label("Manajemen akun pengguna dan role");
-        subtitle.getStyleClass().add("label-subtitle");
-        header.getChildren().addAll(title, subtitle);
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setOpaque(false);
+        header.setBorder(new EmptyBorder(0, 0, 20, 0));
+
+        JLabel title = new JLabel("Kelola User");
+        title.setFont(Theme.FONT_TITLE);
+        title.setForeground(Theme.TEXT_PRIMARY);
+
+        JLabel subtitle = new JLabel("Manajemen akun pengguna dan role");
+        subtitle.setFont(Theme.FONT_SUBTITLE);
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+
+        header.add(title);
+        header.add(Box.createRigidArea(new Dimension(0, 5)));
+        header.add(subtitle);
 
         // Toolbar
-        HBox toolbar = new HBox(10);
-        toolbar.setAlignment(Pos.CENTER_LEFT);
-        Button addBtn = new Button("＋ Tambah User");
-        addBtn.getStyleClass().add("btn-primary");
-        addBtn.setOnAction(e -> showAddDialog());
+        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        toolbar.setOpaque(false);
+        toolbar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
-        Button refreshBtn = new Button("↻ Refresh");
-        refreshBtn.setOnAction(e -> loadData());
+        CustomButton addBtn = new CustomButton("＋ Tambah User");
+        addBtn.setPrimary();
+        addBtn.addActionListener(e -> showAddDialog());
 
-        toolbar.getChildren().addAll(addBtn, refreshBtn);
+        CustomButton refreshBtn = new CustomButton("↻ Refresh");
+        refreshBtn.addActionListener(e -> loadData());
+
+        CustomButton editBtn = new CustomButton("✎ Edit");
+        editBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                User u = getUserFromRow(row);
+                showEditDialog(u);
+            } else {
+                JOptionPane.showMessageDialog(this, "Pilih user yang akan diedit", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        CustomButton resetBtn = new CustomButton("🔑 Reset Pass");
+        resetBtn.setWarning();
+        resetBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                User u = getUserFromRow(row);
+                showResetPasswordDialog(u);
+            } else {
+                JOptionPane.showMessageDialog(this, "Pilih user yang akan direset", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        CustomButton deleteBtn = new CustomButton("✕ Hapus");
+        deleteBtn.setDanger();
+        deleteBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                User u = getUserFromRow(row);
+                handleDelete(u);
+            } else {
+                JOptionPane.showMessageDialog(this, "Pilih user yang akan dihapus", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        toolbar.add(addBtn);
+        toolbar.add(refreshBtn);
+        toolbar.add(editBtn);
+        toolbar.add(resetBtn);
+        toolbar.add(deleteBtn);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+        topPanel.add(header, BorderLayout.NORTH);
+        topPanel.add(toolbar, BorderLayout.SOUTH);
+
+        add(topPanel, BorderLayout.NORTH);
 
         // Table
-        table = new TableView<>();
-        table.setPlaceholder(new Label("Belum ada data user"));
-        VBox.setVgrow(table, Priority.ALWAYS);
-
-        TableColumn<User, Integer> idCol = new TableColumn<>("ID");
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idCol.setPrefWidth(50);
-
-        TableColumn<User, String> usernameCol = new TableColumn<>("Username");
-        usernameCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-        usernameCol.setPrefWidth(150);
-
-        TableColumn<User, String> nameCol = new TableColumn<>("Nama Lengkap");
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        nameCol.setPrefWidth(200);
-
-        TableColumn<User, String> roleCol = new TableColumn<>("Role");
-        roleCol.setCellValueFactory(data -> {
-            String role = data.getValue().getRole();
-            return new SimpleStringProperty(role.substring(0, 1).toUpperCase() + role.substring(1));
-        });
-        roleCol.setPrefWidth(100);
-
-        TableColumn<User, Void> actionCol = new TableColumn<>("Aksi");
-        actionCol.setPrefWidth(280);
-        actionCol.setCellFactory(col -> new TableCell<User, Void>() {
-            private final Button editBtn = new Button("✎ Edit");
-            private final Button resetBtn = new Button("🔑 Reset Password");
-            private final Button deleteBtn = new Button("✕ Hapus");
-            {
-                editBtn.getStyleClass().addAll("btn-warning", "btn-small");
-                resetBtn.getStyleClass().addAll("btn-small");
-                deleteBtn.getStyleClass().addAll("btn-danger", "btn-small");
-                editBtn.setOnAction(e -> showEditDialog(getTableView().getItems().get(getIndex())));
-                resetBtn.setOnAction(e -> showResetPasswordDialog(getTableView().getItems().get(getIndex())));
-                deleteBtn.setOnAction(e -> handleDelete(getTableView().getItems().get(getIndex())));
-            }
-
+        String[] columnNames = {"ID", "Username", "Nama Lengkap", "Role"};
+        tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox box = new HBox(4, editBtn, resetBtn, deleteBtn);
-                    box.setAlignment(Pos.CENTER);
-                    setGraphic(box);
-                }
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
 
-        table.getColumns().add(idCol);
-        table.getColumns().add(usernameCol);
-        table.getColumns().add(nameCol);
-        table.getColumns().add(roleCol);
-        table.getColumns().add(actionCol);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        table = new JTable(tableModel);
+        table.setRowHeight(30);
+        table.setFont(Theme.FONT_REGULAR);
+        table.getTableHeader().setFont(Theme.FONT_BOLD);
+        table.getTableHeader().setBackground(new Color(37, 52, 85));
+        table.getTableHeader().setForeground(Theme.ACCENT_PRIMARY);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setShowVerticalLines(false);
+        table.setGridColor(Theme.BORDER_COLOR);
 
-        getChildren().addAll(header, toolbar, table);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(0).setMaxWidth(80);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.getViewport().setBackground(Theme.BG_CARD);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Theme.BORDER_COLOR));
+
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     private void loadData() {
+        tableModel.setRowCount(0);
         try {
-            table.setItems(FXCollections.observableArrayList(userUseCase.getAllUsers()));
+            List<User> users = userUseCase.getAllUsers();
+            for (User u : users) {
+                String role = u.getRole().substring(0, 1).toUpperCase() + u.getRole().substring(1);
+                tableModel.addRow(new Object[]{u.getId(), u.getUsername(), u.getFullName(), role});
+            }
         } catch (Exception e) {
-            showAlert("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    private User getUserFromRow(int row) {
+        User u = new User();
+        u.setId((int) tableModel.getValueAt(row, 0));
+        u.setUsername((String) tableModel.getValueAt(row, 1));
+        u.setFullName((String) tableModel.getValueAt(row, 2));
+        u.setRole(((String) tableModel.getValueAt(row, 3)).toLowerCase());
+        return u;
+    }
+
     private void showAddDialog() {
-        Dialog<User> dialog = new Dialog<>();
-        dialog.setTitle("Tambah User");
-        dialog.setHeaderText("Tambah User Baru");
+        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+        
+        JTextField usernameField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        JTextField nameField = new JTextField();
+        JComboBox<String> roleCombo = new JComboBox<>(new String[]{"admin", "user"});
+        roleCombo.setSelectedItem("user");
 
-        ButtonType saveBtn = new ButtonType("Simpan", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
+        panel.add(new JLabel("Username:"));
+        panel.add(usernameField);
+        panel.add(new JLabel("Password:"));
+        panel.add(passwordField);
+        panel.add(new JLabel("Nama Lengkap:"));
+        panel.add(nameField);
+        panel.add(new JLabel("Role:"));
+        panel.add(roleCombo);
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(14);
-        grid.setPadding(new Insets(20));
+        int result = JOptionPane.showConfirmDialog(this, panel, "Tambah User",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Username");
-        usernameField.setPrefWidth(300);
-
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Password (min 4 karakter)");
-        passwordField.setPrefWidth(300);
-
-        TextField nameField = new TextField();
-        nameField.setPromptText("Nama lengkap");
-        nameField.setPrefWidth(300);
-
-        ComboBox<String> roleCombo = new ComboBox<>(FXCollections.observableArrayList("admin", "user"));
-        roleCombo.setValue("user");
-        roleCombo.setPrefWidth(300);
-
-        grid.add(new Label("Username:"), 0, 0);
-        grid.add(usernameField, 1, 0);
-        grid.add(new Label("Password:"), 0, 1);
-        grid.add(passwordField, 1, 1);
-        grid.add(new Label("Nama Lengkap:"), 0, 2);
-        grid.add(nameField, 1, 2);
-        grid.add(new Label("Role:"), 0, 3);
-        grid.add(roleCombo, 1, 3);
-
-        dialog.getDialogPane().setContent(grid);
-
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == saveBtn) {
-                try {
-                    userUseCase.createUser(usernameField.getText(), passwordField.getText(),
-                            nameField.getText(), roleCombo.getValue());
-                    loadData();
-                } catch (Exception e) {
-                    showAlert("Error: " + e.getMessage());
-                }
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                userUseCase.createUser(usernameField.getText(), new String(passwordField.getPassword()),
+                        nameField.getText(), (String) roleCombo.getSelectedItem());
+                loadData();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            return null;
-        });
-
-        dialog.showAndWait();
+        }
     }
 
     private void showEditDialog(User user) {
-        Dialog<User> dialog = new Dialog<>();
-        dialog.setTitle("Edit User");
-        dialog.setHeaderText("Edit User: " + user.getUsername());
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+        
+        JTextField usernameField = new JTextField(user.getUsername());
+        JTextField nameField = new JTextField(user.getFullName());
+        JComboBox<String> roleCombo = new JComboBox<>(new String[]{"admin", "user"});
+        roleCombo.setSelectedItem(user.getRole());
 
-        ButtonType saveBtn = new ButtonType("Simpan", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
+        panel.add(new JLabel("Username:"));
+        panel.add(usernameField);
+        panel.add(new JLabel("Nama Lengkap:"));
+        panel.add(nameField);
+        panel.add(new JLabel("Role:"));
+        panel.add(roleCombo);
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(14);
-        grid.setPadding(new Insets(20));
+        int result = JOptionPane.showConfirmDialog(this, panel, "Edit User",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-        TextField usernameField = new TextField(user.getUsername());
-        usernameField.setPrefWidth(300);
-
-        TextField nameField = new TextField(user.getFullName());
-        nameField.setPrefWidth(300);
-
-        ComboBox<String> roleCombo = new ComboBox<>(FXCollections.observableArrayList("admin", "user"));
-        roleCombo.setValue(user.getRole());
-        roleCombo.setPrefWidth(300);
-
-        grid.add(new Label("Username:"), 0, 0);
-        grid.add(usernameField, 1, 0);
-        grid.add(new Label("Nama Lengkap:"), 0, 1);
-        grid.add(nameField, 1, 1);
-        grid.add(new Label("Role:"), 0, 2);
-        grid.add(roleCombo, 1, 2);
-
-        dialog.getDialogPane().setContent(grid);
-
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == saveBtn) {
-                try {
-                    userUseCase.updateUser(user.getId(), usernameField.getText(),
-                            nameField.getText(), roleCombo.getValue());
-                    loadData();
-                } catch (Exception e) {
-                    showAlert("Error: " + e.getMessage());
-                }
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                userUseCase.updateUser(user.getId(), usernameField.getText(),
+                        nameField.getText(), (String) roleCombo.getSelectedItem());
+                loadData();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            return null;
-        });
-
-        dialog.showAndWait();
+        }
     }
 
     private void showResetPasswordDialog(User user) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Reset Password");
-        dialog.setHeaderText("Reset password untuk: " + user.getUsername());
-        dialog.setContentText("Password baru:");
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.add(new JLabel("Password baru untuk " + user.getUsername() + ":"), BorderLayout.NORTH);
+        JPasswordField pf = new JPasswordField(20);
+        panel.add(pf, BorderLayout.CENTER);
 
-        dialog.showAndWait().ifPresent(newPassword -> {
+        int result = JOptionPane.showConfirmDialog(this, panel, "Reset Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
             try {
-                userUseCase.resetPassword(user.getId(), newPassword);
-                showInfo("Password berhasil direset");
+                userUseCase.resetPassword(user.getId(), new String(pf.getPassword()));
+                JOptionPane.showMessageDialog(this, "Password berhasil direset", "Sukses", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
-                showAlert("Error: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
+        }
     }
 
     private void handleDelete(User user) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+        int confirm = JOptionPane.showConfirmDialog(this,
                 "Hapus user '" + user.getUsername() + "'?",
-                ButtonType.YES, ButtonType.NO);
-        confirm.setTitle("Konfirmasi Hapus");
-        confirm.setHeaderText("Hapus User");
-        confirm.showAndWait().ifPresent(type -> {
-            if (type == ButtonType.YES) {
-                try {
-                    userUseCase.deleteUser(user.getId());
-                    loadData();
-                } catch (Exception e) {
-                    showAlert("Error: " + e.getMessage());
-                }
+                "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                userUseCase.deleteUser(user.getId());
+                loadData();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
-    }
-
-    private void showAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error");
-        alert.showAndWait();
-    }
-
-    private void showInfo(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
-        alert.setTitle("Sukses");
-        alert.setHeaderText("Sukses");
-        alert.showAndWait();
+        }
     }
 
     public void refresh() {

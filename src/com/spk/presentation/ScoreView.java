@@ -3,93 +3,101 @@ package com.spk.presentation;
 import com.spk.domain.Criteria;
 import com.spk.domain.Score;
 import com.spk.domain.Vendor;
+import com.spk.presentation.components.CardPanel;
+import com.spk.presentation.components.CustomButton;
+import com.spk.presentation.components.Theme;
 import com.spk.usecase.CriteriaUseCase;
 import com.spk.usecase.ScoreUseCase;
 import com.spk.usecase.VendorUseCase;
-import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * View for inputting vendor scores against each criterion.
- */
-public class ScoreView extends VBox {
+public class ScoreView extends JPanel {
 
     private final ScoreUseCase scoreUseCase = new ScoreUseCase();
     private final VendorUseCase vendorUseCase = new VendorUseCase();
     private final CriteriaUseCase criteriaUseCase = new CriteriaUseCase();
 
-    private ComboBox<Vendor> vendorCombo;
-    private VBox formContainer;
-    private final Map<Integer, TextField> scoreFields = new HashMap<>();
-    private Label statusLabel;
+    private JComboBox<VendorItem> vendorCombo;
+    private JPanel formContainer;
+    private final Map<Integer, JTextField> scoreFields = new HashMap<>();
+    private JLabel statusLabel;
 
     public ScoreView() {
-        getStyleClass().add("content-area");
-        setSpacing(20);
+        setLayout(new BorderLayout());
+        setBackground(Theme.BG_PRIMARY);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         buildUI();
     }
 
     private void buildUI() {
+        removeAll();
+
         // Header
-        VBox header = new VBox(4);
-        header.getStyleClass().add("page-header");
-        Label title = new Label("Penilaian Vendor");
-        title.getStyleClass().add("label-title");
-        Label subtitle = new Label("Input nilai vendor terhadap setiap kriteria");
-        subtitle.getStyleClass().add("label-subtitle");
-        header.getChildren().addAll(title, subtitle);
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setOpaque(false);
+        header.setBorder(new EmptyBorder(0, 0, 20, 0));
+
+        JLabel title = new JLabel("Penilaian Vendor");
+        title.setFont(Theme.FONT_TITLE);
+        title.setForeground(Theme.TEXT_PRIMARY);
+
+        JLabel subtitle = new JLabel("Input nilai vendor terhadap setiap kriteria");
+        subtitle.setFont(Theme.FONT_SUBTITLE);
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+
+        header.add(title);
+        header.add(Box.createRigidArea(new Dimension(0, 5)));
+        header.add(subtitle);
 
         // Status
-        statusLabel = new Label();
-        statusLabel.setStyle("-fx-font-size: 12px;");
+        statusLabel = new JLabel();
+        statusLabel.setFont(Theme.FONT_BOLD.deriveFont(12f));
         checkCompleteness();
 
         // Vendor selector
-        HBox selectorBar = new HBox(12);
-        selectorBar.setAlignment(Pos.CENTER_LEFT);
+        JPanel selectorBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        selectorBar.setOpaque(false);
+        selectorBar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
-        Label selectLabel = new Label("Pilih Vendor:");
-        selectLabel.getStyleClass().add("form-label");
+        JLabel selectLabel = new JLabel("Pilih Vendor:");
+        selectLabel.setFont(Theme.FONT_BOLD);
+        selectLabel.setForeground(Theme.TEXT_PRIMARY);
 
-        vendorCombo = new ComboBox<>();
-        vendorCombo.setPromptText("-- Pilih Vendor --");
-        vendorCombo.setPrefWidth(300);
-        vendorCombo.setCellFactory(lv -> new ListCell<Vendor>() {
-            @Override
-            protected void updateItem(Vendor item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? null : item.getNamaVendor());
-            }
-        });
-        vendorCombo.setButtonCell(new ListCell<Vendor>() {
-            @Override
-            protected void updateItem(Vendor item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? null : item.getNamaVendor());
-            }
-        });
-        vendorCombo.setOnAction(e -> loadScoresForVendor());
+        vendorCombo = new JComboBox<>();
+        vendorCombo.setPreferredSize(new Dimension(300, 35));
+        vendorCombo.addActionListener(e -> loadScoresForVendor());
 
-        selectorBar.getChildren().addAll(selectLabel, vendorCombo, statusLabel);
+        selectorBar.add(selectLabel);
+        selectorBar.add(vendorCombo);
+        selectorBar.add(Box.createRigidArea(new Dimension(10, 0)));
+        selectorBar.add(statusLabel);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+        topPanel.add(header, BorderLayout.NORTH);
+        topPanel.add(selectorBar, BorderLayout.SOUTH);
+
+        add(topPanel, BorderLayout.NORTH);
 
         // Form container
-        formContainer = new VBox(10);
-        formContainer.getStyleClass().add("card");
+        formContainer = new JPanel();
+        formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
+        formContainer.setOpaque(false);
+        formContainer.setBorder(new EmptyBorder(20, 0, 20, 0));
 
-        ScrollPane scrollPane = new ScrollPane(formContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setStyle("-fx-background-color: transparent;");
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
-
-        getChildren().addAll(header, selectorBar, scrollPane);
+        JScrollPane scrollPane = new JScrollPane(formContainer);
+        scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        add(scrollPane, BorderLayout.CENTER);
 
         loadVendors();
     }
@@ -97,116 +105,137 @@ public class ScoreView extends VBox {
     private void loadVendors() {
         try {
             List<Vendor> vendors = vendorUseCase.getAllVendors();
-            vendorCombo.setItems(FXCollections.observableArrayList(vendors));
+            vendorCombo.removeAllItems();
+            vendorCombo.addItem(new VendorItem(-1, "-- Pilih Vendor --"));
+            for (Vendor v : vendors) {
+                vendorCombo.addItem(new VendorItem(v.getId(), v.getNamaVendor()));
+            }
         } catch (Exception e) {
-            showAlert("Error memuat vendor: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error memuat vendor: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void loadScoresForVendor() {
-        Vendor selected = vendorCombo.getValue();
-        if (selected == null)
+        VendorItem selected = (VendorItem) vendorCombo.getSelectedItem();
+        if (selected == null || selected.getId() == -1) {
+            formContainer.removeAll();
+            formContainer.revalidate();
+            formContainer.repaint();
             return;
+        }
 
-        formContainer.getChildren().clear();
+        formContainer.removeAll();
         scoreFields.clear();
 
         try {
             List<Criteria> criteriaList = criteriaUseCase.getAllCriteria();
             List<Score> existingScores = scoreUseCase.getScoresByVendor(selected.getId());
 
-            // Map existing scores by criteria ID
             Map<Integer, Double> existingMap = new HashMap<>();
             for (Score s : existingScores) {
                 existingMap.put(s.getKriteriaId(), s.getNilai());
             }
 
             if (criteriaList.isEmpty()) {
-                Label emptyLabel = new Label("Belum ada kriteria. Tambahkan kriteria terlebih dahulu.");
-                emptyLabel.setStyle("-fx-text-fill: -accent-warning;");
-                formContainer.getChildren().add(emptyLabel);
+                JLabel emptyLabel = new JLabel("Belum ada kriteria. Tambahkan kriteria terlebih dahulu.");
+                emptyLabel.setForeground(Theme.ACCENT_WARNING);
+                formContainer.add(emptyLabel);
+                formContainer.revalidate();
+                formContainer.repaint();
                 return;
             }
 
-            Label formTitle = new Label("Penilaian untuk: " + selected.getNamaVendor());
-            formTitle.getStyleClass().add("label-section");
-            formContainer.getChildren().add(formTitle);
+            CardPanel card = new CardPanel();
+            card.setLayout(new BorderLayout(0, 15));
+            card.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-            GridPane grid = new GridPane();
-            grid.setHgap(16);
-            grid.setVgap(12);
-            grid.setPadding(new Insets(10, 0, 10, 0));
+            JLabel formTitle = new JLabel("Penilaian untuk: " + selected.getName());
+            formTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+            formTitle.setForeground(Theme.ACCENT_PRIMARY);
+            card.add(formTitle, BorderLayout.NORTH);
+
+            JPanel grid = new JPanel(new GridBagLayout());
+            grid.setOpaque(false);
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(8, 10, 8, 10);
+            gbc.anchor = GridBagConstraints.WEST;
 
             // Header row
-            Label hKriteria = new Label("Kriteria");
-            hKriteria.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
-            Label hTipe = new Label("Tipe");
-            hTipe.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
-            Label hNilai = new Label("Nilai");
-            hNilai.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
-            grid.add(hKriteria, 0, 0);
-            grid.add(hTipe, 1, 0);
-            grid.add(hNilai, 2, 0);
+            gbc.gridy = 0;
+            String[] headers = {"Kriteria", "Tipe", "Nilai"};
+            for (int i = 0; i < headers.length; i++) {
+                gbc.gridx = i;
+                JLabel h = new JLabel(headers[i]);
+                h.setFont(Theme.FONT_BOLD.deriveFont(12f));
+                h.setForeground(Theme.ACCENT_PRIMARY);
+                grid.add(h, gbc);
+            }
 
             int row = 1;
             for (Criteria c : criteriaList) {
-                Label nameLabel = new Label(c.getNamaKriteria());
-                nameLabel.setStyle("-fx-text-fill: -text-primary;");
+                gbc.gridy = row;
 
-                Label tipeLabel = new Label(c.isBenefit() ? "▲ Benefit" : "▼ Cost");
-                tipeLabel.setStyle("-fx-text-fill: " + (c.isBenefit() ? "-accent-success" : "-accent-danger")
-                        + "; -fx-font-size: 11px;");
+                gbc.gridx = 0;
+                JLabel nameLabel = new JLabel(c.getNamaKriteria());
+                nameLabel.setForeground(Theme.TEXT_PRIMARY);
+                grid.add(nameLabel, gbc);
 
-                TextField valueField = new TextField();
-                valueField.setPromptText("Masukkan nilai");
-                valueField.setPrefWidth(150);
+                gbc.gridx = 1;
+                JLabel tipeLabel = new JLabel(c.isBenefit() ? "▲ Benefit" : "▼ Cost");
+                tipeLabel.setForeground(c.isBenefit() ? Theme.ACCENT_SUCCESS : Theme.ACCENT_DANGER);
+                tipeLabel.setFont(Theme.FONT_BOLD.deriveFont(11f));
+                grid.add(tipeLabel, gbc);
+
+                gbc.gridx = 2;
+                JTextField valueField = new JTextField(10);
                 if (existingMap.containsKey(c.getId())) {
                     valueField.setText(String.valueOf(existingMap.get(c.getId())));
                 }
-
                 scoreFields.put(c.getId(), valueField);
+                grid.add(valueField, gbc);
 
-                grid.add(nameLabel, 0, row);
-                grid.add(tipeLabel, 1, row);
-                grid.add(valueField, 2, row);
                 row++;
             }
 
-            formContainer.getChildren().add(grid);
+            card.add(grid, BorderLayout.CENTER);
 
             // Save button
-            HBox btnBar = new HBox(10);
-            btnBar.setAlignment(Pos.CENTER_LEFT);
-            btnBar.setPadding(new Insets(10, 0, 0, 0));
-            Button saveBtn = new Button("💾 Simpan Penilaian");
-            saveBtn.getStyleClass().add("btn-success");
-            saveBtn.setOnAction(e -> saveScores(selected.getId()));
-            btnBar.getChildren().add(saveBtn);
-            formContainer.getChildren().add(btnBar);
+            JPanel btnBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            btnBar.setOpaque(false);
+            CustomButton saveBtn = new CustomButton("💾 Simpan Penilaian");
+            saveBtn.setSuccess();
+            saveBtn.addActionListener(e -> saveScores(selected.getId()));
+            btnBar.add(saveBtn);
+            
+            card.add(btnBar, BorderLayout.SOUTH);
+            formContainer.add(card);
+
+            formContainer.revalidate();
+            formContainer.repaint();
 
         } catch (Exception e) {
-            showAlert("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void saveScores(int vendorId) {
         try {
             List<Score> scores = new ArrayList<>();
-            for (Map.Entry<Integer, TextField> entry : scoreFields.entrySet()) {
+            for (Map.Entry<Integer, JTextField> entry : scoreFields.entrySet()) {
                 String text = entry.getValue().getText().trim();
                 if (text.isEmpty()) {
-                    showAlert("Semua nilai harus diisi");
+                    JOptionPane.showMessageDialog(this, "Semua nilai harus diisi", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 double nilai;
                 try {
                     nilai = Double.parseDouble(text);
                 } catch (NumberFormatException ex) {
-                    showAlert("Nilai harus berupa angka untuk semua kriteria");
+                    JOptionPane.showMessageDialog(this, "Nilai harus berupa angka", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (nilai <= 0) {
-                    showAlert("Nilai harus lebih dari 0");
+                    JOptionPane.showMessageDialog(this, "Nilai harus lebih dari 0", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 Score score = new Score(vendorId, entry.getKey(), nilai);
@@ -214,10 +243,10 @@ public class ScoreView extends VBox {
             }
 
             scoreUseCase.saveScores(vendorId, scores);
-            showInfo("Penilaian berhasil disimpan!");
+            JOptionPane.showMessageDialog(this, "Penilaian berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
             checkCompleteness();
         } catch (Exception e) {
-            showAlert("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -226,33 +255,45 @@ public class ScoreView extends VBox {
             boolean complete = scoreUseCase.isScoreComplete();
             if (complete) {
                 statusLabel.setText("✓ Semua penilaian lengkap");
-                statusLabel.getStyleClass().setAll("badge-success");
+                statusLabel.setForeground(Theme.ACCENT_SUCCESS);
             } else {
                 statusLabel.setText("⚠ Penilaian belum lengkap");
-                statusLabel.getStyleClass().setAll("badge-warning");
+                statusLabel.setForeground(Theme.ACCENT_WARNING);
             }
         } catch (Exception e) {
             statusLabel.setText("✗ Error");
+            statusLabel.setForeground(Theme.ACCENT_DANGER);
         }
-    }
-
-    private void showAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error");
-        alert.showAndWait();
-    }
-
-    private void showInfo(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
-        alert.setTitle("Sukses");
-        alert.setHeaderText("Sukses");
-        alert.showAndWait();
     }
 
     public void refresh() {
         loadVendors();
-        formContainer.getChildren().clear();
+        formContainer.removeAll();
+        formContainer.revalidate();
+        formContainer.repaint();
         checkCompleteness();
+    }
+
+    private static class VendorItem {
+        private final int id;
+        private final String name;
+
+        public VendorItem(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }

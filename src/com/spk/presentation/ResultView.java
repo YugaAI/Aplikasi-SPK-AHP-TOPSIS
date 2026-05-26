@@ -1,134 +1,161 @@
 package com.spk.presentation;
 
-import java.util.List;
-
 import com.spk.domain.TOPSISResult;
+import com.spk.presentation.components.CardPanel;
+import com.spk.presentation.components.CustomButton;
+import com.spk.presentation.components.Theme;
 import com.spk.repository.ResultRepository;
 import com.spk.usecase.AuthUseCase;
 import com.spk.usecase.CalculateAHPUseCase;
 import com.spk.usecase.CalculateTOPSISUseCase;
 import com.spk.usecase.ScoreUseCase;
 
-import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
-/**
- * View for displaying TOPSIS calculation results and rankings.
- */
-public class ResultView extends VBox {
+public class ResultView extends JPanel {
 
     private final CalculateTOPSISUseCase topsisUseCase = new CalculateTOPSISUseCase();
     private final CalculateAHPUseCase ahpUseCase = new CalculateAHPUseCase();
     private final ScoreUseCase scoreUseCase = new ScoreUseCase();
     private final ResultRepository resultRepository = new ResultRepository();
 
-    private VBox resultContainer;
+    private JPanel resultContainer;
 
     public ResultView() {
-        getStyleClass().add("content-area");
-        setSpacing(20);
+        setLayout(new BorderLayout());
+        setBackground(Theme.BG_PRIMARY);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         buildUI();
     }
 
     private void buildUI() {
-        // Header
-        VBox header = new VBox(4);
-        header.getStyleClass().add("page-header");
-        Label title = new Label("Hasil Perhitungan TOPSIS");
-        title.getStyleClass().add("label-title");
-        Label subtitle = new Label("Ranking vendor berdasarkan metode TOPSIS");
-        subtitle.getStyleClass().add("label-subtitle");
-        header.getChildren().addAll(title, subtitle);
+        removeAll();
 
-        // Toolbar (admin only)
-        HBox toolbar = new HBox(12);
-        toolbar.setAlignment(Pos.CENTER_LEFT);
+        // Header
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setOpaque(false);
+        header.setBorder(new EmptyBorder(0, 0, 20, 0));
+
+        JLabel title = new JLabel("Hasil Perhitungan TOPSIS");
+        title.setFont(Theme.FONT_TITLE);
+        title.setForeground(Theme.TEXT_PRIMARY);
+
+        JLabel subtitle = new JLabel("Ranking vendor berdasarkan metode TOPSIS");
+        subtitle.setFont(Theme.FONT_SUBTITLE);
+        subtitle.setForeground(Theme.TEXT_SECONDARY);
+
+        header.add(title);
+        header.add(Box.createRigidArea(new Dimension(0, 5)));
+        header.add(subtitle);
+
+        // Toolbar
+        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        toolbar.setOpaque(false);
+        toolbar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
         if (AuthUseCase.isAdmin()) {
-            Button calcBtn = new Button("⚡ Hitung TOPSIS");
-            calcBtn.getStyleClass().add("btn-success");
-            calcBtn.setOnAction(e -> calculateTOPSIS());
+            CustomButton calcBtn = new CustomButton("⚡ Hitung TOPSIS");
+            calcBtn.setSuccess();
+            calcBtn.addActionListener(e -> calculateTOPSIS());
 
-            Button refreshBtn = new Button("↻ Refresh");
-            refreshBtn.setOnAction(e -> loadSavedResults());
+            CustomButton refreshBtn = new CustomButton("↻ Refresh");
+            refreshBtn.addActionListener(e -> loadSavedResults());
 
-            toolbar.getChildren().addAll(calcBtn, refreshBtn);
+            toolbar.add(calcBtn);
+            toolbar.add(refreshBtn);
         }
 
-        resultContainer = new VBox(20);
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+        topPanel.add(header, BorderLayout.NORTH);
+        topPanel.add(toolbar, BorderLayout.SOUTH);
 
-        ScrollPane scrollPane = new ScrollPane(resultContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setStyle("-fx-background-color: transparent;");
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        add(topPanel, BorderLayout.NORTH);
 
-        getChildren().addAll(header, toolbar, scrollPane);
+        resultContainer = new JPanel();
+        resultContainer.setLayout(new BoxLayout(resultContainer, BoxLayout.Y_AXIS));
+        resultContainer.setOpaque(false);
+
+        JScrollPane scrollPane = new JScrollPane(resultContainer);
+        scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        add(scrollPane, BorderLayout.CENTER);
 
         loadSavedResults();
     }
 
     private void loadSavedResults() {
-        resultContainer.getChildren().clear();
+        resultContainer.removeAll();
 
         try {
             if (!resultRepository.hasResults()) {
-                VBox emptyCard = new VBox(10);
-                emptyCard.getStyleClass().add("card");
-                emptyCard.setAlignment(Pos.CENTER);
-                Label emptyIcon = new Label("◎");
-                emptyIcon.setStyle("-fx-font-size: 48px; -fx-text-fill: -text-muted;");
-                Label emptyText = new Label("Belum ada hasil perhitungan TOPSIS");
-                emptyText.setStyle("-fx-text-fill: -text-muted; -fx-font-size: 14px;");
-                Label emptyHint = new Label(AuthUseCase.isAdmin() ?
+                CardPanel emptyCard = new CardPanel();
+                emptyCard.setLayout(new BoxLayout(emptyCard, BoxLayout.Y_AXIS));
+                emptyCard.setBorder(new EmptyBorder(40, 20, 40, 20));
+
+                JLabel emptyIcon = new JLabel("◎");
+                emptyIcon.setFont(Theme.FONT_TITLE.deriveFont(48f));
+                emptyIcon.setForeground(Theme.TEXT_MUTED);
+                emptyIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                JLabel emptyText = new JLabel("Belum ada hasil perhitungan TOPSIS");
+                emptyText.setFont(Theme.FONT_BOLD.deriveFont(14f));
+                emptyText.setForeground(Theme.TEXT_MUTED);
+                emptyText.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                JLabel emptyHint = new JLabel(AuthUseCase.isAdmin() ?
                         "Klik tombol 'Hitung TOPSIS' untuk memulai perhitungan" :
                         "Admin belum melakukan perhitungan");
-                emptyHint.setStyle("-fx-text-fill: -text-muted; -fx-font-size: 12px;");
-                emptyCard.getChildren().addAll(emptyIcon, emptyText, emptyHint);
-                resultContainer.getChildren().add(emptyCard);
+                emptyHint.setFont(Theme.FONT_REGULAR.deriveFont(12f));
+                emptyHint.setForeground(Theme.TEXT_MUTED);
+                emptyHint.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                emptyCard.add(emptyIcon);
+                emptyCard.add(Box.createRigidArea(new Dimension(0, 10)));
+                emptyCard.add(emptyText);
+                emptyCard.add(Box.createRigidArea(new Dimension(0, 5)));
+                emptyCard.add(emptyHint);
+
+                resultContainer.add(emptyCard);
+                resultContainer.revalidate();
+                resultContainer.repaint();
                 return;
             }
 
             List<TOPSISResult> results = topsisUseCase.getSavedResults();
             displayResults(results);
 
-        } catch (java.sql.SQLException | IllegalStateException e) {
-            showAlert("Error: " + e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void calculateTOPSIS() {
         try {
-            // Validate prerequisites
             if (!ahpUseCase.hasWeights()) {
-                showAlert("Bobot AHP belum dihitung. Lakukan perhitungan AHP terlebih dahulu.");
+                JOptionPane.showMessageDialog(this, "Bobot AHP belum dihitung. Lakukan perhitungan AHP terlebih dahulu.", "Peringatan", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             if (!scoreUseCase.isScoreComplete()) {
-                showAlert("Penilaian vendor belum lengkap. Lengkapi penilaian untuk semua vendor terhadap semua kriteria.");
+                JOptionPane.showMessageDialog(this, "Penilaian vendor belum lengkap. Lengkapi penilaian untuk semua vendor terhadap semua kriteria.", "Peringatan", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             List<TOPSISResult> results = topsisUseCase.calculate();
-            resultContainer.getChildren().clear();
+            resultContainer.removeAll();
             displayResults(results);
 
-            showInfo("Perhitungan TOPSIS berhasil! Ranking telah disimpan.");
-        } catch (java.sql.SQLException | IllegalStateException e) {
-            showAlert("Error perhitungan: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Perhitungan TOPSIS berhasil! Ranking telah disimpan.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error perhitungan: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -137,127 +164,118 @@ public class ResultView extends VBox {
 
         // Winner card
         TOPSISResult winner = results.get(0);
-        VBox winnerCard = new VBox(8);
-        winnerCard.getStyleClass().add("card");
-        winnerCard.setStyle("-fx-border-color: rgba(102,187,106,0.4); -fx-background-color: rgba(102,187,106,0.05);");
-        winnerCard.setAlignment(Pos.CENTER);
-        winnerCard.setPadding(new Insets(24));
+        CardPanel winnerCard = new CardPanel();
+        winnerCard.setLayout(new BoxLayout(winnerCard, BoxLayout.Y_AXIS));
+        winnerCard.setBorder(new EmptyBorder(24, 24, 24, 24));
+        winnerCard.setBackground(new Color(102, 187, 106, 15));
 
-        Label trophy = new Label("🏆");
-        trophy.setStyle("-fx-font-size: 42px;");
-        Label winnerTitle = new Label("Vendor Terbaik");
-        winnerTitle.setStyle("-fx-font-size: 14px; -fx-text-fill: -accent-success; -fx-font-weight: bold;");
-        Label winnerName = new Label(winner.getVendorName());
-        winnerName.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -text-primary;");
-        Label winnerScore = new Label("Skor Preferensi: " + String.format("%.6f", winner.getSkorPreferensi()));
-        winnerScore.setStyle("-fx-font-size: 14px; -fx-text-fill: -text-secondary;");
+        JLabel trophy = new JLabel("🏆");
+        trophy.setFont(Theme.FONT_TITLE.deriveFont(42f));
+        trophy.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        winnerCard.getChildren().addAll(trophy, winnerTitle, winnerName, winnerScore);
+        JLabel winnerTitle = new JLabel("Vendor Terbaik");
+        winnerTitle.setFont(Theme.FONT_BOLD.deriveFont(14f));
+        winnerTitle.setForeground(Theme.ACCENT_SUCCESS);
+        winnerTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Ranking table
-        VBox tableCard = new VBox(10);
-        tableCard.getStyleClass().add("card");
+        JLabel winnerName = new JLabel(winner.getVendorName());
+        winnerName.setFont(Theme.FONT_BOLD.deriveFont(28f));
+        winnerName.setForeground(Theme.TEXT_PRIMARY);
+        winnerName.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        Label tableTitle = new Label("📊 Tabel Ranking");
-        tableTitle.getStyleClass().add("label-section");
+        JLabel winnerScore = new JLabel("Skor Preferensi: " + String.format("%.6f", winner.getSkorPreferensi()));
+        winnerScore.setFont(Theme.FONT_REGULAR.deriveFont(14f));
+        winnerScore.setForeground(Theme.TEXT_SECONDARY);
+        winnerScore.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        TableView<TOPSISResult> table = new TableView<>();
-        table.setPlaceholder(new Label("Tidak ada data"));
+        winnerCard.add(trophy);
+        winnerCard.add(Box.createRigidArea(new Dimension(0, 10)));
+        winnerCard.add(winnerTitle);
+        winnerCard.add(Box.createRigidArea(new Dimension(0, 5)));
+        winnerCard.add(winnerName);
+        winnerCard.add(Box.createRigidArea(new Dimension(0, 5)));
+        winnerCard.add(winnerScore);
 
-        TableColumn<TOPSISResult, Integer> rankCol = new TableColumn<>("Ranking");
-        rankCol.setCellValueFactory(new PropertyValueFactory<>("ranking"));
-        rankCol.setPrefWidth(80);
-        rankCol.setStyle("-fx-alignment: CENTER;");
+        // Table card
+        CardPanel tableCard = new CardPanel();
+        tableCard.setLayout(new BorderLayout(0, 10));
+        tableCard.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        TableColumn<TOPSISResult, String> nameCol = new TableColumn<>("Nama Vendor");
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("vendorName"));
-        nameCol.setPrefWidth(250);
+        JLabel tableTitle = new JLabel("📊 Tabel Ranking");
+        tableTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
+        tableTitle.setForeground(Theme.ACCENT_PRIMARY);
+        tableCard.add(tableTitle, BorderLayout.NORTH);
 
-        TableColumn<TOPSISResult, Double> scoreCol = new TableColumn<>("Skor Preferensi");
-        scoreCol.setCellValueFactory(new PropertyValueFactory<>("skorPreferensi"));
-        scoreCol.setPrefWidth(160);
-        scoreCol.setCellFactory(col -> new TableCell<TOPSISResult, Double>() {
+        String[] columnNames = {"Ranking", "Nama Vendor", "Skor Preferensi", "D+ (Jarak Ideal +)", "D- (Jarak Ideal -)"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
-            protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("%.6f", item));
-                }
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
 
-        TableColumn<TOPSISResult, Double> dPosCol = new TableColumn<>("D+ (Jarak Ideal +)");
-        dPosCol.setCellValueFactory(new PropertyValueFactory<>("jarakIdealPositif"));
-        dPosCol.setPrefWidth(150);
-        dPosCol.setCellFactory(col -> new TableCell<TOPSISResult, Double>() {
-            @Override
-            protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("%.6f", item));
-                }
-            }
-        });
+        for (TOPSISResult r : results) {
+            tableModel.addRow(new Object[]{
+                    r.getRanking(),
+                    r.getVendorName(),
+                    String.format("%.6f", r.getSkorPreferensi()),
+                    String.format("%.6f", r.getJarakIdealPositif()),
+                    String.format("%.6f", r.getJarakIdealNegatif())
+            });
+        }
 
-        TableColumn<TOPSISResult, Double> dNegCol = new TableColumn<>("D- (Jarak Ideal -)");
-        dNegCol.setCellValueFactory(new PropertyValueFactory<>("jarakIdealNegatif"));
-        dNegCol.setPrefWidth(150);
-        dNegCol.setCellFactory(col -> new TableCell<TOPSISResult, Double>() {
-            @Override
-            protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("%.6f", item));
-                }
-            }
-        });
+        JTable table = new JTable(tableModel);
+        table.setRowHeight(30);
+        table.setFont(Theme.FONT_REGULAR);
+        table.getTableHeader().setFont(Theme.FONT_BOLD);
+        table.getTableHeader().setBackground(new Color(37, 52, 85));
+        table.getTableHeader().setForeground(Theme.ACCENT_PRIMARY);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setShowVerticalLines(false);
+        table.setGridColor(Theme.BORDER_COLOR);
 
-        table.getColumns().add(rankCol);
-        table.getColumns().add(nameCol);
-        table.getColumns().add(scoreCol);
-        table.getColumns().add(dPosCol);
-        table.getColumns().add(dNegCol);
-        table.setItems(FXCollections.observableArrayList(results));
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        table.setPrefHeight(Math.min(400, 60 + results.size() * 40));
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(0).setMaxWidth(80);
 
-        tableCard.getChildren().addAll(tableTitle, table);
+        JScrollPane tableScroll = new JScrollPane(table);
+        tableScroll.getViewport().setBackground(Theme.BG_CARD);
+        tableScroll.setBorder(BorderFactory.createLineBorder(Theme.BORDER_COLOR));
+        tableScroll.setPreferredSize(new Dimension(0, Math.min(400, 60 + results.size() * 30)));
+        tableCard.add(tableScroll, BorderLayout.CENTER);
 
-        // CR info
-        VBox crCard = new VBox(8);
-        crCard.getStyleClass().add("card");
-        crCard.setStyle("-fx-background-color: rgba(79,195,247,0.05);");
+        // CR Card
+        CardPanel crCard = new CardPanel();
+        crCard.setLayout(new BoxLayout(crCard, BoxLayout.Y_AXIS));
+        crCard.setBorder(new EmptyBorder(15, 20, 15, 20));
+        crCard.setBackground(new Color(79, 195, 247, 15));
+
         try {
             double cr = ahpUseCase.getSavedConsistencyRatio();
-            Label crTitle = new Label("ℹ Informasi Bobot AHP");
-            crTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: -accent-primary;");
-            Label crValue = new Label("Consistency Ratio (CR): " + String.format("%.4f", cr) +
+            JLabel crTitleInfo = new JLabel("ℹ Informasi Bobot AHP");
+            crTitleInfo.setFont(Theme.FONT_BOLD.deriveFont(14f));
+            crTitleInfo.setForeground(Theme.ACCENT_PRIMARY);
+            
+            JLabel crValue = new JLabel("Consistency Ratio (CR): " + String.format("%.4f", cr) +
                     (cr <= 0.1 ? " ✓ Konsisten" : " ✗ Tidak Konsisten"));
-            crValue.setStyle("-fx-text-fill: " + (cr <= 0.1 ? "-accent-success" : "-accent-danger") + ";");
-            crCard.getChildren().addAll(crTitle, crValue);
-        } catch (java.sql.SQLException ignored) {}
+            crValue.setFont(Theme.FONT_REGULAR.deriveFont(12f));
+            crValue.setForeground(cr <= 0.1 ? Theme.ACCENT_SUCCESS : Theme.ACCENT_DANGER);
+            
+            crCard.add(crTitleInfo);
+            crCard.add(Box.createRigidArea(new Dimension(0, 5)));
+            crCard.add(crValue);
+        } catch (Exception ignored) {
+        }
 
-        resultContainer.getChildren().addAll(winnerCard, tableCard, crCard);
-    }
+        resultContainer.add(winnerCard);
+        resultContainer.add(Box.createRigidArea(new Dimension(0, 20)));
+        resultContainer.add(tableCard);
+        resultContainer.add(Box.createRigidArea(new Dimension(0, 20)));
+        resultContainer.add(crCard);
 
-    private void showAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
-        alert.setTitle("Error");
-        alert.setHeaderText("Error");
-        alert.showAndWait();
-    }
-
-    private void showInfo(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
-        alert.setTitle("Sukses");
-        alert.setHeaderText("Sukses");
-        alert.showAndWait();
+        resultContainer.revalidate();
+        resultContainer.repaint();
     }
 
     public void refresh() {

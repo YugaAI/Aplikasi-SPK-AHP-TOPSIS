@@ -1,27 +1,29 @@
 package com.spk.presentation;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.TextAlignment;
+import com.spk.presentation.components.CardPanel;
+import com.spk.presentation.components.CustomButton;
+import com.spk.presentation.components.Theme;
 
-/**
- * Login screen view.
- */
-public class LoginView extends StackPane {
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
+public class LoginView extends JPanel {
 
     public interface LoginListener {
         void onLogin(String username, String password);
     }
 
     private LoginListener listener;
-    private TextField usernameField;
-    private PasswordField passwordField;
-    private Label errorLabel;
-    private Button loginButton;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JLabel errorLabel;
+    private CustomButton loginButton;
 
     public LoginView() {
-        getStyleClass().add("login-container");
+        setBackground(Theme.BG_PRIMARY);
+        setLayout(new GridBagLayout()); // Center the card
         buildUI();
     }
 
@@ -30,90 +32,117 @@ public class LoginView extends StackPane {
     }
 
     private void buildUI() {
-        // Card
-        VBox card = new VBox(20);
-        card.getStyleClass().add("login-card");
-        card.setAlignment(Pos.CENTER);
-        card.setMaxWidth(420);
+        CardPanel card = new CardPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBorder(new EmptyBorder(40, 40, 40, 40));
+        card.setPreferredSize(new Dimension(420, 500));
 
         // Logo / Icon
-        Label icon = new Label("⬡");
-        icon.setStyle("-fx-font-size: 48px; -fx-text-fill: -accent-primary;");
-        icon.setAlignment(Pos.CENTER);
-        icon.setMaxWidth(Double.MAX_VALUE);
-        icon.setTextAlignment(TextAlignment.CENTER);
+        JLabel icon = new JLabel("⬡", SwingConstants.CENTER);
+        icon.setFont(Theme.FONT_TITLE.deriveFont(48f));
+        icon.setForeground(Theme.ACCENT_PRIMARY);
+        icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Title
-        Label title = new Label("SPK Vendor IT");
-        title.getStyleClass().add("login-title");
-        title.setAlignment(Pos.CENTER);
-        title.setMaxWidth(Double.MAX_VALUE);
-        title.setTextAlignment(TextAlignment.CENTER);
+        JLabel title = new JLabel("SPK Vendor IT", SwingConstants.CENTER);
+        title.setFont(Theme.FONT_TITLE.deriveFont(28f));
+        title.setForeground(Theme.ACCENT_PRIMARY);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Subtitle
-        Label subtitle = new Label("Sistem Pendukung Keputusan\nMetode AHP + TOPSIS");
-        subtitle.getStyleClass().add("login-subtitle");
-        subtitle.setAlignment(Pos.CENTER);
-        subtitle.setMaxWidth(Double.MAX_VALUE);
-        subtitle.setTextAlignment(TextAlignment.CENTER);
+        JLabel subtitle = new JLabel("<html><center>Sistem Pendukung Keputusan<br>Metode AHP + TOPSIS</center></html>", SwingConstants.CENTER);
+        subtitle.setFont(Theme.FONT_REGULAR);
+        subtitle.setForeground(Theme.TEXT_MUTED);
+        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Separator
+        JSeparator separator = new JSeparator();
+        separator.setForeground(Theme.BORDER_COLOR);
+        separator.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
 
         // Username field
-        VBox usernameGroup = new VBox(6);
-        Label usernameLabel = new Label("Username");
-        usernameLabel.getStyleClass().add("form-label");
-        usernameField = new TextField();
-        usernameField.setPromptText("Masukkan username");
-        usernameField.setPrefHeight(40);
-        usernameGroup.getChildren().addAll(usernameLabel, usernameField);
+        JPanel usernameGroup = new JPanel();
+        usernameGroup.setLayout(new BoxLayout(usernameGroup, BoxLayout.Y_AXIS));
+        usernameGroup.setOpaque(false);
+        JLabel usernameLabel = new JLabel("Username");
+        usernameLabel.setFont(Theme.FONT_BOLD.deriveFont(12f));
+        usernameLabel.setForeground(Theme.TEXT_SECONDARY);
+        usernameField = new JTextField();
+        usernameField.setPreferredSize(new Dimension(300, 40));
+        usernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        usernameGroup.add(usernameLabel);
+        usernameGroup.add(Box.createRigidArea(new Dimension(0, 6)));
+        usernameGroup.add(usernameField);
 
         // Password field
-        VBox passwordGroup = new VBox(6);
-        Label passwordLabel = new Label("Password");
-        passwordLabel.getStyleClass().add("form-label");
-        passwordField = new PasswordField();
-        passwordField.setPromptText("Masukkan password");
-        passwordField.setPrefHeight(40);
-        passwordGroup.getChildren().addAll(passwordLabel, passwordField);
+        JPanel passwordGroup = new JPanel();
+        passwordGroup.setLayout(new BoxLayout(passwordGroup, BoxLayout.Y_AXIS));
+        passwordGroup.setOpaque(false);
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setFont(Theme.FONT_BOLD.deriveFont(12f));
+        passwordLabel.setForeground(Theme.TEXT_SECONDARY);
+        passwordField = new JPasswordField();
+        passwordField.setPreferredSize(new Dimension(300, 40));
+        passwordField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        passwordGroup.add(passwordLabel);
+        passwordGroup.add(Box.createRigidArea(new Dimension(0, 6)));
+        passwordGroup.add(passwordField);
 
         // Error label
-        errorLabel = new Label();
-        errorLabel.getStyleClass().add("login-error");
+        errorLabel = new JLabel("");
+        errorLabel.setForeground(Theme.ACCENT_DANGER);
+        errorLabel.setFont(Theme.FONT_REGULAR.deriveFont(12f));
+        errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         errorLabel.setVisible(false);
-        errorLabel.setWrapText(true);
-        errorLabel.setMaxWidth(Double.MAX_VALUE);
-        errorLabel.setAlignment(Pos.CENTER);
-        errorLabel.setTextAlignment(TextAlignment.CENTER);
 
         // Login button
-        loginButton = new Button("Masuk");
-        loginButton.getStyleClass().add("btn-primary");
-        loginButton.setPrefHeight(42);
-        loginButton.setMaxWidth(Double.MAX_VALUE);
-        loginButton.setOnAction(e -> handleLogin());
-
-        // Enter key support
-        passwordField.setOnAction(e -> handleLogin());
-        usernameField.setOnAction(e -> passwordField.requestFocus());
+        loginButton = new CustomButton("Masuk");
+        loginButton.setPrimary();
+        loginButton.setPreferredSize(new Dimension(300, 42));
+        loginButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        Action loginAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleLogin();
+            }
+        };
+        loginButton.addActionListener(loginAction);
+        passwordField.addActionListener(loginAction);
+        usernameField.addActionListener(e -> passwordField.requestFocus());
 
         // Default credentials hint
-        Label hint = new Label("Default: admin / admin123");
-        hint.getStyleClass().add("label-muted");
-        hint.setAlignment(Pos.CENTER);
-        hint.setMaxWidth(Double.MAX_VALUE);
-        hint.setTextAlignment(TextAlignment.CENTER);
+        JLabel hint = new JLabel("Default: admin / admin123", SwingConstants.CENTER);
+        hint.setFont(Theme.FONT_REGULAR.deriveFont(12f));
+        hint.setForeground(Theme.TEXT_MUTED);
+        hint.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        card.getChildren().addAll(icon, title, subtitle,
-                new Separator(),
-                usernameGroup, passwordGroup, errorLabel,
-                loginButton, hint);
+        // Add components to card
+        card.add(icon);
+        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(title);
+        card.add(Box.createRigidArea(new Dimension(0, 5)));
+        card.add(subtitle);
+        card.add(Box.createRigidArea(new Dimension(0, 20)));
+        card.add(separator);
+        card.add(Box.createRigidArea(new Dimension(0, 20)));
+        card.add(usernameGroup);
+        card.add(Box.createRigidArea(new Dimension(0, 15)));
+        card.add(passwordGroup);
+        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(errorLabel);
+        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(loginButton);
+        card.add(Box.createRigidArea(new Dimension(0, 15)));
+        card.add(hint);
 
-        setAlignment(Pos.CENTER);
-        getChildren().add(card);
+        add(card);
     }
 
     private void handleLogin() {
         String username = usernameField.getText().trim();
-        String password = passwordField.getText();
+        String password = new String(passwordField.getPassword());
 
         if (username.isEmpty()) {
             showError("Username tidak boleh kosong");
@@ -136,8 +165,8 @@ public class LoginView extends StackPane {
     }
 
     public void clearFields() {
-        usernameField.clear();
-        passwordField.clear();
+        usernameField.setText("");
+        passwordField.setText("");
         errorLabel.setVisible(false);
     }
 }
