@@ -1,16 +1,31 @@
 package com.spk.presentation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import com.spk.domain.Criteria;
 import com.spk.presentation.components.CustomButton;
 import com.spk.presentation.components.Theme;
 import com.spk.usecase.CriteriaUseCase;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
 
 public class CriteriaView extends JPanel {
 
@@ -52,14 +67,14 @@ public class CriteriaView extends JPanel {
         toolbar.setOpaque(false);
         toolbar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
-        CustomButton addBtn = new CustomButton("＋ Tambah Kriteria");
+        CustomButton addBtn = new CustomButton("Tambah Kriteria");
         addBtn.setPrimary();
         addBtn.addActionListener(e -> showAddDialog());
 
-        CustomButton refreshBtn = new CustomButton("↻ Refresh");
+        CustomButton refreshBtn = new CustomButton("Refresh");
         refreshBtn.addActionListener(e -> loadData());
 
-        CustomButton editBtn = new CustomButton("✎ Edit Terpilih");
+        CustomButton editBtn = new CustomButton("Edit Terpilih");
         editBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row >= 0) {
@@ -76,7 +91,7 @@ public class CriteriaView extends JPanel {
             }
         });
 
-        CustomButton deleteBtn = new CustomButton("✕ Hapus Terpilih");
+        CustomButton deleteBtn = new CustomButton("Hapus Terpilih");
         deleteBtn.setDanger();
         deleteBtn.addActionListener(e -> {
             int row = table.getSelectedRow();

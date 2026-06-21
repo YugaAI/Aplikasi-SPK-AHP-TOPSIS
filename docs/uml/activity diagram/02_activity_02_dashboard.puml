@@ -1,0 +1,21 @@
+@startuml 02_activity_02_dashboard
+title Activity Diagram - Menu Dashboard
+
+|Admin|
+start
+:Pilih menu "Dashboard";
+
+|Sistem|
+:Ambil jumlah kriteria dari database;
+:Ambil jumlah vendor dari database;
+:Ambil status kelengkapan penilaian;
+:Ambil status bobot AHP\n(hasWeights);
+:Ambil status hasil TOPSIS\n(hasResults);
+:Hitung ringkasan statistik\n(jumlah benefit/cost, dll);
+:Tampilkan ringkasan analitik\npada halaman Dashboard;
+
+|Admin|
+:Melihat ringkasan data\ndan status sistem;
+
+stop
+@enduml

@@ -1,16 +1,31 @@
 package com.spk.presentation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import com.spk.domain.Vendor;
 import com.spk.presentation.components.CustomButton;
 import com.spk.presentation.components.Theme;
 import com.spk.usecase.VendorUseCase;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
 
 public class VendorView extends JPanel {
 
@@ -52,14 +67,14 @@ public class VendorView extends JPanel {
         toolbar.setOpaque(false);
         toolbar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
-        CustomButton addBtn = new CustomButton("＋ Tambah Vendor");
+        CustomButton addBtn = new CustomButton("Tambah Vendor");
         addBtn.setPrimary();
         addBtn.addActionListener(e -> showAddDialog());
 
-        CustomButton refreshBtn = new CustomButton("↻ Refresh");
+        CustomButton refreshBtn = new CustomButton("Refresh");
         refreshBtn.addActionListener(e -> loadData());
 
-        CustomButton editBtn = new CustomButton("✎ Edit Terpilih");
+        CustomButton editBtn = new CustomButton("Edit Terpilih");
         editBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row >= 0) {
@@ -69,14 +84,14 @@ public class VendorView extends JPanel {
                 Vendor v = new Vendor();
                 v.setId(id);
                 v.setNamaVendor(name);
-                v.setDeskripsi(desc);
+                v.setAlamat(desc);
                 showEditDialog(v);
             } else {
                 JOptionPane.showMessageDialog(this, "Pilih vendor yang akan diedit", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-        CustomButton deleteBtn = new CustomButton("✕ Hapus Terpilih");
+        CustomButton deleteBtn = new CustomButton("Hapus Terpilih");
         deleteBtn.setDanger();
         deleteBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
@@ -102,7 +117,7 @@ public class VendorView extends JPanel {
         add(topPanel, BorderLayout.NORTH);
 
         // Table
-        String[] columnNames = {"ID", "Nama Vendor", "Deskripsi"};
+        String[] columnNames = {"ID", "Nama Vendor", "Alamat"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -137,7 +152,7 @@ public class VendorView extends JPanel {
         try {
             List<Vendor> vendors = vendorUseCase.getAllVendors();
             for (Vendor v : vendors) {
-                tableModel.addRow(new Object[]{v.getId(), v.getNamaVendor(), v.getDeskripsi()});
+                tableModel.addRow(new Object[]{v.getId(), v.getNamaVendor(), v.getAlamat()});
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -154,7 +169,7 @@ public class VendorView extends JPanel {
 
         form.add(new JLabel("Nama Vendor:"));
         form.add(namaField);
-        form.add(new JLabel("Deskripsi:"));
+        form.add(new JLabel("Alamat:"));
         form.add(new JLabel("")); // Spacer
 
         panel.add(form, BorderLayout.NORTH);
@@ -178,12 +193,12 @@ public class VendorView extends JPanel {
         JPanel form = new JPanel(new GridLayout(2, 2, 10, 10));
         
         JTextField namaField = new JTextField(vendor.getNamaVendor());
-        JTextArea descField = new JTextArea(vendor.getDeskripsi(), 3, 20);
+        JTextArea descField = new JTextArea(vendor.getAlamat(), 3, 20);
         JScrollPane descScroll = new JScrollPane(descField);
 
         form.add(new JLabel("Nama Vendor:"));
         form.add(namaField);
-        form.add(new JLabel("Deskripsi:"));
+        form.add(new JLabel("Alamat:"));
         form.add(new JLabel(""));
 
         panel.add(form, BorderLayout.NORTH);

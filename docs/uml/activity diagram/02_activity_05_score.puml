@@ -1,0 +1,41 @@
+@startuml 02_activity_05_score
+title Activity Diagram - Menu Input Penilaian
+
+|Admin|
+start
+:Pilih menu "Penilaian";
+
+|Sistem|
+:Ambil daftar vendor dari database;
+:Ambil daftar kriteria dari database;
+:Tampilkan form pemilihan vendor;
+
+|Admin|
+:Pilih vendor yang akan dinilai;
+
+|Sistem|
+:Ambil nilai penilaian vendor\nyang sudah tersimpan;
+:Tampilkan form penilaian\nper kriteria;
+
+|Admin|
+:Isi nilai untuk setiap kriteria;
+:Klik "Simpan";
+
+|Sistem|
+if (Semua kriteria terisi\ndan nilai > 0?) then (Tidak)
+  :Tampilkan pesan error\n"Semua kriteria harus memiliki nilai"\natau "Nilai tidak boleh nol";
+  |Admin|
+  :Perbaiki nilai;
+  |Sistem|
+else (Ya)
+endif
+
+:Simpan/perbarui nilai penilaian\nke database (upsert);
+:Periksa kelengkapan penilaian\nseluruh vendor;
+:Tampilkan notifikasi\n"Penilaian berhasil disimpan"\nbeserta status kelengkapan;
+
+|Admin|
+:Melihat status penilaian;
+
+stop
+@enduml

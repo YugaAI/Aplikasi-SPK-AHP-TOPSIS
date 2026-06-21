@@ -1,5 +1,26 @@
 package com.spk.presentation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Arc2D;
+import java.sql.SQLException;
+import java.util.Map;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 import com.spk.presentation.components.CardPanel;
 import com.spk.presentation.components.Theme;
 import com.spk.repository.CriteriaRepository;
@@ -7,13 +28,6 @@ import com.spk.repository.ResultRepository;
 import com.spk.repository.ScoreRepository;
 import com.spk.repository.UserRepository;
 import com.spk.repository.VendorRepository;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.geom.Arc2D;
-import java.sql.SQLException;
-import java.util.Map;
 
 public class DashboardView extends JPanel {
 
@@ -84,10 +98,10 @@ public class DashboardView extends JPanel {
             kpiRow.setOpaque(false);
             kpiRow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            kpiRow.add(createMetricCard("Total Kriteria", String.valueOf(criteriaCount), "◈", Theme.ACCENT_PRIMARY));
-            kpiRow.add(createMetricCard("Total Vendor", String.valueOf(vendorCount), "◉", Theme.ACCENT_SECONDARY));
-            kpiRow.add(createMetricCard("Total Skor", String.valueOf(scoreCount), "▣", Theme.ACCENT_WARNING));
-            kpiRow.add(createMetricCard("Total User", String.valueOf(userCount), "☷", Theme.ACCENT_PRIMARY));
+            kpiRow.add(createMetricCard("Total Kriteria", String.valueOf(criteriaCount), "", Theme.ACCENT_PRIMARY));
+            kpiRow.add(createMetricCard("Total Vendor", String.valueOf(vendorCount), "", Theme.ACCENT_SECONDARY));
+            kpiRow.add(createMetricCard("Total Skor", String.valueOf(scoreCount), "", Theme.ACCENT_WARNING));
+            kpiRow.add(createMetricCard("Total User", String.valueOf(userCount), "", Theme.ACCENT_PRIMARY));
 
             contentContainer.add(kpiRow);
             contentContainer.add(Box.createRigidArea(new Dimension(0, 20)));

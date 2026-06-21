@@ -65,7 +65,7 @@ Field:
 
 * id
 * nama_vendor
-* deskripsi
+* alamat
 
 ---
 

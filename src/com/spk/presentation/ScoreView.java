@@ -1,5 +1,26 @@
 package com.spk.presentation;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
 import com.spk.domain.Criteria;
 import com.spk.domain.Score;
 import com.spk.domain.Vendor;
@@ -9,14 +30,6 @@ import com.spk.presentation.components.Theme;
 import com.spk.usecase.CriteriaUseCase;
 import com.spk.usecase.ScoreUseCase;
 import com.spk.usecase.VendorUseCase;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ScoreView extends JPanel {
 
@@ -202,7 +215,7 @@ public class ScoreView extends JPanel {
             // Save button
             JPanel btnBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
             btnBar.setOpaque(false);
-            CustomButton saveBtn = new CustomButton("💾 Simpan Penilaian");
+            CustomButton saveBtn = new CustomButton("Simpan Penilaian");
             saveBtn.setSuccess();
             saveBtn.addActionListener(e -> saveScores(selected.getId()));
             btnBar.add(saveBtn);
@@ -254,10 +267,10 @@ public class ScoreView extends JPanel {
         try {
             boolean complete = scoreUseCase.isScoreComplete();
             if (complete) {
-                statusLabel.setText("✓ Semua penilaian lengkap");
+                statusLabel.setText("Semua penilaian lengkap");
                 statusLabel.setForeground(Theme.ACCENT_SUCCESS);
             } else {
-                statusLabel.setText("⚠ Penilaian belum lengkap");
+                statusLabel.setText("Penilaian belum lengkap");
                 statusLabel.setForeground(Theme.ACCENT_WARNING);
             }
         } catch (Exception e) {

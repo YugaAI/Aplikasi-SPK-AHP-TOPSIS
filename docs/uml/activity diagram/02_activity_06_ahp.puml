@@ -1,0 +1,48 @@
+@startuml 02_activity_06_ahp
+title Activity Diagram - Menu Perhitungan AHP (Bobot Kriteria)
+
+|Admin|
+start
+:Pilih menu "AHP (Bobot)";
+
+|Sistem|
+if (Jumlah kriteria < 2?) then (Ya)
+  :Tampilkan pesan error\n"Minimal 2 kriteria\nuntuk perhitungan AHP";
+  |Admin|
+  stop
+else (Tidak)
+endif
+
+:Tampilkan matriks perbandingan\nberpasangan antar kriteria;
+
+|Admin|
+:Isi nilai perbandingan berpasangan\n(skala 1-9 Saaty);
+:Klik "Simpan Perbandingan";
+
+|Sistem|
+:Simpan data perbandingan\nberpasangan ke database\n(upsert);
+:Tampilkan konfirmasi\n"Data perbandingan tersimpan";
+
+|Admin|
+:Klik "Hitung Bobot AHP";
+
+|Sistem|
+:Bangun matriks perbandingan\nberpasangan\n(diagonal=1, resiprokal otomatis);
+:Normalisasi matriks\n(bagi elemen dengan jumlah kolom);
+:Hitung vektor prioritas\n(rata-rata baris matriks normal);
+:Hitung lambda max (λmax);
+:Hitung Consistency Index (CI)\ndan Consistency Ratio (CR);
+
+if (CR <= 0.1\n(Konsisten)?) then (Ya)
+  :Simpan bobot kriteria\nke database;
+  :Tampilkan bobot kriteria,\nmatriks, dan CR\n(status: Konsisten);
+else (Tidak)
+  :Tampilkan matriks dan CR\n(status: Tidak Konsisten);
+  :Tampilkan peringatan\n"Perbaiki nilai perbandingan";
+endif
+
+|Admin|
+:Melihat hasil bobot\ndan status konsistensi;
+
+stop
+@enduml

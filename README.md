@@ -12,7 +12,7 @@ Aplikasi dibangun menggunakan prinsip **Clean Architecture** (tanpa framework be
    * Menambah, mengedit, dan menghapus kriteria.
    * Menentukan tipe kriteria: *Benefit* (semakin besar semakin baik) atau *Cost* (semakin kecil semakin baik).
 2. **Data Alternatif (Vendor)**
-   * Menambah, mengedit, dan menghapus data vendor beserta deskripsinya.
+   * Menambah, mengedit, dan menghapus data vendor beserta alamatnya.
 3. **Data Penilaian**
    * Menginput nilai masing-masing vendor terhadap setiap kriteria.
    * Dilengkapi validasi ketat: tidak boleh ada nilai kosong dan semua vendor harus memiliki nilai untuk semua kriteria.

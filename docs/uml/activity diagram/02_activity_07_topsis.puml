@@ -1,0 +1,45 @@
+@startuml 02_activity_07_topsis
+title Activity Diagram - Menu Hasil TOPSIS & Rekomendasi
+
+|Pengguna|
+start
+:Pilih menu "Hasil TOPSIS";
+
+|Sistem|
+if (Bobot AHP\nsudah dihitung?) then (Tidak)
+  :Tampilkan pesan error\n"Bobot AHP belum dihitung,\nlakukan perhitungan AHP dulu";
+  |Pengguna|
+  stop
+else (Ya)
+endif
+
+if (Jumlah vendor < 2\natau kriteria < 2?) then (Ya)
+  :Tampilkan pesan error\n"Minimal 2 vendor dan 2 kriteria";
+  |Pengguna|
+  stop
+else (Tidak)
+endif
+
+:Bangun matriks keputusan\n(vendor x kriteria);
+
+if (Terdapat nilai kosong\natau = 0?) then (Ya)
+  :Tampilkan pesan error\n"Penilaian belum lengkap";
+  |Pengguna|
+  stop
+else (Tidak)
+endif
+
+:Normalisasi matriks keputusan\n(vector normalization);
+:Bangun matriks ternormalisasi\nterbobot (x bobot AHP);
+:Tentukan solusi ideal positif (A+)\ndan ideal negatif (A-)\nberdasarkan tipe kriteria;
+:Hitung jarak setiap vendor\nke A+ (D+) dan A- (D-);
+:Hitung skor preferensi\n(Vi = D- / (D+ + D-));
+:Urutkan vendor berdasarkan\nskor preferensi (descending);
+:Simpan hasil ranking\nke database;
+:Tampilkan tabel ranking\ndan rekomendasi vendor terbaik;
+
+|Pengguna|
+:Melihat hasil ranking\ndan rekomendasi;
+
+stop
+@enduml

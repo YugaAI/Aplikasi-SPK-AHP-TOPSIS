@@ -1,9 +1,13 @@
 package com.spk.repository;
 
-import com.spk.domain.Vendor;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.spk.domain.Vendor;
 
 /**
  * Repository for Vendor CRUD operations.
@@ -38,10 +42,10 @@ public class VendorRepository {
     }
 
     public void insert(Vendor vendor) throws SQLException {
-        String sql = "INSERT INTO vendors (nama_vendor, deskripsi) VALUES (?, ?)";
+        String sql = "INSERT INTO vendors (nama_vendor, alamat) VALUES (?, ?)";
         PreparedStatement ps = DatabaseHelper.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, vendor.getNamaVendor());
-        ps.setString(2, vendor.getDeskripsi());
+        ps.setString(2, vendor.getAlamat());
         ps.executeUpdate();
         ResultSet keys = ps.getGeneratedKeys();
         if (keys.next()) {
@@ -52,10 +56,10 @@ public class VendorRepository {
     }
 
     public void update(Vendor vendor) throws SQLException {
-        String sql = "UPDATE vendors SET nama_vendor = ?, deskripsi = ? WHERE id = ?";
+        String sql = "UPDATE vendors SET nama_vendor = ?, alamat = ? WHERE id = ?";
         PreparedStatement ps = DatabaseHelper.getConnection().prepareStatement(sql);
         ps.setString(1, vendor.getNamaVendor());
-        ps.setString(2, vendor.getDeskripsi());
+        ps.setString(2, vendor.getAlamat());
         ps.setInt(3, vendor.getId());
         ps.executeUpdate();
         ps.close();
@@ -83,7 +87,7 @@ public class VendorRepository {
         return new Vendor(
                 rs.getInt("id"),
                 rs.getString("nama_vendor"),
-                rs.getString("deskripsi")
+                rs.getString("alamat")
         );
     }
 }

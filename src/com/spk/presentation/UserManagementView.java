@@ -1,16 +1,32 @@
 package com.spk.presentation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import com.spk.domain.User;
 import com.spk.presentation.components.CustomButton;
 import com.spk.presentation.components.Theme;
 import com.spk.usecase.UserUseCase;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
 
 public class UserManagementView extends JPanel {
 
@@ -52,14 +68,14 @@ public class UserManagementView extends JPanel {
         toolbar.setOpaque(false);
         toolbar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
-        CustomButton addBtn = new CustomButton("＋ Tambah User");
+        CustomButton addBtn = new CustomButton("Tambah User");
         addBtn.setPrimary();
         addBtn.addActionListener(e -> showAddDialog());
 
-        CustomButton refreshBtn = new CustomButton("↻ Refresh");
+        CustomButton refreshBtn = new CustomButton("Refresh");
         refreshBtn.addActionListener(e -> loadData());
 
-        CustomButton editBtn = new CustomButton("✎ Edit");
+        CustomButton editBtn = new CustomButton("Edit");
         editBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row >= 0) {
@@ -70,7 +86,7 @@ public class UserManagementView extends JPanel {
             }
         });
 
-        CustomButton resetBtn = new CustomButton("🔑 Reset Pass");
+        CustomButton resetBtn = new CustomButton("Reset Pass");
         resetBtn.setWarning();
         resetBtn.addActionListener(e -> {
             int row = table.getSelectedRow();

@@ -1,10 +1,10 @@
 package com.spk.usecase;
 
-import com.spk.domain.Vendor;
-import com.spk.repository.VendorRepository;
-
 import java.sql.SQLException;
 import java.util.List;
+
+import com.spk.domain.Vendor;
+import com.spk.repository.VendorRepository;
 
 /**
  * Use case for vendor (alternative) management.
@@ -24,18 +24,18 @@ public class VendorUseCase {
         return vendorRepository.findById(id);
     }
 
-    public void createVendor(String nama, String deskripsi) throws SQLException {
+    public void createVendor(String nama, String alamat) throws SQLException {
         if (nama == null || nama.trim().isEmpty()) {
             throw new IllegalArgumentException("Nama vendor tidak boleh kosong");
         }
 
         Vendor vendor = new Vendor();
         vendor.setNamaVendor(nama.trim());
-        vendor.setDeskripsi(deskripsi != null ? deskripsi.trim() : "");
+        vendor.setAlamat(alamat != null ? alamat.trim() : "");
         vendorRepository.insert(vendor);
     }
 
-    public void updateVendor(int id, String nama, String deskripsi) throws SQLException {
+    public void updateVendor(int id, String nama, String alamat) throws SQLException {
         if (nama == null || nama.trim().isEmpty()) {
             throw new IllegalArgumentException("Nama vendor tidak boleh kosong");
         }
@@ -45,7 +45,7 @@ public class VendorUseCase {
             throw new IllegalArgumentException("Vendor tidak ditemukan");
         }
         vendor.setNamaVendor(nama.trim());
-        vendor.setDeskripsi(deskripsi != null ? deskripsi.trim() : "");
+        vendor.setAlamat(alamat != null ? alamat.trim() : "");
         vendorRepository.update(vendor);
     }
 

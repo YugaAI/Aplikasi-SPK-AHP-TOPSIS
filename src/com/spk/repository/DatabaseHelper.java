@@ -58,7 +58,7 @@ public class DatabaseHelper {
         stmt.execute("CREATE TABLE IF NOT EXISTS vendors (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nama_vendor TEXT NOT NULL, " +
-                "deskripsi TEXT" +
+                "alamat TEXT" +
                 ")");
 
         stmt.execute("CREATE TABLE IF NOT EXISTS scores (" +
@@ -97,16 +97,6 @@ public class DatabaseHelper {
                 "ranking INTEGER NOT NULL, " +
                 "calculated_at TEXT DEFAULT (datetime('now')), " +
                 "FOREIGN KEY (vendor_id) REFERENCES vendors(id) ON DELETE CASCADE" +
-                ")");
-
-        stmt.execute("CREATE TABLE IF NOT EXISTS user_sessions (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "user_id INTEGER NOT NULL, " +
-                "mac_address TEXT NOT NULL, " +
-                "device_type TEXT NOT NULL, " +
-                "last_login TEXT DEFAULT (datetime('now')), " +
-                "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, " +
-                "UNIQUE(user_id, mac_address)" +
                 ")");
 
         // Seed default admin user if no users exist

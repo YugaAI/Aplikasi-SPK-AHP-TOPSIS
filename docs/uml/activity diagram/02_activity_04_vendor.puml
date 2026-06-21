@@ -1,0 +1,50 @@
+@startuml 02_activity_04_vendor
+title Activity Diagram - Menu Manajemen Vendor (Alternatif)
+
+|Admin|
+start
+:Pilih menu "Alternatif (Vendor)";
+
+|Sistem|
+:Ambil daftar vendor dari database;
+:Tampilkan daftar vendor;
+
+|Admin|
+:Pilih aksi;
+
+fork
+  :Input data vendor;
+fork again
+  :Update data vendor;
+fork again
+  :Delete data vendor;
+end fork
+
+|Sistem|
+if (Validasi data?) then (Tidak)
+  :Tampilkan pesan error\n"Nama vendor tidak boleh kosong";
+  |Admin|
+  :Perbaiki data;
+  |Sistem|
+else (Ya)
+endif
+
+if (Aksi = Delete?) then (Ya)
+  :Ambil data vendor\ndari database;
+  if (Data ditemukan?) then (Ya)
+    :Hapus vendor dan penilaian\nterkait dari database\n(CASCADE);
+  else (Tidak)
+    :Tampilkan pesan error\n"Vendor tidak ditemukan";
+  endif
+else (Tidak)
+  :Proses insert/update\ndata vendor ke database;
+endif
+
+:Ambil ulang daftar vendor\ndari database;
+:Tampilkan daftar vendor terbaru;
+
+|Admin|
+:Melihat daftar vendor terbaru;
+
+stop
+@enduml

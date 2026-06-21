@@ -1,5 +1,25 @@
 package com.spk.presentation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import com.spk.domain.TOPSISResult;
 import com.spk.presentation.components.CardPanel;
 import com.spk.presentation.components.CustomButton;
@@ -9,13 +29,6 @@ import com.spk.usecase.AuthUseCase;
 import com.spk.usecase.CalculateAHPUseCase;
 import com.spk.usecase.CalculateTOPSISUseCase;
 import com.spk.usecase.ScoreUseCase;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
 
 public class ResultView extends JPanel {
 
@@ -60,11 +73,11 @@ public class ResultView extends JPanel {
         toolbar.setBorder(new EmptyBorder(0, 0, 15, 0));
 
         if (AuthUseCase.isAdmin()) {
-            CustomButton calcBtn = new CustomButton("⚡ Hitung TOPSIS");
+            CustomButton calcBtn = new CustomButton("Hitung TOPSIS");
             calcBtn.setSuccess();
             calcBtn.addActionListener(e -> calculateTOPSIS());
 
-            CustomButton refreshBtn = new CustomButton("↻ Refresh");
+            CustomButton refreshBtn = new CustomButton("Refresh");
             refreshBtn.addActionListener(e -> loadSavedResults());
 
             toolbar.add(calcBtn);
@@ -100,7 +113,7 @@ public class ResultView extends JPanel {
                 emptyCard.setLayout(new BoxLayout(emptyCard, BoxLayout.Y_AXIS));
                 emptyCard.setBorder(new EmptyBorder(40, 20, 40, 20));
 
-                JLabel emptyIcon = new JLabel("◎");
+                JLabel emptyIcon = new JLabel("");
                 emptyIcon.setFont(Theme.FONT_TITLE.deriveFont(48f));
                 emptyIcon.setForeground(Theme.TEXT_MUTED);
                 emptyIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -169,7 +182,7 @@ public class ResultView extends JPanel {
         winnerCard.setBorder(new EmptyBorder(24, 24, 24, 24));
         winnerCard.setBackground(new Color(102, 187, 106, 15));
 
-        JLabel trophy = new JLabel("🏆");
+        JLabel trophy = new JLabel("");
         trophy.setFont(Theme.FONT_TITLE.deriveFont(42f));
         trophy.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -201,7 +214,7 @@ public class ResultView extends JPanel {
         tableCard.setLayout(new BorderLayout(0, 10));
         tableCard.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JLabel tableTitle = new JLabel("📊 Tabel Ranking");
+        JLabel tableTitle = new JLabel("Tabel Ranking");
         tableTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
         tableTitle.setForeground(Theme.ACCENT_PRIMARY);
         tableCard.add(tableTitle, BorderLayout.NORTH);
@@ -253,7 +266,7 @@ public class ResultView extends JPanel {
 
         try {
             double cr = ahpUseCase.getSavedConsistencyRatio();
-            JLabel crTitleInfo = new JLabel("ℹ Informasi Bobot AHP");
+            JLabel crTitleInfo = new JLabel("Informasi Bobot AHP");
             crTitleInfo.setFont(Theme.FONT_BOLD.deriveFont(14f));
             crTitleInfo.setForeground(Theme.ACCENT_PRIMARY);
             

@@ -1,13 +1,26 @@
 package com.spk.presentation;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
 import com.spk.presentation.components.CardPanel;
 import com.spk.presentation.components.CustomButton;
 import com.spk.presentation.components.Theme;
 import com.spk.usecase.AuthUseCase;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
 
 public class ProfileView extends JPanel {
 
@@ -56,7 +69,7 @@ public class ProfileView extends JPanel {
         profileCard.setLayout(new BorderLayout(0, 15));
         profileCard.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JLabel profileTitle = new JLabel("☺ Informasi Profil");
+        JLabel profileTitle = new JLabel("Informasi Profil");
         profileTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
         profileTitle.setForeground(Theme.ACCENT_PRIMARY);
         profileCard.add(profileTitle, BorderLayout.NORTH);
@@ -103,7 +116,7 @@ public class ProfileView extends JPanel {
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnPanel.setOpaque(false);
-        CustomButton saveProfileBtn = new CustomButton("💾 Simpan Profil");
+        CustomButton saveProfileBtn = new CustomButton("Simpan Profil");
         saveProfileBtn.setPrimary();
         saveProfileBtn.addActionListener(e -> saveProfile());
         btnPanel.add(saveProfileBtn);
@@ -117,7 +130,7 @@ public class ProfileView extends JPanel {
         passwordCard.setLayout(new BorderLayout(0, 15));
         passwordCard.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JLabel passwordTitle = new JLabel("🔑 Ganti Password");
+        JLabel passwordTitle = new JLabel("Ganti Password");
         passwordTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
         passwordTitle.setForeground(Theme.ACCENT_WARNING);
         passwordCard.add(passwordTitle, BorderLayout.NORTH);
@@ -159,7 +172,7 @@ public class ProfileView extends JPanel {
 
         JPanel passBtnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         passBtnPanel.setOpaque(false);
-        CustomButton changePassBtn = new CustomButton("🔑 Ubah Password");
+        CustomButton changePassBtn = new CustomButton("Ubah Password");
         changePassBtn.setWarning();
         changePassBtn.addActionListener(e -> {
             String oldPass = new String(oldPassField.getPassword());

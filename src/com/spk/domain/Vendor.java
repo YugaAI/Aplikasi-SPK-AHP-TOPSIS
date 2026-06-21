@@ -6,14 +6,14 @@ package com.spk.domain;
 public class Vendor {
     private int id;
     private String namaVendor;
-    private String deskripsi;
+    private String alamat;
 
     public Vendor() {}
 
-    public Vendor(int id, String namaVendor, String deskripsi) {
+    public Vendor(int id, String namaVendor, String alamat) {
         this.id = id;
         this.namaVendor = namaVendor;
-        this.deskripsi = deskripsi;
+        this.alamat = alamat;
     }
 
     public int getId() { return id; }
@@ -22,8 +22,8 @@ public class Vendor {
     public String getNamaVendor() { return namaVendor; }
     public void setNamaVendor(String namaVendor) { this.namaVendor = namaVendor; }
 
-    public String getDeskripsi() { return deskripsi; }
-    public void setDeskripsi(String deskripsi) { this.deskripsi = deskripsi; }
+    public String getAlamat() { return alamat; }
+    public void setAlamat(String alamat) { this.alamat = alamat; }
 
     @Override
     public String toString() {

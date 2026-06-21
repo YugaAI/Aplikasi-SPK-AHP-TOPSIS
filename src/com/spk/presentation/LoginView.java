@@ -1,13 +1,25 @@
 package com.spk.presentation;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 import com.spk.presentation.components.CardPanel;
 import com.spk.presentation.components.CustomButton;
 import com.spk.presentation.components.Theme;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class LoginView extends JPanel {
 
@@ -38,10 +50,10 @@ public class LoginView extends JPanel {
         card.setPreferredSize(new Dimension(420, 500));
 
         // Logo / Icon
-        JLabel icon = new JLabel("⬡", SwingConstants.CENTER);
-        icon.setFont(Theme.FONT_TITLE.deriveFont(48f));
-        icon.setForeground(Theme.ACCENT_PRIMARY);
-        icon.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // JLabel icon = new JLabel("", SwingConstants.CENTER);
+        // icon.setFont(Theme.FONT_TITLE.deriveFont(48f));
+        // icon.setForeground(Theme.ACCENT_PRIMARY);
+        // icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Title
         JLabel title = new JLabel("SPK Vendor IT", SwingConstants.CENTER);
@@ -119,7 +131,7 @@ public class LoginView extends JPanel {
         hint.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Add components to card
-        card.add(icon);
+        // card.add(icon);
         card.add(Box.createRigidArea(new Dimension(0, 10)));
         card.add(title);
         card.add(Box.createRigidArea(new Dimension(0, 5)));

@@ -1,5 +1,28 @@
 package com.spk.presentation;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 import com.spk.domain.AHPResult;
 import com.spk.domain.Criteria;
 import com.spk.domain.PairwiseComparison;
@@ -8,14 +31,6 @@ import com.spk.presentation.components.CustomButton;
 import com.spk.presentation.components.Theme;
 import com.spk.usecase.CalculateAHPUseCase;
 import com.spk.usecase.CriteriaUseCase;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AHPView extends JPanel {
 
@@ -117,7 +132,7 @@ public class AHPView extends JPanel {
             criteriaList = criteriaUseCase.getAllCriteria();
 
             if (criteriaList.size() < 2) {
-                JLabel warn = new JLabel("⚠ Minimal 2 kriteria diperlukan untuk perbandingan AHP");
+                JLabel warn = new JLabel("Minimal 2 kriteria diperlukan untuk perbandingan AHP");
                 warn.setForeground(Theme.ACCENT_WARNING);
                 warn.setFont(Theme.FONT_BOLD);
                 comparisonContainer.add(warn);
@@ -216,11 +231,11 @@ public class AHPView extends JPanel {
             btnBar.setOpaque(false);
             btnBar.setBorder(new EmptyBorder(10, 0, 0, 0));
 
-            CustomButton saveBtn = new CustomButton("💾 Simpan Perbandingan");
+            CustomButton saveBtn = new CustomButton("Simpan Perbandingan");
             saveBtn.setPrimary();
             saveBtn.addActionListener(e -> saveComparisons());
 
-            CustomButton calcBtn = new CustomButton("⚡ Hitung AHP");
+            CustomButton calcBtn = new CustomButton("Hitung AHP");
             calcBtn.addActionListener(e -> calculateAHP());
 
             btnBar.add(saveBtn);
@@ -331,7 +346,7 @@ public class AHPView extends JPanel {
         CardPanel matrixCard = new CardPanel();
         matrixCard.setLayout(new BorderLayout(0, 10));
         matrixCard.setBorder(new EmptyBorder(20, 20, 20, 20));
-        JLabel matrixTitle = new JLabel("📊 Matriks Perbandingan Berpasangan");
+        JLabel matrixTitle = new JLabel("Matriks Perbandingan Berpasangan");
         matrixTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
         matrixTitle.setForeground(Theme.ACCENT_PRIMARY);
         matrixCard.add(matrixTitle, BorderLayout.NORTH);
@@ -341,7 +356,7 @@ public class AHPView extends JPanel {
         CardPanel normCard = new CardPanel();
         normCard.setLayout(new BorderLayout(0, 10));
         normCard.setBorder(new EmptyBorder(20, 20, 20, 20));
-        JLabel normTitle = new JLabel("📊 Matriks Normalisasi");
+        JLabel normTitle = new JLabel("Matriks Normalisasi");
         normTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
         normTitle.setForeground(Theme.ACCENT_PRIMARY);
         normCard.add(normTitle, BorderLayout.NORTH);
@@ -351,7 +366,7 @@ public class AHPView extends JPanel {
         CardPanel weightsCard = new CardPanel();
         weightsCard.setLayout(new BorderLayout(0, 10));
         weightsCard.setBorder(new EmptyBorder(20, 20, 20, 20));
-        JLabel weightsTitle = new JLabel("⚖ Bobot Kriteria (Priority Vector)");
+        JLabel weightsTitle = new JLabel("Bobot Kriteria (Priority Vector)");
         weightsTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
         weightsTitle.setForeground(Theme.ACCENT_PRIMARY);
         weightsCard.add(weightsTitle, BorderLayout.NORTH);
@@ -378,7 +393,7 @@ public class AHPView extends JPanel {
         crCard.setBorder(new EmptyBorder(20, 20, 20, 20));
         boolean consistent = result.isConsistent();
 
-        JLabel crTitle = new JLabel(consistent ? "✓ Konsistensi: VALID" : "✗ Konsistensi: TIDAK VALID");
+        JLabel crTitle = new JLabel(consistent ? "Konsistensi: VALID" : "Konsistensi: TIDAK VALID");
         crTitle.setFont(Theme.FONT_BOLD.deriveFont(16f));
         crTitle.setForeground(consistent ? Theme.ACCENT_SUCCESS : Theme.ACCENT_DANGER);
         crCard.add(crTitle);
@@ -402,7 +417,7 @@ public class AHPView extends JPanel {
 
         if (!consistent) {
             crCard.add(Box.createRigidArea(new Dimension(0, 10)));
-            JLabel warn = new JLabel("<html>⚠ Perbandingan tidak konsisten! Ubah nilai perbandingan agar CR ≤ 0.1</html>");
+            JLabel warn = new JLabel("<html>Perbandingan tidak konsisten! Ubah nilai perbandingan agar CR ≤ 0.1</html>");
             warn.setForeground(Theme.ACCENT_DANGER);
             crCard.add(warn);
         }
