@@ -98,7 +98,7 @@ public class UserManagementView extends JPanel {
             }
         });
 
-        CustomButton deleteBtn = new CustomButton("✕ Hapus");
+        CustomButton deleteBtn = new CustomButton("Hapus");
         deleteBtn.setDanger();
         deleteBtn.addActionListener(e -> {
             int row = table.getSelectedRow();

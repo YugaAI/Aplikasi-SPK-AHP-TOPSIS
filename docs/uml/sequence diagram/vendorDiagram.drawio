@@ -1,0 +1,337 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="n4lGYIZ3GfN1MbkypmAO">
+    <mxGraphModel dx="1382" dy="996" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="2100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PYLOM-AXn0S-zRajv-uN-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="1880" width="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="div1" parent="1" style="shape=notification;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=center;fontStyle=1;strokeWidth=2;fontSize=14;" value="== Menampilkan Daftar Vendor ==" vertex="1">
+          <mxGeometry height="30" width="950" x="20" y="116" as="geometry" />
+        </mxCell>
+        <mxCell id="msg1" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Pilih menu &quot;Alternatif&quot;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="170" as="sourcePoint" />
+            <mxPoint x="270" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg2" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="getAllVendors()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="200" as="sourcePoint" />
+            <mxPoint x="475" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg3" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="findAll()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="230" as="sourcePoint" />
+            <mxPoint x="700" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg4" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="SELECT * FROM vendors ORDER BY id">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="259" as="sourcePoint" />
+            <mxPoint x="895" y="259" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg5" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="daftar vendor">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="895" y="287" as="sourcePoint" />
+            <mxPoint x="700" y="287" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg6" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="List&lt;Vendor&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="305" as="sourcePoint" />
+            <mxPoint x="475" y="305" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg7" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="List&lt;Vendor&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="323" as="sourcePoint" />
+            <mxPoint x="270" y="323" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg8" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Tampilkan tabel vendor">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="343" as="sourcePoint" />
+            <mxPoint x="80" y="343" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="div2" parent="1" style="shape=notification;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=center;fontStyle=1;strokeWidth=2;fontSize=14;" value="== Tambah Vendor ==" vertex="1">
+          <mxGeometry height="30" width="950" x="20" y="371" as="geometry" />
+        </mxCell>
+        <mxCell id="msg9" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Isi nama &amp; alamat vendor,&#xa;klik &quot;Simpan&quot;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="449" as="sourcePoint" />
+            <mxPoint x="270" y="449" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg10" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="createVendor(nama, alamat)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="475" as="sourcePoint" />
+            <mxPoint x="475" y="475" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg11" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;curved=0;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;fontSize=14;fontStyle=1" value="validasi nama vendor">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="497" as="sourcePoint" />
+            <mxPoint x="475" y="527" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg12" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="throw IllegalArgumentException">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="585" as="sourcePoint" />
+            <mxPoint x="270" y="585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg13" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Tampilkan pesan error">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="614" as="sourcePoint" />
+            <mxPoint x="80" y="614" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg14" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="insert(vendor)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="669" as="sourcePoint" />
+            <mxPoint x="700" y="669" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg15" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="INSERT INTO vendors (...) VALUES (...)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="699" as="sourcePoint" />
+            <mxPoint x="895" y="699" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg16" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="generated id">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="895" y="729" as="sourcePoint" />
+            <mxPoint x="700" y="729" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg17" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="void">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="750" as="sourcePoint" />
+            <mxPoint x="475" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg18" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="sukses">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="771" as="sourcePoint" />
+            <mxPoint x="270" y="771" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg19" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="getAllVendors()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="805" as="sourcePoint" />
+            <mxPoint x="475" y="805" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg20" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="findAll()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="829" as="sourcePoint" />
+            <mxPoint x="700" y="829" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg21" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="SELECT * FROM vendors">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="855" as="sourcePoint" />
+            <mxPoint x="895" y="855" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg22" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="daftar vendor terbaru">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="895" y="891" as="sourcePoint" />
+            <mxPoint x="700" y="891" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg23" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="List&lt;Vendor&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="919" as="sourcePoint" />
+            <mxPoint x="475" y="919" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg24" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="List&lt;Vendor&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="941" as="sourcePoint" />
+            <mxPoint x="270" y="941" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg25" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Tampilkan daftar vendor terbaru">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="976" as="sourcePoint" />
+            <mxPoint x="80" y="976" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="div3" parent="1" style="shape=notification;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=center;fontStyle=1;strokeWidth=2;fontSize=14;" value="== Ubah Vendor ==" vertex="1">
+          <mxGeometry height="30" width="950" x="15" y="1020" as="geometry" />
+        </mxCell>
+        <mxCell id="msg26" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Pilih vendor, ubah data,&#xa;klik &quot;Simpan&quot;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="1102" as="sourcePoint" />
+            <mxPoint x="270" y="1102" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg27" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="updateVendor(id, nama, alamat)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="1132" as="sourcePoint" />
+            <mxPoint x="475" y="1132" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg28" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="findById(id)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="1162" as="sourcePoint" />
+            <mxPoint x="700" y="1162" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg29" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="SELECT * FROM vendors WHERE id = ?">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="1192" as="sourcePoint" />
+            <mxPoint x="895" y="1192" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg30" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="data vendor">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="895" y="1222" as="sourcePoint" />
+            <mxPoint x="700" y="1222" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg31" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Vendor">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="1252" as="sourcePoint" />
+            <mxPoint x="475" y="1252" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg32" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="update(vendor)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="1282" as="sourcePoint" />
+            <mxPoint x="700" y="1282" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg33" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="UPDATE vendors SET ... WHERE id = ?">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="1312" as="sourcePoint" />
+            <mxPoint x="895" y="1312" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg34" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="sukses">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="895" y="1342" as="sourcePoint" />
+            <mxPoint x="700" y="1342" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg35" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="void">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="1372" as="sourcePoint" />
+            <mxPoint x="475" y="1372" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg36" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="sukses">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="1402" as="sourcePoint" />
+            <mxPoint x="270" y="1402" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg37" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Tampilkan daftar vendor terbaru">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="1432" as="sourcePoint" />
+            <mxPoint x="80" y="1432" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="div4" parent="1" style="shape=notification;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=center;fontStyle=1;strokeWidth=2;fontSize=14;" value="== Hapus Vendor ==" vertex="1">
+          <mxGeometry height="30" width="950" x="15" y="1460" as="geometry" />
+        </mxCell>
+        <mxCell id="msg38" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Pilih vendor, klik &quot;Hapus&quot;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="1528" as="sourcePoint" />
+            <mxPoint x="270" y="1528" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg39" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Tampilkan dialog konfirmasi">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="1558" as="sourcePoint" />
+            <mxPoint x="80" y="1558" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg40" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Konfirmasi hapus">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="1588" as="sourcePoint" />
+            <mxPoint x="270" y="1588" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg41" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="deleteVendor(id)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="1618" as="sourcePoint" />
+            <mxPoint x="475" y="1618" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg42" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="delete(id)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="1648" as="sourcePoint" />
+            <mxPoint x="700" y="1648" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg43" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="DELETE FROM vendors WHERE id = ?">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="1678" as="sourcePoint" />
+            <mxPoint x="895" y="1678" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg44" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="sukses">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="895" y="1708" as="sourcePoint" />
+            <mxPoint x="700" y="1708" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg45" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="void">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="700" y="1738" as="sourcePoint" />
+            <mxPoint x="475" y="1738" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg46" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="sukses">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="1768" as="sourcePoint" />
+            <mxPoint x="270" y="1768" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg47" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=14;fontStyle=1" value="Tampilkan daftar vendor terbaru">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="1798" as="sourcePoint" />
+            <mxPoint x="80" y="1798" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PYLOM-AXn0S-zRajv-uN-1" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="450" width="955" x="15" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="alt_data" parent="PYLOM-AXn0S-zRajv-uN-1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=0;collapsible=0;width=120;height=30;strokeWidth=2;fontSize=14;fontStyle=1" value="alt [nama kosong]" vertex="1">
+          <mxGeometry height="450" width="955" as="geometry" />
+        </mxCell>
+        <mxCell id="alt_data_sep" parent="PYLOM-AXn0S-zRajv-uN-1" style="line;strokeWidth=2;dashed=1;labelBackgroundColor=none;noLabel=0;align=left;spacingLeft=5;html=1;fontSize=14;fontStyle=1" value="[nama valid]" vertex="1">
+          <mxGeometry height="8.653846153846153" width="955" y="70.09615384615385" as="geometry" />
+        </mxCell>
+        <mxCell id="PYLOM-AXn0S-zRajv-uN-2" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="" vertex="1">
+          <mxGeometry height="60" width="40" x="875" y="7" as="geometry" />
+        </mxCell>
+        <mxCell id="PYLOM-AXn0S-zRajv-uN-3" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="1800" width="900" x="50" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_admin" parent="PYLOM-AXn0S-zRajv-uN-3" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=14;fontStyle=1" value="Admin" vertex="1">
+          <mxGeometry height="1800" width="60" as="geometry" />
+        </mxCell>
+        <mxCell id="view_vendor" parent="PYLOM-AXn0S-zRajv-uN-3" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fontSize=14;fontStyle=1" value="VendorView" vertex="1">
+          <mxGeometry height="1800" width="100" x="170" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_vendor" parent="PYLOM-AXn0S-zRajv-uN-3" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#ece9fc;strokeColor=#8c82c2;strokeWidth=2;fontSize=14;fontStyle=1" value="VendorUseCase" vertex="1">
+          <mxGeometry height="1800" width="110" x="370" as="geometry" />
+        </mxCell>
+        <mxCell id="repo_vendor" parent="PYLOM-AXn0S-zRajv-uN-3" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontSize=14;fontStyle=1" value="VendorRepository" vertex="1">
+          <mxGeometry height="1800" width="120" x="590" as="geometry" />
+        </mxCell>
+        <mxCell id="db_sqlite" parent="PYLOM-AXn0S-zRajv-uN-3" style="shape=umlLifeline;participant=umlDatabase;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;strokeWidth=2;fontSize=14;fontStyle=1;size=90;" value="SQLite&#xa;(spk_ahp_topsis.db)" vertex="1">
+          <mxGeometry height="1800" width="110" x="790" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

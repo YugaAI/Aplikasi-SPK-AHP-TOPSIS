@@ -60,16 +60,10 @@ public class DashboardView extends JPanel {
         titleRow.add(title);
         titleRow.add(breadcrumb);
 
-        JLabel subtitle = new JLabel("Ringkasan sistem pilihan vendor IT dalam tampilan analytics modern");
-        subtitle.setFont(Theme.FONT_SUBTITLE);
-        subtitle.setForeground(Theme.TEXT_SECONDARY);
-        subtitle.setBorder(new EmptyBorder(5, 12, 10, 0));
-
         JSeparator separator = new JSeparator();
         separator.setForeground(Theme.BORDER_COLOR);
 
         header.add(titleRow);
-        header.add(subtitle);
         header.add(separator);
 
         add(header, BorderLayout.NORTH);

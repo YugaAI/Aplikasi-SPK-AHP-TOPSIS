@@ -271,7 +271,7 @@ public class ResultView extends JPanel {
             crTitleInfo.setForeground(Theme.ACCENT_PRIMARY);
             
             JLabel crValue = new JLabel("Consistency Ratio (CR): " + String.format("%.4f", cr) +
-                    (cr <= 0.1 ? " ✓ Konsisten" : " ✗ Tidak Konsisten"));
+                    (cr <= 0.1 ? " Konsisten" : " Tidak Konsisten"));
             crValue.setFont(Theme.FONT_REGULAR.deriveFont(12f));
             crValue.setForeground(cr <= 0.1 ? Theme.ACCENT_SUCCESS : Theme.ACCENT_DANGER);
             

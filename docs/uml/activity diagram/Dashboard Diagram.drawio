@@ -1,0 +1,81 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="9yKSShqRElKcFgdihZxT">
+    <mxGraphModel dx="1266" dy="703" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-1" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Activitiy Diagram - Menu Dashboard" vertex="1">
+          <mxGeometry height="810" width="410" x="290" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-2" parent="z2KN6yOTZWaCewP7CnSw-1" style="swimlane;whiteSpace=wrap;html=1;startSize=23;" value="Admin/Pengguna" vertex="1">
+          <mxGeometry height="787" width="200" y="23" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-3" edge="1" parent="z2KN6yOTZWaCewP7CnSw-2" source="z2KN6yOTZWaCewP7CnSw-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="z2KN6yOTZWaCewP7CnSw-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-4" parent="z2KN6yOTZWaCewP7CnSw-2" style="ellipse;fillColor=strokeColor;html=1;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="85" y="47" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-6" parent="z2KN6yOTZWaCewP7CnSw-2" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="pilih menu &quot;Dashboard&quot;" vertex="1">
+          <mxGeometry height="23" width="140" x="30" y="97" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-12" edge="1" parent="z2KN6yOTZWaCewP7CnSw-2" source="z2KN6yOTZWaCewP7CnSw-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="z2KN6yOTZWaCewP7CnSw-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-13" parent="z2KN6yOTZWaCewP7CnSw-2" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Melihat Halaman Utama" vertex="1">
+          <mxGeometry height="23" width="140" x="30" y="657" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-14" parent="z2KN6yOTZWaCewP7CnSw-2" style="ellipse;html=1;shape=endState;fillColor=strokeColor;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="85" y="707" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-16" parent="z2KN6yOTZWaCewP7CnSw-1" style="swimlane;whiteSpace=wrap;html=1;startSize=23;" value="Sistem" vertex="1">
+          <mxGeometry height="787" width="210" x="200" y="23" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-47" edge="1" parent="z2KN6yOTZWaCewP7CnSw-16" source="z2KN6yOTZWaCewP7CnSw-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="z2KN6yOTZWaCewP7CnSw-41">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-40" parent="z2KN6yOTZWaCewP7CnSw-16" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Ambil Total Kriteria" vertex="1">
+          <mxGeometry height="23" width="140" x="35" y="157" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-48" edge="1" parent="z2KN6yOTZWaCewP7CnSw-16" source="z2KN6yOTZWaCewP7CnSw-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="z2KN6yOTZWaCewP7CnSw-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-41" parent="z2KN6yOTZWaCewP7CnSw-16" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Ambil Total Vendor" vertex="1">
+          <mxGeometry height="23" width="140" x="35" y="247" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-49" edge="1" parent="z2KN6yOTZWaCewP7CnSw-16" source="z2KN6yOTZWaCewP7CnSw-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="z2KN6yOTZWaCewP7CnSw-43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-42" parent="z2KN6yOTZWaCewP7CnSw-16" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Ambil Total Skor" vertex="1">
+          <mxGeometry height="23" width="140" x="35" y="337" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-50" edge="1" parent="z2KN6yOTZWaCewP7CnSw-16" source="z2KN6yOTZWaCewP7CnSw-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="z2KN6yOTZWaCewP7CnSw-44">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-43" parent="z2KN6yOTZWaCewP7CnSw-16" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Ambil Total User" vertex="1">
+          <mxGeometry height="23" width="140" x="35" y="417" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-51" edge="1" parent="z2KN6yOTZWaCewP7CnSw-16" source="z2KN6yOTZWaCewP7CnSw-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="z2KN6yOTZWaCewP7CnSw-45">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-44" parent="z2KN6yOTZWaCewP7CnSw-16" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Ambil Jumlah Tipe Kriteria" vertex="1">
+          <mxGeometry height="40" width="140" x="35" y="497" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-45" parent="z2KN6yOTZWaCewP7CnSw-16" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Ambil Bobot Kriteria (distribusi bobot kriteria AHP)" vertex="1">
+          <mxGeometry height="53" width="140" x="35" y="567" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-46" edge="1" parent="z2KN6yOTZWaCewP7CnSw-1" source="z2KN6yOTZWaCewP7CnSw-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="z2KN6yOTZWaCewP7CnSw-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z2KN6yOTZWaCewP7CnSw-52" edge="1" parent="z2KN6yOTZWaCewP7CnSw-1" source="z2KN6yOTZWaCewP7CnSw-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="z2KN6yOTZWaCewP7CnSw-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="305" y="660" />
+              <mxPoint x="100" y="660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

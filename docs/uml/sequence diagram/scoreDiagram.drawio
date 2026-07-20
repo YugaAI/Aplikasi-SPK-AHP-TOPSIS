@@ -1,0 +1,280 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="6NZfnruuX4Cw3x21JdEL">
+    <mxGraphModel dx="2171" dy="1566" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zfQVfa9b-QhFl8cWbvNJ-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="1560" width="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="div1" parent="1" style="shape=notification;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=center;fontStyle=1;strokeWidth=2;fontSize=16;" value="== Menampilkan Form Penilaian ==" vertex="1">
+          <mxGeometry height="30" width="1210" x="20" y="133" as="geometry" />
+        </mxCell>
+        <mxCell id="msg1" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="Pilih menu &quot;Penilaian&quot;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="205" as="sourcePoint" />
+            <mxPoint x="250" y="205" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg2" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="getAllVendors()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="221" as="sourcePoint" />
+            <mxPoint x="435" y="221" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg3" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="findAll()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="435" y="234" as="sourcePoint" />
+            <mxPoint x="965" y="234" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg4" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="SELECT * FROM vendors">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="264" as="sourcePoint" />
+            <mxPoint x="1155" y="264" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg5" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="daftar vendor">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1155" y="294" as="sourcePoint" />
+            <mxPoint x="965" y="294" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg6" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="List&lt;Vendor&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="311" as="sourcePoint" />
+            <mxPoint x="435" y="311" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg7" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="List&lt;Vendor&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="435" y="329" as="sourcePoint" />
+            <mxPoint x="250" y="329" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg8" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="getAllCriteria()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="362" as="sourcePoint" />
+            <mxPoint x="605" y="362" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg9" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="findAll()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="605" y="385" as="sourcePoint" />
+            <mxPoint x="965" y="385" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg10" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="SELECT * FROM criteria">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="412" as="sourcePoint" />
+            <mxPoint x="1155" y="412" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg11" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="daftar kriteria">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1155" y="442" as="sourcePoint" />
+            <mxPoint x="965" y="442" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg12" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="List&lt;Criteria&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="472" as="sourcePoint" />
+            <mxPoint x="605" y="472" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg13" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="List&lt;Criteria&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="605" y="502" as="sourcePoint" />
+            <mxPoint x="250" y="502" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg14" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="Pilih vendor yang dinilai">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="542" as="sourcePoint" />
+            <mxPoint x="250" y="542" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg15" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="getScoresByVendor(vendorId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="572" as="sourcePoint" />
+            <mxPoint x="775" y="572" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg16" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="findByVendor(vendorId)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="775" y="602" as="sourcePoint" />
+            <mxPoint x="965" y="602" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg17" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="SELECT * FROM scores WHERE vendor_id = ?">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="632" as="sourcePoint" />
+            <mxPoint x="1155" y="632" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg18" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="daftar nilai">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1155" y="662" as="sourcePoint" />
+            <mxPoint x="965" y="662" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg19" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="List&lt;Score&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="692" as="sourcePoint" />
+            <mxPoint x="775" y="692" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg20" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="List&lt;Score&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="775" y="722" as="sourcePoint" />
+            <mxPoint x="250" y="722" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg21" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="Tampilkan form penilaian&#xa;per kriteria">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="752" as="sourcePoint" />
+            <mxPoint x="80" y="752" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="div2" parent="1" style="shape=notification;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=center;fontStyle=1;strokeWidth=2;fontSize=16;" value="== Menyimpan Penilaian ==" vertex="1">
+          <mxGeometry height="30" width="1210" x="20" y="777" as="geometry" />
+        </mxCell>
+        <mxCell id="msg22" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="Isi nilai setiap kriteria,&#xa;klik &quot;Simpan&quot;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="868" as="sourcePoint" />
+            <mxPoint x="250" y="868" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg23" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="saveScores(vendorId, scores)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="889" as="sourcePoint" />
+            <mxPoint x="775" y="889" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg24" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="getAllCriteria()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="775" y="919" as="sourcePoint" />
+            <mxPoint x="605" y="919" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg25" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="findAll()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="605" y="949" as="sourcePoint" />
+            <mxPoint x="965" y="949" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg26" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="SELECT * FROM criteria">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="979" as="sourcePoint" />
+            <mxPoint x="1155" y="979" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg27" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="daftar kriteria">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1155" y="1009" as="sourcePoint" />
+            <mxPoint x="965" y="1009" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg28" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="List&lt;Criteria&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="1039" as="sourcePoint" />
+            <mxPoint x="605" y="1039" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg29" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="List&lt;Criteria&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="605" y="1069" as="sourcePoint" />
+            <mxPoint x="775" y="1069" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg30" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;curved=0;rounded=0;edgeStyle=orthogonalEdgeStyle;strokeWidth=2;fontSize=16;fontStyle=1" value="validasi jumlah skor&#xa;= jumlah kriteria,&#xa;setiap nilai &gt; 0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="775" y="1099" as="sourcePoint" />
+            <mxPoint x="775" y="1139" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="alt_data" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=0;collapsible=0;width=130;height=30;strokeWidth=2;fontSize=16;fontStyle=1" value="alt [data tidak valid]" vertex="1">
+          <mxGeometry height="309" width="1205" x="15" y="1161" as="geometry" />
+        </mxCell>
+        <mxCell id="msg31" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="throw IllegalArgumentException">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="775" y="1201" as="sourcePoint" />
+            <mxPoint x="250" y="1201" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg32" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="Tampilkan pesan error">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="1231" as="sourcePoint" />
+            <mxPoint x="80" y="1231" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="alt_data_sep" parent="1" style="line;strokeWidth=2;dashed=1;labelBackgroundColor=none;noLabel=0;align=left;spacingLeft=5;html=1;fontSize=16;fontStyle=1" value="[data valid]" vertex="1">
+          <mxGeometry height="10" width="1170" x="15" y="1243" as="geometry" />
+        </mxCell>
+        <mxCell id="msg33" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="upsertAll(scores)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="775" y="1291" as="sourcePoint" />
+            <mxPoint x="965" y="1291" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg34" edge="1" parent="1" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="INSERT OR REPLACE INTO scores (...)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="1321" as="sourcePoint" />
+            <mxPoint x="1155" y="1321" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg35" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="sukses">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1155" y="1351" as="sourcePoint" />
+            <mxPoint x="965" y="1351" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg36" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="void">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="1381" as="sourcePoint" />
+            <mxPoint x="775" y="1381" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg37" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="sukses">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="775" y="1411" as="sourcePoint" />
+            <mxPoint x="250" y="1411" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg38" edge="1" parent="1" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=16;fontStyle=1" value="Tampilkan notifikasi&#xa;&quot;Penilaian berhasil disimpan&quot;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="1441" as="sourcePoint" />
+            <mxPoint x="80" y="1441" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zfQVfa9b-QhFl8cWbvNJ-2" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="" vertex="1">
+          <mxGeometry height="60" width="40" x="1135" y="18" as="geometry" />
+        </mxCell>
+        <mxCell id="zfQVfa9b-QhFl8cWbvNJ-3" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="1480" width="1160" x="50" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_admin" parent="zfQVfa9b-QhFl8cWbvNJ-3" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=16;fontStyle=1" value="Admin" vertex="1">
+          <mxGeometry height="1480" width="60" as="geometry" />
+        </mxCell>
+        <mxCell id="view_score" parent="zfQVfa9b-QhFl8cWbvNJ-3" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fontSize=16;fontStyle=1" value="ScoreView" vertex="1">
+          <mxGeometry height="1480" width="100" x="150" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_vendor" parent="zfQVfa9b-QhFl8cWbvNJ-3" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#ece9fc;strokeColor=#8c82c2;strokeWidth=2;fontSize=16;fontStyle=1" value="VendorUseCase" vertex="1">
+          <mxGeometry height="1480" width="130" x="320" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_crit" parent="zfQVfa9b-QhFl8cWbvNJ-3" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#ece9fc;strokeColor=#8c82c2;strokeWidth=2;fontSize=16;fontStyle=1" value="CriteriaUseCase" vertex="1">
+          <mxGeometry height="1480" width="130" x="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_score" parent="zfQVfa9b-QhFl8cWbvNJ-3" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#ece9fc;strokeColor=#8c82c2;strokeWidth=2;fontSize=16;fontStyle=1" value="ScoreUseCase" vertex="1">
+          <mxGeometry height="1480" width="110" x="670" as="geometry" />
+        </mxCell>
+        <mxCell id="repo_all" parent="zfQVfa9b-QhFl8cWbvNJ-3" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontSize=16;fontStyle=1" value="Repository&#xa;(Vendor/Criteria/Score)" vertex="1">
+          <mxGeometry height="1480" width="190" x="820" as="geometry" />
+        </mxCell>
+        <mxCell id="db_sqlite" parent="zfQVfa9b-QhFl8cWbvNJ-3" style="shape=umlLifeline;participant=umlDatabase;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;strokeWidth=2;fontSize=16;fontStyle=1;size=120;" value="SQLite&#xa;(spk_ahp_topsis.db)" vertex="1">
+          <mxGeometry height="1480" width="110" x="1050" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

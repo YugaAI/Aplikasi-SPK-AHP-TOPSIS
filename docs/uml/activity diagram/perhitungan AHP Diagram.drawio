@@ -1,0 +1,153 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="dTMs6jyVZhbiQ17lc2tO">
+    <mxGraphModel dx="1558" dy="865" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-1" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Activitiy Diagram - Menu Perhitungan AHP" vertex="1">
+          <mxGeometry height="1410" width="760" x="420" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-2" parent="b2xu-oVjxihalJ2KRKOn-1" style="swimlane;whiteSpace=wrap;html=1;" value="Admin/Pengguna" vertex="1">
+          <mxGeometry height="1386" width="330" y="24" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-27" edge="1" parent="b2xu-oVjxihalJ2KRKOn-2" source="b2xu-oVjxihalJ2KRKOn-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-5" parent="b2xu-oVjxihalJ2KRKOn-2" style="ellipse;fillColor=strokeColor;html=1;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="150" y="66" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-6" parent="b2xu-oVjxihalJ2KRKOn-2" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Pilih menu &quot;AHP(Bobot)&quot;" vertex="1">
+          <mxGeometry height="34" width="170" x="80" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-10" parent="b2xu-oVjxihalJ2KRKOn-2" style="ellipse;html=1;shape=endState;fillColor=strokeColor;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="150" y="336" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-32" edge="1" parent="b2xu-oVjxihalJ2KRKOn-2" source="b2xu-oVjxihalJ2KRKOn-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-11" parent="b2xu-oVjxihalJ2KRKOn-2" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Tampilkan Matrik perbaningan berpasangan antar kriteria" vertex="1">
+          <mxGeometry height="44" width="170" x="80" y="416" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-33" edge="1" parent="b2xu-oVjxihalJ2KRKOn-2" source="b2xu-oVjxihalJ2KRKOn-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-12" parent="b2xu-oVjxihalJ2KRKOn-2" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="isi nilai perbandingan berpasangan (skala 1-9 saaty)" vertex="1">
+          <mxGeometry height="44" width="170" x="80" y="486" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-13" parent="b2xu-oVjxihalJ2KRKOn-2" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="klik &quot;Simpan Perbandingan&quot;" vertex="1">
+          <mxGeometry height="34" width="170" x="80" y="556" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-25" parent="b2xu-oVjxihalJ2KRKOn-2" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Melihat hasil bobot dan status konsistensi" vertex="1">
+          <mxGeometry height="44" width="170" x="80" y="1216" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-26" parent="b2xu-oVjxihalJ2KRKOn-2" style="ellipse;html=1;shape=endState;fillColor=strokeColor;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="150" y="1306" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-4" parent="b2xu-oVjxihalJ2KRKOn-1" style="swimlane;whiteSpace=wrap;html=1;" value="Sistem" vertex="1">
+          <mxGeometry height="1386" width="430" x="330" y="24" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-29" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-7" parent="b2xu-oVjxihalJ2KRKOn-4" style="rhombus;whiteSpace=wrap;html=1;" value="jumlah Kriteria &amp;gt; 2?" vertex="1">
+          <mxGeometry height="60" width="205" x="112.5" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-9" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Tampilkan pesan error &quot;minimal 2 kriteria untuk perhitungan AHP&quot;" vertex="1">
+          <mxGeometry height="54" width="170" x="130" y="276" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-35" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-14" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="bangun matrik perbandingan berpasangan (diagonal=1:resiprokal otomatis)" vertex="1">
+          <mxGeometry height="64" width="170" x="130" y="586" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-36" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-16" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Normalisasi matriks" vertex="1">
+          <mxGeometry height="34" width="170" x="130" y="686" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-37" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-17" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Hitung vektor prioritas" vertex="1">
+          <mxGeometry height="34" width="170" x="130" y="756" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-39" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-18" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Hitung lamnda max" vertex="1">
+          <mxGeometry height="34" width="170" x="130" y="826" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-40" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-19" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="Hitung consistention index (ci) dan consistention ratio (cr)" vertex="1">
+          <mxGeometry height="44" width="170" x="130" y="896" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-42" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-43" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-20" parent="b2xu-oVjxihalJ2KRKOn-4" style="rhombus;whiteSpace=wrap;html=1;" value="CR = 0.1 ?" vertex="1">
+          <mxGeometry height="80" width="80" x="175" y="986" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-44" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-21" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="simpan bobot kriteria ke database" vertex="1">
+          <mxGeometry height="44" width="170" x="30" y="1076" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-45" edge="1" parent="b2xu-oVjxihalJ2KRKOn-4" source="b2xu-oVjxihalJ2KRKOn-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-22" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="tampilkan matriks dan CR (status: tidak konsisten)" vertex="1">
+          <mxGeometry height="44" width="170" x="230" y="1076" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-23" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="tampilkan matriks dan CR (status: konsisten)" vertex="1">
+          <mxGeometry height="44" width="170" x="30" y="1156" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-24" parent="b2xu-oVjxihalJ2KRKOn-4" style="html=1;align=center;verticalAlign=top;rounded=1;absoluteArcSize=1;arcSize=10;dashed=0;whiteSpace=wrap;" value="tampilkan peringatan &quot;Perbaiki nilai perbandingan&quot;" vertex="1">
+          <mxGeometry height="44" width="170" x="230" y="1156" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-49" parent="b2xu-oVjxihalJ2KRKOn-4" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Ya" vertex="1">
+          <mxGeometry height="30" width="60" x="310" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-50" parent="b2xu-oVjxihalJ2KRKOn-4" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Tidak" vertex="1">
+          <mxGeometry height="30" width="60" x="160" y="236" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-51" parent="b2xu-oVjxihalJ2KRKOn-4" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Tidak" vertex="1">
+          <mxGeometry height="30" width="60" x="250" y="996" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-52" parent="b2xu-oVjxihalJ2KRKOn-4" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Ya" vertex="1">
+          <mxGeometry height="30" width="60" x="115" y="996" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-28" edge="1" parent="b2xu-oVjxihalJ2KRKOn-1" source="b2xu-oVjxihalJ2KRKOn-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-30" edge="1" parent="b2xu-oVjxihalJ2KRKOn-1" source="b2xu-oVjxihalJ2KRKOn-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-31" edge="1" parent="b2xu-oVjxihalJ2KRKOn-1" source="b2xu-oVjxihalJ2KRKOn-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="214" />
+              <mxPoint x="700" y="462" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-38" edge="1" parent="b2xu-oVjxihalJ2KRKOn-1" source="b2xu-oVjxihalJ2KRKOn-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="b2xu-oVjxihalJ2KRKOn-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-46" edge="1" parent="b2xu-oVjxihalJ2KRKOn-1" source="b2xu-oVjxihalJ2KRKOn-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2xu-oVjxihalJ2KRKOn-48" edge="1" parent="b2xu-oVjxihalJ2KRKOn-1" source="b2xu-oVjxihalJ2KRKOn-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="b2xu-oVjxihalJ2KRKOn-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
