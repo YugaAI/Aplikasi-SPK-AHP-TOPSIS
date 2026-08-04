@@ -5,11 +5,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Arc2D;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.Box;
@@ -158,7 +162,7 @@ public class DashboardView extends JPanel {
         CardPanel card = new CardPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBorder(new EmptyBorder(20, 20, 20, 20));
-        card.setPreferredSize(new Dimension(280, 320));
+        card.setPreferredSize(new Dimension(260, 340));
 
         JLabel title = new JLabel("Flow Penggunaan");
         title.setFont(Theme.FONT_BOLD.deriveFont(16f));
@@ -188,7 +192,7 @@ public class DashboardView extends JPanel {
         CardPanel card = new CardPanel();
         card.setLayout(new BorderLayout());
         card.setBorder(new EmptyBorder(20, 20, 20, 20));
-        card.setPreferredSize(new Dimension(320, 320));
+        card.setPreferredSize(new Dimension(300, 340));
 
         JLabel title = new JLabel("Jumlah Tipe Kriteria");
         title.setFont(Theme.FONT_BOLD.deriveFont(16f));
@@ -201,35 +205,47 @@ public class DashboardView extends JPanel {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
+
                 if (data.isEmpty()) return;
 
                 int max = data.values().stream().max(Integer::compareTo).orElse(1);
                 int width = getWidth();
                 int height = getHeight();
-                int barWidth = 40;
-                int spacing = 60;
-                int startX = 50;
+                int n = data.size();
+
+                int leftMargin = 40;
+                int rightMargin = 20;
+                int bottomMargin = 40;
+                int topMargin = 25;
+                int chartWidth = Math.max(0, width - leftMargin - rightMargin);
+                int slot = n > 0 ? chartWidth / n : chartWidth;
+                int barWidth = Math.max(24, Math.min(50, (int) (slot * 0.5)));
 
                 g2.setColor(Theme.BORDER_COLOR);
-                g2.drawLine(40, height - 30, width - 20, height - 30);
-                
+                g2.drawLine(leftMargin, height - bottomMargin, width - rightMargin, height - bottomMargin);
+
                 int i = 0;
+                FontMetrics fm = g2.getFontMetrics(Theme.FONT_REGULAR.deriveFont(10f));
                 for (Map.Entry<String, Integer> entry : data.entrySet()) {
-                    int barHeight = (int) (((double) entry.getValue() / max) * (height - 60));
-                    int x = startX + (i * spacing);
-                    int y = height - 30 - barHeight;
+                    int barHeight = (int) (((double) entry.getValue() / max) * (height - bottomMargin - topMargin));
+                    int slotCenter = leftMargin + (i * slot) + slot / 2;
+                    int x = slotCenter - barWidth / 2;
+                    int y = height - bottomMargin - barHeight;
 
                     g2.setColor(Theme.ACCENT_PRIMARY);
                     g2.fillRoundRect(x, y, barWidth, barHeight, 5, 5);
-                    
-                    // Label
+
+                    // Label (centered under the bar)
                     g2.setColor(Theme.TEXT_SECONDARY);
                     g2.setFont(Theme.FONT_REGULAR.deriveFont(10f));
-                    g2.drawString(entry.getKey(), x, height - 15);
-                    
-                    // Value
-                    g2.drawString(String.valueOf(entry.getValue()), x + 15, y - 5);
+                    String label = entry.getKey();
+                    int labelWidth = fm.stringWidth(label);
+                    g2.drawString(label, slotCenter - labelWidth / 2, height - bottomMargin + 15);
+
+                    // Value (centered above the bar)
+                    String valueStr = String.valueOf(entry.getValue());
+                    int valueWidth = fm.stringWidth(valueStr);
+                    g2.drawString(valueStr, slotCenter - valueWidth / 2, y - 6);
                     i++;
                 }
             }
@@ -244,7 +260,7 @@ public class DashboardView extends JPanel {
         CardPanel card = new CardPanel();
         card.setLayout(new BorderLayout());
         card.setBorder(new EmptyBorder(20, 20, 20, 20));
-        card.setPreferredSize(new Dimension(320, 320));
+        card.setPreferredSize(new Dimension(420, 340));
 
         JPanel titleBox = new JPanel();
         titleBox.setLayout(new BoxLayout(titleBox, BoxLayout.Y_AXIS));
@@ -275,47 +291,106 @@ public class DashboardView extends JPanel {
 
                 int width = getWidth();
                 int height = getHeight();
-                int size = Math.min(width, height) - 60;
-                int x = (width - size) / 2;
-                int y = (height - size) / 2;
 
                 Color[] colors = {Theme.ACCENT_PRIMARY, Theme.ACCENT_SECONDARY, Theme.ACCENT_SUCCESS, Theme.ACCENT_WARNING, Theme.ACCENT_DANGER};
-                
+
                 double total = data.values().stream().mapToDouble(Double::doubleValue).sum();
+
+                Font legendFont = Theme.FONT_REGULAR.deriveFont(11f);
+                g2.setFont(legendFont);
+                FontMetrics legendFm = g2.getFontMetrics();
+                int swatch = 10;
+                int itemGap = 16;
+                int lineHeight = 18;
+                int legendPadding = 10;
+                int availWidth = Math.max(80, width - 2 * legendPadding);
+
+                List<String> labels = new ArrayList<>();
+                List<Integer> itemWidths = new ArrayList<>();
+                for (Map.Entry<String, Double> entry : data.entrySet()) {
+                    double pct = (entry.getValue() / total) * 100;
+                    String label = entry.getKey() + String.format(" (%.1f%%)", pct);
+                    labels.add(label);
+                    itemWidths.add(swatch + 6 + legendFm.stringWidth(label));
+                }
+
+                List<List<Integer>> legendRows = new ArrayList<>();
+                List<Integer> currentRow = new ArrayList<>();
+                int rowWidth = 0;
+                for (int idx = 0; idx < labels.size(); idx++) {
+                    int w = itemWidths.get(idx);
+                    if (!currentRow.isEmpty() && rowWidth + itemGap + w > availWidth) {
+                        legendRows.add(currentRow);
+                        currentRow = new ArrayList<>();
+                        rowWidth = 0;
+                    }
+                    if (!currentRow.isEmpty()) rowWidth += itemGap;
+                    currentRow.add(idx);
+                    rowWidth += w;
+                }
+                if (!currentRow.isEmpty()) legendRows.add(currentRow);
+
+                int legendHeight = legendRows.size() * lineHeight + legendPadding;
+
+                int topPadding = 10;
+                int pieAreaHeight = Math.max(60, height - legendHeight - topPadding);
+                int size = Math.min(width - 40, pieAreaHeight);
+                int x = (width - size) / 2;
+                int y = topPadding + (pieAreaHeight - size) / 2;
+                double cx = x + size / 2.0;
+                double cy = y + size / 2.0;
+                double outerRadius = size / 2.0;
+                double innerRadius = outerRadius * 0.5;
+                double labelRadius = (outerRadius + innerRadius) / 2.0;
+
                 double currentAngle = 0;
                 int i = 0;
-
-                // Draw pie
+                double[] midAngles = new double[data.size()];
+                double[] sliceAngles = new double[data.size()];
                 for (Map.Entry<String, Double> entry : data.entrySet()) {
                     double angle = (entry.getValue() / total) * 360;
                     g2.setColor(colors[i % colors.length]);
                     g2.fill(new Arc2D.Double(x, y, size, size, currentAngle, angle, Arc2D.PIE));
+                    midAngles[i] = currentAngle + angle / 2.0;
+                    sliceAngles[i] = angle;
                     currentAngle += angle;
                     i++;
                 }
-                
-                // Draw inner circle for donut chart look
+
                 g2.setColor(Theme.BG_CARD);
-                int innerSize = size / 2;
-                g2.fillOval(x + (size - innerSize)/2, y + (size - innerSize)/2, innerSize, innerSize);
-                
-                // Legend
-                int legendY = height - 20;
-                int legendX = 10;
+                int innerSize = (int) (innerRadius * 2);
+                g2.fillOval((int) (cx - innerRadius), (int) (cy - innerRadius), innerSize, innerSize);
+
+                Font pctFont = Theme.FONT_BOLD.deriveFont(11f);
+                g2.setFont(pctFont);
+                FontMetrics pctFm = g2.getFontMetrics();
                 i = 0;
                 for (Map.Entry<String, Double> entry : data.entrySet()) {
-                    g2.setColor(colors[i % colors.length]);
-                    g2.fillRect(legendX, legendY, 10, 10);
-                    g2.setColor(Theme.TEXT_SECONDARY);
-                    g2.setFont(Theme.FONT_REGULAR.deriveFont(10f));
                     double pct = (entry.getValue() / total) * 100;
-                    g2.drawString(entry.getKey() + String.format(" (%.1f%%)", pct), legendX + 15, legendY + 9);
-                    legendX += 80;
-                    if (legendX > width - 80) {
-                        legendX = 10;
-                        legendY += 15;
+                    if (sliceAngles[i] >= 12) {
+                        String pctLabel = String.format("%.0f%%", pct);
+                        double rad = Math.toRadians(midAngles[i]);
+                        double lx = cx + labelRadius * Math.cos(rad);
+                        double ly = cy - labelRadius * Math.sin(rad);
+                        int lw = pctFm.stringWidth(pctLabel);
+                        g2.setColor(Theme.TEXT_ON_ACCENT);
+                        g2.drawString(pctLabel, (float) (lx - lw / 2.0), (float) (ly + pctFm.getAscent() / 2.5));
                     }
                     i++;
+                }
+
+                g2.setFont(legendFont);
+                int legendY = height - legendRows.size() * lineHeight;
+                for (List<Integer> row : legendRows) {
+                    int legendX = legendPadding;
+                    for (int idx : row) {
+                        g2.setColor(colors[idx % colors.length]);
+                        g2.fillRect(legendX, legendY + 4, swatch, swatch);
+                        g2.setColor(Theme.TEXT_SECONDARY);
+                        g2.drawString(labels.get(idx), legendX + swatch + 6, legendY + swatch + 2);
+                        legendX += itemWidths.get(idx) + itemGap;
+                    }
+                    legendY += lineHeight;
                 }
             }
         };
